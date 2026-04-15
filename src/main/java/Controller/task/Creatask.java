@@ -1,4 +1,4 @@
-package Controller;
+package Controller.task;
 
 import enums.PrioriteTache;
 import enums.StatutTache;
@@ -12,8 +12,8 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import model.Tache;
-import service.TacheService;
+import model.task.Tache;
+import service.task.TacheService;
 
 import java.io.IOException;
 import java.net.URL;
@@ -49,7 +49,7 @@ public class Creatask implements Initializable {
     @FXML
     private void retourVersReadTask(ActionEvent event) {
         try {
-            Parent readTaskRoot = FXMLLoader.load(getClass().getResource("/readtask.fxml"));
+            Parent readTaskRoot = FXMLLoader.load(getClass().getResource("/task/readtask.fxml"));
             root.getScene().setRoot(readTaskRoot);
         } catch (IOException e) {
             System.err.println("Erreur retour vers ReadTask : " + e.getMessage());

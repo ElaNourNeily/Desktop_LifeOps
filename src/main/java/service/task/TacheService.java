@@ -1,8 +1,9 @@
-package service;
+package service.task;
 
 import enums.PrioriteTache;
 import enums.StatutTache;
-import model.Tache;
+import model.task.Tache;
+import service.Crud;
 import utils.MyDatabase;
 
 import java.sql.*;

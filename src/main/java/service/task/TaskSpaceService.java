@@ -1,8 +1,9 @@
-package service;
+package service.task;
 
 import enums.StatutTaskSpace;
 import enums.TypeTaskSpace;
-import model.TaskSpace;
+import model.task.TaskSpace;
+import service.Crud;
 import utils.MyDatabase;
 
 import java.sql.*;

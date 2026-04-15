@@ -1,4 +1,4 @@
-package model;
+package model.task;
 
 import enums.TypeTaskSpace;
 import enums.StatutTaskSpace;

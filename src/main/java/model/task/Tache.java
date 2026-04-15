@@ -1,4 +1,4 @@
-package model;
+package model.task;
 
 import enums.PrioriteTache;
 import enums.StatutTache;

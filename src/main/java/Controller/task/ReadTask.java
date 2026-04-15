@@ -1,4 +1,4 @@
-package Controller;
+package Controller.task;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,8 +12,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
-import model.Tache;
-import service.TacheService;
+import model.task.Tache;
+import service.task.TacheService;
 
 import java.io.IOException;
 import java.net.URL;
@@ -50,7 +50,7 @@ public class ReadTask implements Initializable {
     @FXML
     private void naviguerVersCreatask() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Creatask.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/task/Creatask.fxml"));
             colAFaire.getScene().setRoot(root);
         } catch (IOException e) {
             System.err.println("Erreur navigation vers Creatask : " + e.getMessage());
@@ -161,7 +161,7 @@ public class ReadTask implements Initializable {
     // ── Navigate to UpdateTask.fxml passing the selected Tache ────────
     private void naviguerVersUpdateTask(Tache tache) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/UpdateTask.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/task/Updatetask.fxml"));
             Parent root = loader.load();
 
             // Pass the selected task to the UpdateTask controller once it's ready:
