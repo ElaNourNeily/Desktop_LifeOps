@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="700.0" prefWidth="920.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ObjectifController">
+    <padding>
+        <Insets bottom="30" left="40" right="40" top="30" />
+    </padding>
+
+    <top>
+        <VBox spacing="16">
+            <!-- TITRE ET BOUTON -->
+            <HBox alignment="CENTER_LEFT">
+                <VBox>
+                    <Label styleClass="title-label" text="Mes Objectifs" />
+                    <Label styleClass="subtitle-label" text="Définissez, suivez et atteignez vos objectifs personnels" />
+                </VBox>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="btnNouvelObjectif" onAction="#handleNouvelObjectif" styleClass="btn-primary" text="+ Nouvel objectif" />
+            </HBox>
+
+            <!-- RECHERCHE + TRI -->
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <TextField fx:id="txtRecherche" promptText="🔍 Rechercher un objectif..."
+                           styleClass="search-field" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                <Label style="-fx-text-fill: #8a8d91; -fx-font-size: 13px;" text="Trier par :" />
+                <ComboBox fx:id="comboTri" prefWidth="190"
+                          style="-fx-background-color: #1c1e22; -fx-text-fill: white;" />
+            </HBox>
+
+            <!-- FILTRES CATÉGORIE -->
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Button fx:id="btnTous"      onAction="#handleFiltrer" styleClass="filter-btn-active" text="Tous" />
+                <Button fx:id="btnPersonnel" onAction="#handleFiltrer" styleClass="filter-btn"        text="Personnel" />
+                <Button fx:id="btnSante"     onAction="#handleFiltrer" styleClass="filter-btn"        text="Santé" />
+                <Button fx:id="btnEtudes"    onAction="#handleFiltrer" styleClass="filter-btn"        text="Etudes" />
+                <Button fx:id="btnFinances"  onAction="#handleFiltrer" styleClass="filter-btn"        text="Finances" />
+                <Button fx:id="btnLoisirs"   onAction="#handleFiltrer" styleClass="filter-btn"        text="Loisirs" />
+            </HBox>
+
+            <Label fx:id="labelCount" styleClass="section-title" text="EN COURS (0)" />
+
+            <BorderPane.margin>
+                <Insets bottom="10.0" />
+            </BorderPane.margin>
+        </VBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background: #121417; -fx-background-color: transparent;">
+            <VBox fx:id="objectifsContainer" spacing="15" />
+        </ScrollPane>
+    </center>
+</BorderPane>
