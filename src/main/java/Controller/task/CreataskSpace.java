@@ -34,58 +34,72 @@ public class CreataskSpace implements Initializable {
 
     private final TaskSpaceService taskSpaceService = new TaskSpaceService();
 
+    private static final int UTILISATEUR_ID = 2;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         type.getItems().setAll(TypeTaskSpace.values());
         statut.getItems().setAll(StatutTaskSpace.values());
 
-        // Default selections matching screenshot
         type.setValue(TypeTaskSpace.values()[0]);
         statut.setValue(StatutTaskSpace.values()[0]);
 
-        // Spinner 1–365, default 14
         duration.setValueFactory(
-            new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 365, 14)
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 365, 14)
         );
         duration.setEditable(true);
     }
-    // Replace with logged-in user id later
-    private static final int UTILISATEUR_ID = 2;
 
-    // ── Back → ReadTaskSpace ──────────────────────────────────
     @FXML
-    private void retourVersReadTaskSpace(ActionEvent event) {
+    private void retourVersTaskSpace(ActionEvent event) {
         try {
             Parent readRoot = FXMLLoader.load(getClass().getResource("/task/TaskSpace.fxml"));
             root.getScene().setRoot(readRoot);
         } catch (IOException e) {
-            System.err.println("Erreur retour ReadTaskSpace : " + e.getMessage());
+            System.err.println("Erreur retour TaskSpace : " + e.getMessage());
         }
     }
 
-    // ── Save ─────────────────────────────────────────────────
     @FXML
     private void enregistrer(ActionEvent event) {
         String tNom = nom.getText();
 
         if (tNom == null || tNom.trim().isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Attention", "Le nom du projet est obligatoire !");
+            showAlert(Alert.AlertType.WARNING, "Erreur de saisie", "Le nom du projet est obligatoire et ne peut pas être vide !");
             return;
         }
 
-        TypeTaskSpace tType     = type.getValue();
+        TypeTaskSpace tType = type.getValue();
+        if (tType == null) {
+            showAlert(Alert.AlertType.WARNING, "Erreur de saisie", "Veuillez sélectionner un type de projet !");
+            return;
+        }
+
         StatutTaskSpace tStatut = statut.getValue();
-        int tDuration           = duration.getValue() != null ? duration.getValue() : 14;
-        String tDesc            = description.getText();
+        if (tStatut == null) {
+            showAlert(Alert.AlertType.WARNING, "Erreur de saisie", "Veuillez sélectionner un statut de projet !");
+            return;
+        }
+
+        Integer tDuration = duration.getValue();
+        if (tDuration == null || tDuration < 1 || tDuration > 365) {
+            showAlert(Alert.AlertType.WARNING, "Erreur de saisie", "La durée doit être comprise entre 1 et 365 jours !");
+            return;
+        }
+
+        String tDesc = description.getText();
+        if (tDesc != null && tDesc.length() > 500) {
+            showAlert(Alert.AlertType.WARNING, "Erreur de saisie", "La description est trop longue (maximum 500 caractères) !");
+            return;
+        }
 
         try {
             TaskSpace ts = new TaskSpace(
-                tNom, tType, new Date(), tDesc, tDuration, tStatut, UTILISATEUR_ID
+                    tNom, tType, new Date(), tDesc, tDuration, tStatut, UTILISATEUR_ID
             );
             taskSpaceService.ajouter(ts);
             showAlert(Alert.AlertType.INFORMATION, "Succès", "Projet créé avec succès !");
-            retourVersReadTaskSpace(event);
+            retourVersTaskSpace(event);
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur BD", e.getMessage());
         } catch (Exception e) {
@@ -93,14 +107,13 @@ public class CreataskSpace implements Initializable {
         }
     }
 
-    // ── Cancel ───────────────────────────────────────────────
     @FXML
     private void annuler(ActionEvent event) {
-        retourVersReadTaskSpace(event);
+        retourVersTaskSpace(event);
     }
 
-    private void showAlert(Alert.AlertType type, String title, String message) {
-        Alert a = new Alert(type);
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert a = new Alert(alertType);
         a.setTitle(title);
         a.setHeaderText(null);
         a.setContentText(message);

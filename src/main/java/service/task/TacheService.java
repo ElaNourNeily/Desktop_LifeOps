@@ -27,9 +27,9 @@ public class TacheService implements Crud<Tache> {
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setString(1, t.getTitre());
         ps.setString(2, t.getDescription());
-        ps.setString(3, t.getPriorite().getValeur());   // enum → string DB
+        ps.setString(3, t.getPriorite().getValeur());
         ps.setInt(4, t.getDifficulte());
-        ps.setString(5, t.getStatut().getValeur());     // enum → string DB
+        ps.setString(5, t.getStatut().getValeur());
 
         if (t.getDeadline() != null)
             ps.setTimestamp(6, new Timestamp(t.getDeadline().getTime()));
@@ -39,7 +39,6 @@ public class TacheService implements Crud<Tache> {
         ps.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
         ps.setTimestamp(8, new Timestamp(System.currentTimeMillis()));
 
-        // 0 = Solo → NULL en DB
         if (t.getTaskSpaceId() != 0)
             ps.setInt(9, t.getTaskSpaceId());
         else
@@ -48,8 +47,7 @@ public class TacheService implements Crud<Tache> {
         ps.setInt(10, t.getUtilisateurId());
 
         ps.executeUpdate();
-        System.out.println("✅ Tache ajoutée : " + t.getTitre()
-                + " [" + t.getPriorite() + " | " + t.getStatut() + "]");
+        System.out.println("✅ Tache ajoutée : " + t.getTitre() + " [" + t.getPriorite() + " | " + t.getStatut() + "]");
     }
 
     @Override
@@ -65,7 +63,6 @@ public class TacheService implements Crud<Tache> {
         return liste;
     }
 
-    // Taches d'un utilisateur
     public List<Tache> recupererParUtilisateur(int utilisateurId) throws SQLException {
         String sql = "SELECT * FROM tache WHERE utilisateur_id = ?";
         PreparedStatement ps = connection.prepareStatement(sql);
@@ -77,7 +74,6 @@ public class TacheService implements Crud<Tache> {
         return liste;
     }
 
-    // Taches d'un TaskSpace précis
     public List<Tache> recupererParTaskSpace(int taskSpaceId) throws SQLException {
         String sql = "SELECT * FROM tache WHERE task_space_id = ?";
         PreparedStatement ps = connection.prepareStatement(sql);
@@ -89,7 +85,18 @@ public class TacheService implements Crud<Tache> {
         return liste;
     }
 
-    // Taches Solo (sans projet) d'un utilisateur
+    public List<Tache> recupererParTaskSpaceEtUtilisateur(int taskSpaceId, int utilisateurId) throws SQLException {
+        String sql = "SELECT * FROM tache WHERE task_space_id = ? AND utilisateur_id = ?";
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setInt(1, taskSpaceId);
+        ps.setInt(2, utilisateurId);
+        ResultSet rs = ps.executeQuery();
+
+        List<Tache> liste = new ArrayList<>();
+        while (rs.next()) liste.add(mapRow(rs));
+        return liste;
+    }
+
     public List<Tache> recupererTachesSolo(int utilisateurId) throws SQLException {
         String sql = "SELECT * FROM tache WHERE task_space_id IS NULL AND utilisateur_id = ?";
         PreparedStatement ps = connection.prepareStatement(sql);
@@ -129,8 +136,7 @@ public class TacheService implements Crud<Tache> {
         ps.setInt(9, t.getId());
 
         ps.executeUpdate();
-        System.out.println("✅ Tache modifiée : id=" + t.getId()
-                + " → " + t.getStatut().getValeur());
+        System.out.println("✅ Tache modifiée : id=" + t.getId() + " → " + t.getStatut().getValeur());
     }
 
     @Override
@@ -142,31 +148,31 @@ public class TacheService implements Crud<Tache> {
         System.out.println("✅ Tache supprimée : id=" + id);
     }
 
-    // ─── Méthode privée pour éviter la répétition du mapping ─────────
     private Tache mapRow(ResultSet rs) throws SQLException {
         Tache t = new Tache();
         t.setId(rs.getInt("id"));
         t.setTitre(rs.getString("titre"));
         t.setDescription(rs.getString("description"));
-        t.setPriorite(PrioriteTache.fromString(rs.getString("priorite")));  // string DB → enum
+        t.setPriorite(PrioriteTache.fromString(rs.getString("priorite")));
         t.setDifficulte(rs.getInt("difficulte"));
-        t.setStatut(StatutTache.fromString(rs.getString("statut")));        // string DB → enum
+        t.setStatut(StatutTache.fromString(rs.getString("statut")));
         t.setDeadline(rs.getTimestamp("deadline"));
         t.setCreatedAt(rs.getTimestamp("created_at"));
         t.setUpdatedAt(rs.getTimestamp("updated_at"));
-        t.setTaskSpaceId(rs.getInt("task_space_id")); // 0 si NULL
+        t.setTaskSpaceId(rs.getInt("task_space_id"));
         t.setUtilisateurId(rs.getInt("utilisateur_id"));
         return t;
     }
+
     @Override
     public List<Tache> trier() {
         try {
             return recuperer().stream()
                     .sorted((t1, t2) -> {
-                        // priorité d'abord
+                        if (t1.getPriorite() == null && t2.getPriorite() == null) return 0;
+                        if (t1.getPriorite() == null) return 1;
+                        if (t2.getPriorite() == null) return -1;
                         int cmp = t1.getPriorite().compareTo(t2.getPriorite());
-
-                        // si même priorité → comparer difficulté
                         if (cmp == 0) {
                             return Integer.compare(t1.getDifficulte(), t2.getDifficulte());
                         }
@@ -178,6 +184,7 @@ public class TacheService implements Crud<Tache> {
             return new ArrayList<>();
         }
     }
+
     @Override
     public List<Tache> rechercher(String titre) {
         try {
@@ -188,5 +195,25 @@ public class TacheService implements Crud<Tache> {
             System.out.println(e.getMessage());
             return new ArrayList<>();
         }
+    }
+
+    @Override
+    public Tache findbyID(int i) throws SQLException {
+        return null;
+    }
+
+    @Override
+    public Tache findbyMail(String mail) throws SQLException {
+        return null;
+    }
+
+    @Override
+    public List<Tache> findAll() throws SQLException {
+        return List.of();
+    }
+
+    @Override
+    public List<Tache> sortbyName() throws SQLException {
+        return List.of();
     }
 }

@@ -10,4 +10,8 @@ public interface Crud<T> {
     List<T> recuperer() throws SQLException;
     List<T> trier();
     List<T> rechercher(String critere);
+    T findbyID(int i) throws SQLException;
+    T findbyMail(String mail) throws SQLException;
+    List<T> findAll() throws SQLException;
+    List<T> sortbyName() throws SQLException;
 }

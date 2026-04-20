@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
@@ -15,292 +16,229 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<!--
-    CreataskSpace.fxml — Nouveau Projet / Créer un espace de travail
-    Matches: Screenshot 3 (create project form)
-    Dark Mode by default via stylespace.css
-    Light Mode: root.getStyleClass().add("light-mode");
--->
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="603.0" prefWidth="820.0" styleClass="root-pane" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.task.CreataskSpace">
+    <children>
 
-<AnchorPane fx:id="root"
-            maxHeight="-Infinity" maxWidth="-Infinity"
-            minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="603.0" prefWidth="820.0"
-            styleClass="root-pane"
-            stylesheets="@stylespace.css"
-            xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="Controller.task.CreataskSpace">
-   <children>
+        <VBox prefHeight="603.0" prefWidth="229.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
 
-      <!-- ═══════════════════════════════════════
-           SIDEBAR
-      ════════════════════════════════════════ -->
-      <VBox prefHeight="603.0" prefWidth="229.0" styleClass="sidebar"
-            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-
-            <!-- Logo -->
-            <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="229.0" spacing="10.0">
-               <padding><Insets left="20.0" /></padding>
-               <children>
-                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                     <image><Image url="@../../../assets/5555.png" /></image>
-                  </ImageView>
-                  <Label styleClass="logo-label" text="LifeOps">
-                     <font><Font name="System Bold" size="18.0" /></font>
-                  </Label>
-               </children>
-            </HBox>
-
-            <!-- Navigation -->
-            <VBox prefWidth="229.0" spacing="5.0">
-               <padding><Insets top="20.0" /></padding>
-               <children>
-
-                  <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0" spacing="10.0" styleClass="nav-item">
-                     <padding><Insets left="20.0" /></padding>
-                     <children>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image><Image url="@../../../assets/home_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="229.0" spacing="10.0">
+                    <padding><Insets left="20.0" /></padding>
+                    <children>
+                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                            <image><Image url="@../../../assets/5555.png" /></image>
                         </ImageView>
-                        <Label styleClass="nav-label" text="Tableau de bord"><font><Font size="14.0" /></font></Label>
-                     </children>
-                  </HBox>
-
-                  <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0" spacing="10.0" styleClass="nav-item-active">
-                     <padding><Insets left="20.0" /></padding>
-                     <children>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image><Image url="@../../../assets/done_all_24dp_7A4ED4_FILL0_wght400_GRAD0_opsz24.png" /></image>
-                        </ImageView>
-                        <Label styleClass="nav-label-active" text="Tâches"><font><Font size="14.0" /></font></Label>
-                     </children>
-                  </HBox>
-
-                  <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0" spacing="10.0" styleClass="nav-item">
-                     <padding><Insets left="20.0" /></padding>
-                     <children>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image><Image url="@../../../assets/account_balance_wallet_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
-                        </ImageView>
-                        <Label styleClass="nav-label" text="Finance"><font><Font size="14.0" /></font></Label>
-                     </children>
-                  </HBox>
-
-                  <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0" spacing="10.0" styleClass="nav-item">
-                     <padding><Insets left="20.0" /></padding>
-                     <children>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image><Image url="@../../../assets/target_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
-                        </ImageView>
-                        <Label styleClass="nav-label" text="Objectifs"><font><Font size="14.0" /></font></Label>
-                     </children>
-                  </HBox>
-
-                  <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0" spacing="10.0" styleClass="nav-item">
-                     <padding><Insets left="20.0" /></padding>
-                     <children>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image><Image url="@../../../assets/ecg_heart_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
-                        </ImageView>
-                        <Label styleClass="nav-label" text="Santé"><font><Font size="14.0" /></font></Label>
-                     </children>
-                  </HBox>
-
-                  <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0" spacing="10.0" styleClass="nav-item">
-                     <padding><Insets left="20.0" /></padding>
-                     <children>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image><Image url="@../../../assets/schedule_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
-                        </ImageView>
-                        <Label styleClass="nav-label" text="Temps"><font><Font size="14.0" /></font></Label>
-                     </children>
-                  </HBox>
-
-               </children>
-            </VBox>
-
-            <VBox VBox.vgrow="ALWAYS" />
-
-            <!-- User Account -->
-            <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="229.0" spacing="10.0" styleClass="account-box">
-               <padding><Insets bottom="10.0" left="15.0" right="15.0" top="10.0" /></padding>
-               <VBox.margin><Insets bottom="20.0" left="10.0" right="10.0" /></VBox.margin>
-               <children>
-                  <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                     <image><Image url="@../../../assets/account_circle_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
-                  </ImageView>
-                  <Label styleClass="account-label" text="compte"><font><Font size="14.0" /></font></Label>
-               </children>
-            </HBox>
-
-         </children>
-      </VBox>
-
-      <!-- Vertical separator -->
-      <Line endX="0.0" endY="603.0" startX="0.0" startY="0.0"
-            styleClass="sidebar-divider"
-            AnchorPane.leftAnchor="229.0" AnchorPane.topAnchor="0.0" />
-
-      <!-- ═══════════════════════════════════════
-           MAIN CONTENT
-      ════════════════════════════════════════ -->
-      <VBox styleClass="main-content"
-            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="229.0"
-            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-
-            <!-- ── Header ──────────────────────────────────── -->
-            <HBox alignment="CENTER_LEFT" prefHeight="75.0" spacing="15.0">
-               <padding><Insets left="20.0" right="20.0" top="20.0" /></padding>
-               <children>
-
-                  <!-- Back Button -->
-                  <Button mnemonicParsing="false"
-                          onAction="#retourVersReadTaskSpace"
-                          prefHeight="36.0" prefWidth="36.0"
-                          styleClass="back-button">
-                     <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                           <image><Image url="@../../../assets/arrow_back_ios_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-
-                  <VBox spacing="3.0">
-                     <children>
-                        <Label styleClass="page-title" text="Nouveau Projet">
-                           <font><Font name="System Bold" size="20.0" /></font>
+                        <Label styleClass="logo-label" text="LifeOps">
+                            <font><Font name="System Bold" size="18.0" /></font>
                         </Label>
-                        <Label styleClass="page-subtitle" text="Créer un nouvel espace de travail">
-                           <font><Font size="13.0" /></font>
-                        </Label>
-                     </children>
-                  </VBox>
+                    </children>
+                </HBox>
 
-               </children>
-            </HBox>
+                <VBox prefWidth="229.0" spacing="5.0">
+                    <padding><Insets top="20.0" /></padding>
+                    <children>
 
-            <!-- Horizontal separator -->
-            <Line endX="538.0" startX="0.0" styleClass="section-divider">
-               <VBox.margin><Insets left="20.0" right="20.0" /></VBox.margin>
-            </Line>
-
-            <!-- ── Form Container ──────────────────────────── -->
-            <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
-               <padding><Insets bottom="30.0" left="30.0" right="30.0" top="30.0" /></padding>
-               <children>
-
-                  <!-- Form Card -->
-                  <VBox maxWidth="1.7976931348623157E308" prefWidth="498.0" spacing="16.0" styleClass="form-card">
-                     <padding><Insets bottom="30.0" left="30.0" right="30.0" top="30.0" /></padding>
-                     <children>
-
-                        <!-- Nom du projet -->
-                        <VBox spacing="8.0">
-                           <children>
-                              <Label styleClass="field-label" text="Nom du projet">
-                                 <font><Font size="13.0" /></font>
-                              </Label>
-                              <TextField fx:id="nom"
-                                         promptText="Ex: Refonte du site web"
-                                         styleClass="form-field"
-                                         maxWidth="1.7976931348623157E308" />
-                           </children>
-                        </VBox>
-
-                        <!-- Type & Statut -->
-                        <HBox spacing="15.0">
-                           <children>
-
-                              <VBox spacing="8.0" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Label styleClass="field-label" text="Type de projet">
-                                       <font><Font size="13.0" /></font>
-                                    </Label>
-                                    <ChoiceBox fx:id="type"
-                                               maxWidth="1.7976931348623157E308"
-                                               prefWidth="150.0"
-                                               styleClass="form-choice" />
-                                 </children>
-                              </VBox>
-
-                              <VBox spacing="8.0" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Label styleClass="field-label" text="Statut du projet">
-                                       <font><Font size="13.0" /></font>
-                                    </Label>
-                                    <ChoiceBox fx:id="statut"
-                                               maxWidth="1.7976931348623157E308"
-                                               prefWidth="150.0"
-                                               styleClass="form-choice" />
-                                 </children>
-                              </VBox>
-
-                           </children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0" spacing="10.0" styleClass="nav-item">
+                            <padding><Insets left="20.0" /></padding>
+                            <children>
+                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image><Image url="@../../../assets/home_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                                </ImageView>
+                                <Label styleClass="nav-label" text="Tableau de bord"><font><Font size="14.0" /></font></Label>
+                            </children>
                         </HBox>
 
-                        <!-- Durée -->
-                        <VBox spacing="8.0">
-                           <children>
-                              <Label styleClass="field-label" text="Durée (en jours)">
-                                 <font><Font size="13.0" /></font>
-                              </Label>
-                              <Spinner fx:id="duration"
-                                       maxWidth="1.7976931348623157E308"
-                                       prefHeight="35.0"
-                                       styleClass="form-spinner" />
-                              <Label styleClass="field-hint" text="Durée estimée du projet en jours.">
-                                 <font><Font size="11.0" /></font>
-                              </Label>
-                           </children>
-                        </VBox>
-
-                        <!-- Description -->
-                        <VBox spacing="8.0">
-                           <children>
-                              <Label styleClass="field-label" text="Description">
-                                 <font><Font size="13.0" /></font>
-                              </Label>
-                              <TextArea fx:id="description"
-                                        prefHeight="90.0"
-                                        maxWidth="1.7976931348623157E308"
-                                        promptText="Décrivez l'objectif du projet..."
-                                        styleClass="form-textarea"
-                                        wrapText="true" />
-                           </children>
-                        </VBox>
-
-                        <!-- Buttons -->
-                        <HBox alignment="CENTER_RIGHT" spacing="12.0">
-                           <VBox.margin><Insets top="6.0" /></VBox.margin>
-                           <children>
-                              <Button mnemonicParsing="false"
-                                      onAction="#annuler"
-                                      prefHeight="40.0" prefWidth="110.0"
-                                      styleClass="cancel-button"
-                                      text="Annuler">
-                                 <font><Font size="13.0" /></font>
-                              </Button>
-                              <Button mnemonicParsing="false"
-                                      onAction="#enregistrer"
-                                      prefHeight="40.0" prefWidth="130.0"
-                                      styleClass="submit-button"
-                                      text="Enregistrer">
-                                 <font><Font name="System Bold" size="13.0" /></font>
-                              </Button>
-                           </children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0" spacing="10.0" styleClass="nav-item-active">
+                            <padding><Insets left="20.0" /></padding>
+                            <children>
+                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image><Image url="@../../../assets/done_all_24dp_7A4ED4_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                                </ImageView>
+                                <Label styleClass="nav-label-active" text="Tâches"><font><Font size="14.0" /></font></Label>
+                            </children>
                         </HBox>
 
-                     </children>
-                  </VBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0" spacing="10.0" styleClass="nav-item">
+                            <padding><Insets left="20.0" /></padding>
+                            <children>
+                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image><Image url="@../../../assets/account_balance_wallet_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                                </ImageView>
+                                <Label styleClass="nav-label" text="Finance"><font><Font size="14.0" /></font></Label>
+                            </children>
+                        </HBox>
 
-               </children>
-            </VBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0" spacing="10.0" styleClass="nav-item">
+                            <padding><Insets left="20.0" /></padding>
+                            <children>
+                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image><Image url="@../../../assets/target_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                                </ImageView>
+                                <Label styleClass="nav-label" text="Objectifs"><font><Font size="14.0" /></font></Label>
+                            </children>
+                        </HBox>
 
-         </children>
-      </VBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0" spacing="10.0" styleClass="nav-item">
+                            <padding><Insets left="20.0" /></padding>
+                            <children>
+                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image><Image url="@../../../assets/ecg_heart_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                                </ImageView>
+                                <Label styleClass="nav-label" text="Santé"><font><Font size="14.0" /></font></Label>
+                            </children>
+                        </HBox>
 
-   </children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0" spacing="10.0" styleClass="nav-item">
+                            <padding><Insets left="20.0" /></padding>
+                            <children>
+                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image><Image url="@../../../assets/schedule_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                                </ImageView>
+                                <Label styleClass="nav-label" text="Temps"><font><Font size="14.0" /></font></Label>
+                            </children>
+                        </HBox>
+
+                    </children>
+                </VBox>
+
+                <VBox VBox.vgrow="ALWAYS" />
+
+                <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="229.0" spacing="10.0" styleClass="account-box">
+                    <padding><Insets bottom="10.0" left="15.0" right="15.0" top="10.0" /></padding>
+                    <VBox.margin><Insets bottom="20.0" left="10.0" right="10.0" /></VBox.margin>
+                    <children>
+                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                            <image><Image url="@../../../assets/account_circle_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                        </ImageView>
+                        <Label styleClass="account-label" text="compte"><font><Font size="14.0" /></font></Label>
+                    </children>
+                </HBox>
+
+            </children>
+        </VBox>
+
+        <Line endX="0.0" endY="603.0" startX="0.0" startY="0.0" styleClass="sidebar-divider" AnchorPane.leftAnchor="229.0" AnchorPane.topAnchor="0.0" />
+
+        <VBox styleClass="main-content" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="229.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+
+                <HBox alignment="CENTER_LEFT" prefHeight="75.0" spacing="15.0">
+                    <padding><Insets left="20.0" right="20.0" top="20.0" /></padding>
+                    <children>
+
+                        <Button mnemonicParsing="false" onAction="#retourVersTaskSpace" prefHeight="36.0" prefWidth="36.0" styleClass="back-button">
+                            <graphic>
+                                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                    <image><Image url="@../../../assets/arrow_back_ios_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+
+                        <VBox spacing="3.0">
+                            <children>
+                                <Label styleClass="page-title" text="Nouveau Projet">
+                                    <font><Font name="System Bold" size="20.0" /></font>
+                                </Label>
+                                <Label styleClass="page-subtitle" text="Créer un nouvel espace de travail">
+                                    <font><Font size="13.0" /></font>
+                                </Label>
+                            </children>
+                        </VBox>
+
+                    </children>
+                </HBox>
+
+                <Line endX="538.0" startX="0.0" styleClass="section-divider">
+                    <VBox.margin><Insets left="20.0" right="20.0" /></VBox.margin>
+                </Line>
+
+                <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
+                    <padding><Insets bottom="30.0" left="30.0" right="30.0" top="30.0" /></padding>
+                    <children>
+
+                        <VBox maxWidth="1.7976931348623157E308" prefWidth="498.0" spacing="16.0" styleClass="form-card">
+                            <padding><Insets bottom="30.0" left="30.0" right="30.0" top="30.0" /></padding>
+                            <children>
+
+                                <VBox spacing="8.0">
+                                    <children>
+                                        <Label styleClass="field-label" text="Nom du projet">
+                                            <font><Font size="13.0" /></font>
+                                        </Label>
+                                        <TextField fx:id="nom" maxWidth="1.7976931348623157E308" promptText="Ex: Refonte du site web" styleClass="form-field" />
+                                    </children>
+                                </VBox>
+
+                                <HBox spacing="15.0">
+                                    <children>
+
+                                        <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label styleClass="field-label" text="Type de projet">
+                                                    <font><Font size="13.0" /></font>
+                                                </Label>
+                                                <ChoiceBox fx:id="type" maxWidth="1.7976931348623157E308" prefWidth="150.0" styleClass="form-choice" />
+                                            </children>
+                                        </VBox>
+
+                                        <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label styleClass="field-label" text="Statut du projet">
+                                                    <font><Font size="13.0" /></font>
+                                                </Label>
+                                                <ChoiceBox fx:id="statut" maxWidth="1.7976931348623157E308" prefWidth="150.0" styleClass="form-choice" />
+                                            </children>
+                                        </VBox>
+
+                                    </children>
+                                </HBox>
+
+                                <VBox spacing="8.0">
+                                    <children>
+                                        <Label styleClass="field-label" text="Durée (en jours)">
+                                            <font><Font size="13.0" /></font>
+                                        </Label>
+                                        <Spinner fx:id="duration" maxWidth="1.7976931348623157E308" prefHeight="35.0" styleClass="form-spinner" />
+                                        <Label styleClass="field-hint" text="Durée estimée du projet en jours.">
+                                            <font><Font size="11.0" /></font>
+                                        </Label>
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="8.0">
+                                    <children>
+                                        <Label styleClass="field-label" text="Description">
+                                            <font><Font size="13.0" /></font>
+                                        </Label>
+                                        <TextArea fx:id="description" maxWidth="1.7976931348623157E308" prefHeight="90.0" promptText="Décrivez l'objectif du projet..." styleClass="form-textarea" wrapText="true" />
+                                    </children>
+                                </VBox>
+
+                                <HBox alignment="CENTER_RIGHT" spacing="12.0">
+                                    <VBox.margin><Insets top="6.0" /></VBox.margin>
+                                    <children>
+                                        <Button mnemonicParsing="false" onAction="#annuler" prefHeight="40.0" prefWidth="110.0" styleClass="cancel-button" text="Annuler">
+                                            <font><Font size="13.0" /></font>
+                                        </Button>
+                                        <Button mnemonicParsing="false" onAction="#enregistrer" prefHeight="40.0" prefWidth="130.0" styleClass="submit-button" text="Enregistrer">
+                                            <font><Font name="System Bold" size="13.0" /></font>
+                                        </Button>
+                                    </children>
+                                </HBox>
+
+                            </children>
+                        </VBox>
+
+                    </children>
+                </VBox>
+
+            </children>
+        </VBox>
+
+    </children>
+   <stylesheets>
+      <URL value="@stylespace.css" />
+      <URL value="@styleRead.css" />
+      <URL value="@style.css" />
+   </stylesheets>
 </AnchorPane>

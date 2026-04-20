@@ -1,447 +1,383 @@
 /* ============================================================
-   style.css  —  LifeOps / Creatask
-   Supports: Dark Mode (default) & Light Mode
-   To switch to light mode, add the style class "light-mode"
-   to the root AnchorPane in your FXML or in Java:
-       root.getStyleClass().add("light-mode");
+   style.css — LifeOps  |  Creatask · UpdateTask
+   Design System: "Deep Orbit" — dark navy + violet accent
    ============================================================ */
 
+/* ── Design Tokens ─────────────────────────────────────────── */
+/* bg-base      : #0F1117  — deepest background                */
+/* bg-surface   : #161920  — card / sidebar                    */
+/* bg-elevated  : #1C1F2A  — form card, input bg hover         */
+/* bg-input     : #0D0F15  — text fields                       */
+/* border-subtle : #2C2D38 — default borders                   */
+/* border-focus  : #7C4DFF — focused violet                    */
+/* accent-main   : #7C4DFF — primary violet                    */
+/* accent-hover  : #6A3DE8 — deeper violet on hover            */
+/* accent-pressed: #5930CC — pressed                           */
+/* accent-glow   : rgba(124,77,255,0.18) — shadow/glow         */
+/* text-primary  : #F0F0F8 — main text                         */
+/* text-secondary: #9898AA — muted labels                      */
+/* text-placeholder:#55556A — placeholders                     */
+/* separator     : #23242F — dividers                          */
 
-/* ============================================================
-   DARK MODE — Default Theme (variables via looked-up colors)
-   ============================================================ */
-
-/* --- Root / Window background --- */
+/* ── Root ──────────────────────────────────────────────────── */
 .root-pane {
-    -fx-background-color: #171A21;
+    -fx-background-color: #0F1117;
 }
-/* ============================================================
-   ICONS - Defined for ImageViews 
-   (Assuming your images are in src/main/resources/assets)
-   ============================================================ */
 
-.icon-logo { 
-    -fx-image: url("/assets/5555.png"); 
-}
-.icon-home { 
-    -fx-image: url("/assets/home_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png"); 
-}
-.icon-tasks { 
-    -fx-image: url("/assets/done_all_24dp_7A4ED4_FILL0_wght400_GRAD0_opsz24.png"); 
-}
-.icon-finance { 
-    -fx-image: url("/assets/account_balance_wallet_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png"); 
-}
-.icon-goals { 
-    -fx-image: url("/assets/target_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png"); 
-}
-.icon-health { 
-    -fx-image: url("/assets/ecg_heart_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png"); 
-}
-.icon-time { 
-    -fx-image: url("/assets/schedule_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png"); 
-}
-.icon-account { 
-    -fx-image: url("/assets/account_circle_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png"); 
-}
-.icon-back { 
-    -fx-image: url("/assets/arrow_back_ios_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png"); 
-}
-/* --- Sidebar --- */
+/* ── Icon helpers ───────────────────────────────────────────── */
+.icon-logo    { -fx-image: url("/assets/5555.png"); }
+.icon-home    { -fx-image: url("/assets/home_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png"); }
+.icon-tasks   { -fx-image: url("/assets/done_all_24dp_7A4ED4_FILL0_wght400_GRAD0_opsz24.png"); }
+.icon-finance { -fx-image: url("/assets/account_balance_wallet_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png"); }
+.icon-goals   { -fx-image: url("/assets/target_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png"); }
+.icon-health  { -fx-image: url("/assets/ecg_heart_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png"); }
+.icon-time    { -fx-image: url("/assets/schedule_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png"); }
+.icon-account { -fx-image: url("/assets/account_circle_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png"); }
+.icon-back    { -fx-image: url("/assets/arrow_back_ios_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png"); }
+
+
+/* ════════════════════════════════════════════════════════════
+   SIDEBAR
+   ════════════════════════════════════════════════════════════ */
 .sidebar {
-    -fx-background-color: #141416;
+    -fx-background-color: #161920;
+    -fx-border-color: transparent #23242F transparent transparent;
+    -fx-border-width: 0 1 0 0;
 }
 
-/* --- Sidebar: Logo label --- */
 .logo-label {
-    -fx-text-fill: white;
-    -fx-font-size: 18px;
+    -fx-text-fill: #F0F0F8;
+    -fx-font-size: 19px;
     -fx-font-weight: bold;
 }
 
-/* --- Sidebar: Separator line (vertical) --- */
 .sidebar-divider {
-    -fx-stroke: #3b3b40;
+    -fx-stroke: #23242F;
+    -fx-stroke-width: 1;
 }
 
-/* --- Nav item: default (inactive) --- */
+/* Nav items */
 .nav-item {
     -fx-background-color: transparent;
     -fx-background-radius: 10;
 }
-
 .nav-item:hover {
-    -fx-background-color: #1a1a1f;
+    -fx-background-color: #1E2030;
     -fx-background-radius: 10;
     -fx-cursor: hand;
 }
-
-/* --- Nav item: active / selected --- */
 .nav-item-active {
-    -fx-background-color: #1E1333;
+    -fx-background-color: linear-gradient(to right, #1C1040, #191030);
     -fx-background-radius: 10;
+    -fx-border-color: #7C4DFF;
+    -fx-border-width: 0 0 0 2;
+    -fx-border-radius: 10;
 }
 
-/* --- Nav labels: inactive --- */
 .nav-label {
-    -fx-text-fill: #a1a1aa;
+    -fx-text-fill: #9898AA;
     -fx-font-size: 14px;
 }
-
-/* --- Nav label: active --- */
 .nav-label-active {
-    -fx-text-fill: #7a4ed4;
+    -fx-text-fill: #A580FF;
     -fx-font-size: 14px;
-}
-
-/* --- User account box (bottom of sidebar) --- */
-.account-box {
-    -fx-background-color: #141416;
-    -fx-border-color: #5A2E8A;
-    -fx-border-radius: 15;
-    -fx-background-radius: 15;
-}
-
-.account-label {
-    -fx-text-fill: #a1a1aa;
-    -fx-font-size: 14px;
-}
-
-/* --- Main content area --- */
-.main-content {
-    -fx-background-color: #171A21;
-}
-
-/* --- Header: back button --- */
-.back-button {
-    -fx-background-color: #171A21;
-    -fx-border-color: transparent;
-    -fx-cursor: hand;
-}
-
-.back-button:hover {
-    -fx-background-color: #1f2330;
-}
-
-/* --- Header: page title --- */
-.page-title {
-    -fx-text-fill: white;
-    -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
 
-/* --- Header: page subtitle --- */
+/* Account box */
+.account-box {
+    -fx-background-color: #1C1F2A;
+    -fx-border-color: #3D2B70;
+    -fx-border-radius: 14;
+    -fx-background-radius: 14;
+}
+.account-label {
+    -fx-text-fill: #9898AA;
+    -fx-font-size: 13px;
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   MAIN CONTENT
+   ════════════════════════════════════════════════════════════ */
+.main-content {
+    -fx-background-color: #0F1117;
+}
+
+/* Back button */
+.back-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+}
+.back-button:hover {
+    -fx-background-color: #1C1F2A;
+    -fx-background-radius: 8;
+}
+
+/* Header typography */
+.page-title {
+    -fx-text-fill: #F0F0F8;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
 .page-subtitle {
-    -fx-text-fill: #a1a1aa;
+    -fx-text-fill: #9898AA;
     -fx-font-size: 13px;
 }
 
-/* --- Horizontal separator line --- */
+/* Divider */
 .section-divider {
-    -fx-stroke: #3b3b40;
+    -fx-stroke: #23242F;
+    -fx-stroke-width: 1;
 }
 
-/* --- Form card (the rounded box) --- */
+
+/* ════════════════════════════════════════════════════════════
+   FORM CARD
+   ════════════════════════════════════════════════════════════ */
 .form-card {
-    -fx-background-color: #17191F;
-    -fx-background-radius: 20;
-    -fx-border-color: #39393B;
-    -fx-border-radius: 20;
+    -fx-background-color: #161920;
+    -fx-background-radius: 18;
+    -fx-border-color: #2C2D38;
+    -fx-border-radius: 18;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 16, 0, 0, 4);
 }
 
-/* --- Form field label --- */
+/* Labels */
 .field-label {
-    -fx-text-fill: white;
+    -fx-text-fill: #D8D8E8;
     -fx-font-size: 13px;
+    -fx-font-weight: bold;
 }
 
-/* --- Text fields --- */
+/* Text fields */
 .form-field {
-    -fx-background-color: #0B0C10;
+    -fx-background-color: #0D0F15;
     -fx-background-radius: 9;
     -fx-border-radius: 9;
-    -fx-border-color: #39393B;
-    -fx-text-fill: white;
-    -fx-prompt-text-fill: #6b6b75;
+    -fx-border-color: #2C2D38;
+    -fx-border-width: 1;
+    -fx-text-fill: #F0F0F8;
+    -fx-prompt-text-fill: #55556A;
+    -fx-padding: 8 12 8 12;
 }
-
 .form-field:focused {
-    -fx-border-color: #7a4ed4;
+    -fx-border-color: #7C4DFF;
+    -fx-effect: dropshadow(gaussian, rgba(124,77,255,0.18), 8, 0, 0, 0);
 }
 
-/* --- ChoiceBox / ComboBox --- */
+/* ChoiceBox */
 .form-choice {
-    -fx-background-color: #0B0C10;
+    -fx-background-color: #0D0F15;
     -fx-background-radius: 9;
     -fx-border-radius: 9;
-    -fx-border-color: #39393B;
-    -fx-mark-color: #a1a1aa;
+    -fx-border-color: #2C2D38;
+    -fx-mark-color: #9898AA;
 }
-
 .form-choice .label {
-    -fx-text-fill: white;
+    -fx-text-fill: #F0F0F8;
 }
-
 .form-choice:focused {
-    -fx-border-color: #7a4ed4;
+    -fx-border-color: #7C4DFF;
 }
-
-/* ChoiceBox popup list */
 .form-choice .context-menu {
-    -fx-background-color: #17191F;
-    -fx-border-color: #39393B;
+    -fx-background-color: #1C1F2A;
+    -fx-border-color: #2C2D38;
     -fx-border-radius: 9;
     -fx-background-radius: 9;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 12, 0, 0, 4);
 }
-
 .form-choice .menu-item {
     -fx-background-color: transparent;
+    -fx-padding: 6 12 6 12;
 }
-
 .form-choice .menu-item:hover {
-    -fx-background-color: #1E1333;
+    -fx-background-color: #261450;
 }
-
 .form-choice .menu-item .label {
-    -fx-text-fill: white;
+    -fx-text-fill: #F0F0F8;
 }
 
-/* --- DatePicker --- */
+/* DatePicker */
 .form-datepicker {
-    -fx-background-color: #0B0C10;
+    -fx-background-color: #0D0F15;
     -fx-background-radius: 9;
     -fx-border-radius: 9;
-    -fx-border-color: #39393B;
+    -fx-border-color: #2C2D38;
 }
-
 .form-datepicker .text-field {
     -fx-background-color: transparent;
-    -fx-text-fill: white;
-    -fx-prompt-text-fill: #6b6b75;
+    -fx-text-fill: #F0F0F8;
+    -fx-prompt-text-fill: #55556A;
 }
-
 .form-datepicker .arrow-button {
     -fx-background-color: transparent;
 }
-
 .form-datepicker .arrow-button .arrow {
-    -fx-background-color: #a1a1aa;
+    -fx-background-color: #9898AA;
 }
-
 .form-datepicker:focused {
-    -fx-border-color: #7a4ed4;
+    -fx-border-color: #7C4DFF;
 }
-
-/* DatePicker popup calendar */
 .form-datepicker .date-picker-popup {
-    -fx-background-color: #17191F;
-    -fx-border-color: #39393B;
+    -fx-background-color: #1C1F2A;
+    -fx-border-color: #2C2D38;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 14, 0, 0, 4);
 }
-
 .form-datepicker .date-picker-popup .month-year-pane {
-    -fx-background-color: #141416;
+    -fx-background-color: #161920;
 }
-
 .form-datepicker .date-picker-popup .day-cell {
-    -fx-text-fill: white;
+    -fx-text-fill: #F0F0F8;
     -fx-background-color: transparent;
+    -fx-background-radius: 8;
 }
-
 .form-datepicker .date-picker-popup .day-cell:hover {
-    -fx-background-color: #1E1333;
+    -fx-background-color: #261450;
 }
-
 .form-datepicker .date-picker-popup .selected {
-    -fx-background-color: #7a4ed4;
+    -fx-background-color: #7C4DFF;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
 }
 
-/* --- Submit button --- */
+
+/* ════════════════════════════════════════════════════════════
+   BUTTONS
+   ════════════════════════════════════════════════════════════ */
+
+/* Primary — Submit / Save */
 .submit-button {
-    -fx-background-color: #8b5cf6;
-    -fx-background-radius: 9;
-    -fx-border-radius: 9;
+    -fx-background-color: linear-gradient(to bottom, #8B5CF6, #7C4DFF);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
     -fx-text-fill: white;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
     -fx-cursor: hand;
+    -fx-padding: 10 24 10 24;
+    -fx-effect: dropshadow(gaussian, rgba(124,77,255,0.35), 10, 0, 0, 3);
 }
-
 .submit-button:hover {
-    -fx-background-color: #7a4ed4;
+    -fx-background-color: linear-gradient(to bottom, #7C4DFF, #6A3DE8);
+    -fx-effect: dropshadow(gaussian, rgba(124,77,255,0.5), 14, 0, 0, 4);
 }
-
 .submit-button:pressed {
-    -fx-background-color: #6a3ec4;
+    -fx-background-color: #5930CC;
+    -fx-effect: none;
 }
 
-
-/* ============================================================
-   LIGHT MODE — override everything under .light-mode
-   Apply "light-mode" style class to the root AnchorPane
-   ============================================================ */
-
-.light-mode.root-pane {
-    -fx-background-color: #f4f4f8;
+/* Cancel */
+.cancel-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #2C2D38;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-text-fill: #9898AA;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+    -fx-padding: 10 24 10 24;
+}
+.cancel-button:hover {
+    -fx-background-color: #1C1F2A;
+    -fx-text-fill: #F0F0F8;
+    -fx-border-color: #3C3D4A;
 }
 
-.light-mode .sidebar {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #e0e0e8;
-    -fx-border-width: 0 1 0 0;
+/* Delete (primary destructive) */
+.delete-button-main {
+    -fx-background-color: #2D1515;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #7F1D1D;
+    -fx-border-width: 1;
+    -fx-text-fill: #FCA5A5;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 10 24 10 24;
 }
-
-.light-mode .logo-label {
-    -fx-text-fill: #1a1a2e;
-}
-
-.light-mode .sidebar-divider {
-    -fx-stroke: #d0d0d8;
-}
-
-.light-mode .nav-item:hover {
-    -fx-background-color: #f0ebfa;
-}
-
-.light-mode .nav-item-active {
-    -fx-background-color: #ede9fa;
-}
-
-.light-mode .nav-label {
-    -fx-text-fill: #6b6b80;
-}
-
-.light-mode .nav-label-active {
-    -fx-text-fill: #7a4ed4;
-}
-
-.light-mode .account-box {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #c9a8f5;
-}
-
-.light-mode .account-label {
-    -fx-text-fill: #6b6b80;
-}
-
-.light-mode .main-content {
-    -fx-background-color: #f4f4f8;
-}
-
-.light-mode .back-button {
-    -fx-background-color: #f4f4f8;
-}
-
-.light-mode .back-button:hover {
-    -fx-background-color: #e8e8f0;
-}
-
-.light-mode .page-title {
-    -fx-text-fill: #1a1a2e;
-}
-
-.light-mode .page-subtitle {
-    -fx-text-fill: #6b6b80;
-}
-
-.light-mode .section-divider {
-    -fx-stroke: #d0d0d8;
-}
-
-.light-mode .form-card {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #e0e0e8;
-}
-
-.light-mode .field-label {
-    -fx-text-fill: #1a1a2e;
-}
-
-.light-mode .form-field {
-    -fx-background-color: #f7f7fb;
-    -fx-border-color: #d0d0d8;
-    -fx-text-fill: #1a1a2e;
-    -fx-prompt-text-fill: #b0b0c0;
-}
-
-.light-mode .form-field:focused {
-    -fx-border-color: #7a4ed4;
-}
-
-.light-mode .form-choice {
-    -fx-background-color: #f7f7fb;
-    -fx-border-color: #d0d0d8;
-    -fx-mark-color: #6b6b80;
-}
-
-.light-mode .form-choice .label {
-    -fx-text-fill: #1a1a2e;
-}
-
-.light-mode .form-choice:focused {
-    -fx-border-color: #7a4ed4;
-}
-
-.light-mode .form-choice .context-menu {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #d0d0d8;
-}
-
-.light-mode .form-choice .menu-item:hover {
-    -fx-background-color: #ede9fa;
-}
-
-.light-mode .form-choice .menu-item .label {
-    -fx-text-fill: #1a1a2e;
-}
-
-.light-mode .form-datepicker {
-    -fx-background-color: #f7f7fb;
-    -fx-border-color: #d0d0d8;
-}
-
-.light-mode .form-datepicker .text-field {
-    -fx-text-fill: #1a1a2e;
-    -fx-prompt-text-fill: #b0b0c0;
-}
-
-.light-mode .form-datepicker .arrow-button .arrow {
-    -fx-background-color: #6b6b80;
-}
-
-.light-mode .form-datepicker:focused {
-    -fx-border-color: #7a4ed4;
-}
-
-.light-mode .form-datepicker .date-picker-popup {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #d0d0d8;
-}
-
-.light-mode .form-datepicker .date-picker-popup .month-year-pane {
-    -fx-background-color: #f4f4f8;
-}
-
-.light-mode .form-datepicker .date-picker-popup .day-cell {
-    -fx-text-fill: #1a1a2e;
-}
-
-.light-mode .form-datepicker .date-picker-popup .day-cell:hover {
-    -fx-background-color: #ede9fa;
-}
-
-.light-mode .form-datepicker .date-picker-popup .selected {
-    -fx-background-color: #7a4ed4;
+.delete-button-main:hover {
+    -fx-background-color: #7F1D1D;
     -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(239,68,68,0.3), 10, 0, 0, 3);
+}
+.delete-button-main:pressed {
+    -fx-background-color: #991B1B;
 }
 
+
+/* ════════════════════════════════════════════════════════════
+   LIGHT MODE
+   ════════════════════════════════════════════════════════════ */
+.light-mode.root-pane { -fx-background-color: #F2F3F8; }
+.light-mode .sidebar {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: transparent #E2E4EE transparent transparent;
+}
+.light-mode .logo-label { -fx-text-fill: #1A1B2E; }
+.light-mode .sidebar-divider { -fx-stroke: #E2E4EE; }
+.light-mode .nav-item:hover { -fx-background-color: #EDE9FA; }
+.light-mode .nav-item-active {
+    -fx-background-color: linear-gradient(to right, #EDE9FA, #E8E3F8);
+    -fx-border-color: #7C4DFF;
+}
+.light-mode .nav-label { -fx-text-fill: #6B6B80; }
+.light-mode .nav-label-active { -fx-text-fill: #7C4DFF; }
+.light-mode .account-box { -fx-background-color: #FFFFFF; -fx-border-color: #C4A8F0; }
+.light-mode .account-label { -fx-text-fill: #6B6B80; }
+.light-mode .main-content { -fx-background-color: #F2F3F8; }
+.light-mode .back-button { -fx-background-color: transparent; }
+.light-mode .back-button:hover { -fx-background-color: #E8E9F4; }
+.light-mode .page-title { -fx-text-fill: #1A1B2E; }
+.light-mode .page-subtitle { -fx-text-fill: #6B6B80; }
+.light-mode .section-divider { -fx-stroke: #E2E4EE; }
+.light-mode .form-card {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E2E4EE;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 12, 0, 0, 3);
+}
+.light-mode .field-label { -fx-text-fill: #1A1B2E; }
+.light-mode .form-field {
+    -fx-background-color: #F5F6FA;
+    -fx-border-color: #D5D7E2;
+    -fx-text-fill: #1A1B2E;
+    -fx-prompt-text-fill: #ABABC0;
+}
+.light-mode .form-field:focused { -fx-border-color: #7C4DFF; }
+.light-mode .form-choice {
+    -fx-background-color: #F5F6FA;
+    -fx-border-color: #D5D7E2;
+    -fx-mark-color: #6B6B80;
+}
+.light-mode .form-choice .label { -fx-text-fill: #1A1B2E; }
+.light-mode .form-choice .context-menu { -fx-background-color: #FFFFFF; -fx-border-color: #D5D7E2; }
+.light-mode .form-choice .menu-item:hover { -fx-background-color: #EDE9FA; }
+.light-mode .form-choice .menu-item .label { -fx-text-fill: #1A1B2E; }
+.light-mode .form-datepicker { -fx-background-color: #F5F6FA; -fx-border-color: #D5D7E2; }
+.light-mode .form-datepicker .text-field { -fx-text-fill: #1A1B2E; -fx-prompt-text-fill: #ABABC0; }
+.light-mode .form-datepicker .arrow-button .arrow { -fx-background-color: #6B6B80; }
+.light-mode .form-datepicker .date-picker-popup { -fx-background-color: #FFFFFF; -fx-border-color: #D5D7E2; }
+.light-mode .form-datepicker .date-picker-popup .month-year-pane { -fx-background-color: #F2F3F8; }
+.light-mode .form-datepicker .date-picker-popup .day-cell { -fx-text-fill: #1A1B2E; }
+.light-mode .form-datepicker .date-picker-popup .day-cell:hover { -fx-background-color: #EDE9FA; }
+.light-mode .form-datepicker .date-picker-popup .selected { -fx-background-color: #7C4DFF; -fx-text-fill: white; }
 .light-mode .submit-button {
-    -fx-background-color: #8b5cf6;
+    -fx-background-color: linear-gradient(to bottom, #8B5CF6, #7C4DFF);
 }
-
-.light-mode .submit-button:hover {
-    -fx-background-color: #7a4ed4;
+.light-mode .submit-button:hover { -fx-background-color: linear-gradient(to bottom, #7C4DFF, #6A3DE8); }
+.light-mode .cancel-button { -fx-border-color: #D5D7E2; -fx-text-fill: #6B6B80; }
+.light-mode .cancel-button:hover { -fx-background-color: #E8E9F4; -fx-text-fill: #1A1B2E; }
+.light-mode .delete-button-main {
+    -fx-background-color: #FEE2E2;
+    -fx-border-color: #FCA5A5;
+    -fx-text-fill: #B91C1C;
 }
-
-.light-mode .submit-button:pressed {
-    -fx-background-color: #6a3ec4;
+.light-mode .delete-button-main:hover {
+    -fx-background-color: #FEE2E2;
+    -fx-border-color: #F87171;
 }

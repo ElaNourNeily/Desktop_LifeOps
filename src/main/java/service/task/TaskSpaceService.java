@@ -25,11 +25,11 @@ public class TaskSpaceService implements Crud<TaskSpace> {
 
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setString(1, ts.getNom());
-        ps.setString(2, ts.getType().getValeur());       // enum → string DB
+        ps.setString(2, ts.getType().getValeur());
         ps.setDate(3, new java.sql.Date(ts.getDateCreation().getTime()));
         ps.setString(4, ts.getDescription());
         ps.setInt(5, ts.getDuration());
-        ps.setString(6, ts.getStatus().getValeur());     // enum → string DB
+        ps.setString(6, ts.getStatus().getValeur());
         ps.setInt(7, ts.getUtilisateurId());
 
         ps.executeUpdate();
@@ -47,20 +47,41 @@ public class TaskSpaceService implements Crud<TaskSpace> {
             TaskSpace ts = new TaskSpace();
             ts.setId(rs.getInt("id"));
             ts.setNom(rs.getString("nom"));
-            ts.setType(TypeTaskSpace.fromString(rs.getString("type")));     // string DB → enum
+            ts.setType(TypeTaskSpace.fromString(rs.getString("type")));
             ts.setDateCreation(rs.getDate("date_creation"));
             ts.setDescription(rs.getString("description"));
             ts.setDuration(rs.getInt("duration"));
-            ts.setStatus(StatutTaskSpace.fromString(rs.getString("status"))); // string DB → enum
+            ts.setStatus(StatutTaskSpace.fromString(rs.getString("status")));
             ts.setUtilisateurId(rs.getInt("utilisateur_id"));
             liste.add(ts);
         }
         return liste;
     }
 
-    // Récupérer les TaskSpaces d'un utilisateur précis
     public List<TaskSpace> recupererParUtilisateur(int utilisateurId) throws SQLException {
         String sql = "SELECT * FROM task_space WHERE utilisateur_id = ?";
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setInt(1, utilisateurId);
+        ResultSet rs = ps.executeQuery();
+
+        List<TaskSpace> liste = new ArrayList<>();
+        while (rs.next()) {
+            TaskSpace ts = new TaskSpace();
+            ts.setId(rs.getInt("id"));
+            ts.setNom(rs.getString("nom"));
+            ts.setType(TypeTaskSpace.fromString(rs.getString("type")));
+            ts.setDateCreation(rs.getDate("date_creation"));
+            ts.setDescription(rs.getString("description"));
+            ts.setDuration(rs.getInt("duration"));
+            ts.setStatus(StatutTaskSpace.fromString(rs.getString("status")));
+            ts.setUtilisateurId(rs.getInt("utilisateur_id"));
+            liste.add(ts);
+        }
+        return liste;
+    }
+
+    public List<TaskSpace> recupererProjetsMembre(int utilisateurId) throws SQLException {
+        String sql = "SELECT ts.* FROM task_space ts JOIN task_space_membre tsm ON ts.id = tsm.task_space_id WHERE tsm.utilisateur_id = ?";
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setInt(1, utilisateurId);
         ResultSet rs = ps.executeQuery();
@@ -107,6 +128,7 @@ public class TaskSpaceService implements Crud<TaskSpace> {
         ps.executeUpdate();
         System.out.println("✅ TaskSpace supprimé : id=" + id);
     }
+
     @Override
     public List<TaskSpace> rechercher(String type) {
         try {
@@ -118,6 +140,27 @@ public class TaskSpaceService implements Crud<TaskSpace> {
             return new ArrayList<>();
         }
     }
+
+    @Override
+    public TaskSpace findbyID(int i) throws SQLException {
+        return null;
+    }
+
+    @Override
+    public TaskSpace findbyMail(String mail) throws SQLException {
+        return null;
+    }
+
+    @Override
+    public List<TaskSpace> findAll() throws SQLException {
+        return List.of();
+    }
+
+    @Override
+    public List<TaskSpace> sortbyName() throws SQLException {
+        return List.of();
+    }
+
     @Override
     public List<TaskSpace> trier() {
         try {

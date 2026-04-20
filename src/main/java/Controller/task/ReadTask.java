@@ -1,22 +1,30 @@
 package Controller.task;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import model.task.Tache;
+import model.user.User;
 import service.task.TacheService;
+import service.user.Userservice;
 
 import java.io.IOException;
 import java.net.URL;
@@ -39,27 +47,116 @@ public class ReadTask implements Initializable {
     @FXML private Label badgeEnRevision;
     @FXML private Label badgeTermine;
 
+    @FXML private ComboBox<User> userCombo;
+    @FXML private ComboBox<String> sortCombo;
+
+    @FXML private Button btnMesProjets;
+    @FXML private Button btnNouvelleTache;
+
     private final TacheService tacheService = new TacheService();
+    private final Userservice userService = new Userservice();
     private static final SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy");
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        chargerTaches();
+        chargerOptionsDeTri();
+        chargerUtilisateurs();
     }
 
-    // ── + Nouvelle Tâche → Creatask.fxml ─────────────────────────────
-    @FXML
-    private void naviguerVersCreatask() {
+    private void chargerOptionsDeTri() {
+        sortCombo.getItems().addAll("Aucun tri", "Tri par Priorité", "Tri par Temps Estimé");
+        sortCombo.getSelectionModel().selectFirst();
+
+        sortCombo.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (userCombo.getValue() != null) {
+                chargerTachesParUtilisateur(userCombo.getValue().getId());
+            }
+        });
+    }
+
+    private void chargerUtilisateurs() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/task/Creatask.fxml"));
-            colAFaire.getScene().setRoot(root);
-        } catch (IOException e) {
-            System.err.println("Erreur navigation Creatask : " + e.getMessage());
+            List<User> users = userService.findAll();
+            userCombo.getItems().addAll(users);
+
+            userCombo.setConverter(new StringConverter<User>() {
+                @Override
+                public String toString(User user) {
+                    if (user == null) return "";
+                    return user.getPrenom() + " " + user.getNom();
+                }
+
+                @Override
+                public User fromString(String string) {
+                    return null;
+                }
+            });
+
+            userCombo.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+                if (newSelection != null) {
+                    chargerTachesParUtilisateur(newSelection.getId());
+                }
+            });
+
+            if (!users.isEmpty()) {
+                userCombo.getSelectionModel().selectFirst();
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erreur chargement utilisateurs : " + e.getMessage());
         }
     }
 
-    // ── Load & distribute tasks into columns ──────────────────────────
-    private void chargerTaches() {
+    @FXML
+    private void naviguerVersCreatask(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/task/Creatask.fxml"));
+            Parent root = loader.load();
+
+            User selectedUser = userCombo.getValue();
+            if (selectedUser != null) {
+                root.setUserData(selectedUser);
+            }
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            System.err.println("Erreur navigation Creatask : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void naviguerVersProjets(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/task/TaskSpace.fxml"));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            System.err.println("Erreur navigation TaskSpace : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void naviguerVersUpdateTask(ActionEvent event, Tache tacheSelectionnee) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/task/Updatetask.fxml"));
+            Parent root = loader.load();
+
+            root.setUserData(tacheSelectionnee);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            System.err.println("Erreur navigation UpdateTask : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void chargerTachesParUtilisateur(int userId) {
         nettoyerColonne(colAFaire);
         nettoyerColonne(colEnCours);
         nettoyerColonne(colEnRevision);
@@ -68,8 +165,23 @@ public class ReadTask implements Initializable {
         int cA = 0, cE = 0, cR = 0, cT = 0;
 
         try {
-            List<Tache> taches = tacheService.recuperer();
+            List<Tache> taches = tacheService.recupererParUtilisateur(userId);
+
+            String triChoisi = sortCombo.getValue();
+            if ("Tri par Priorité".equals(triChoisi)) {
+                taches.sort((t1, t2) -> {
+                    if (t1.getPriorite() == null && t2.getPriorite() == null) return 0;
+                    if (t1.getPriorite() == null) return 1;
+                    if (t2.getPriorite() == null) return -1;
+                    return t1.getPriorite().compareTo(t2.getPriorite());
+                });
+            } else if ("Tri par Temps Estimé".equals(triChoisi)) {
+                taches.sort((t1, t2) -> Integer.compare(t1.getDifficulte(), t2.getDifficulte()));
+            }
+
             for (Tache t : taches) {
+                if (t.getStatut() == null) continue;
+
                 VBox card = creerCarteTache(t);
                 String s = t.getStatut().getValeur().toLowerCase();
 
@@ -105,37 +217,32 @@ public class ReadTask implements Initializable {
         if (b != null) b.setText(String.valueOf(count));
     }
 
-    // ── Build one task card with ✏️ edit + 🗑 delete buttons ──────────
     private VBox creerCarteTache(Tache t) {
         VBox card = new VBox(10);
         card.getStyleClass().add("task-card");
         card.setPadding(new Insets(15));
 
-        // Row 1: Priorité badge + Difficulté dots
         HBox headerBox = new HBox(10);
         headerBox.setAlignment(Pos.CENTER_LEFT);
-        Label lblPriorite = new Label(t.getPriorite().getValeur());
-        lblPriorite.getStyleClass().add(priorityStyleClass(t.getPriorite().getValeur()));
+
+        Label lblPriorite = new Label(t.getPriorite() != null ? t.getPriorite().getValeur() : "Basse");
+        lblPriorite.getStyleClass().add(priorityStyleClass(t.getPriorite() != null ? t.getPriorite().getValeur() : "basse"));
+
         Region sp1 = new Region();
         HBox.setHgrow(sp1, Priority.ALWAYS);
+
         headerBox.getChildren().addAll(lblPriorite, sp1, creerDifficultyDots(t.getDifficulte()));
 
-        // Row 2: Title
         Label lblTitre = new Label(t.getTitre());
         lblTitre.getStyleClass().add("task-title");
         lblTitre.setWrapText(true);
 
-        // Row 3: Description
-        String descText = (t.getDescription() != null && !t.getDescription().isBlank())
-                ? t.getDescription() : "Aucune description";
-        Label lblDesc = new Label(descText);
+        Label lblDesc = new Label(t.getDescription());
         lblDesc.getStyleClass().add("task-description");
         lblDesc.setWrapText(true);
 
-        // Row 4: Deadline label + Edit icon button + Delete icon button
-        HBox footerBox = new HBox(8);
+        HBox footerBox = new HBox(10);
         footerBox.setAlignment(Pos.CENTER_LEFT);
-        VBox.setMargin(footerBox, new Insets(4, 0, 0, 0));
 
         Label lblDate = new Label(formatDeadline(t.getDeadline()));
         lblDate.getStyleClass().add("task-meta");
@@ -143,49 +250,33 @@ public class ReadTask implements Initializable {
         Region sp2 = new Region();
         HBox.setHgrow(sp2, Priority.ALWAYS);
 
-        // ✏ Edit — purple rounded icon button (like screenshot 3)
-        Button btnEdit = new Button("✏");
-        btnEdit.getStyleClass().add("card-icon-button-edit");
-        btnEdit.setOnAction(e -> naviguerVersUpdateTask(t));
+        Button btnEdit = new Button("✏️");
+        btnEdit.getStyleClass().addAll("action-icon-button", "edit-button");
+        btnEdit.setOnAction(e -> naviguerVersUpdateTask(e, t));
 
-        // 🗑 Delete — dark rounded icon button (like screenshot 3)
-        Button btnDelete = new Button("🗑");
-        btnDelete.getStyleClass().add("card-icon-button-delete");
-        btnDelete.setOnAction(e -> supprimerTache(t));
+        Button btnDel = new Button("🗑");
+        btnDel.getStyleClass().addAll("action-icon-button", "delete-button");
+        btnDel.setOnAction(e -> supprimerTache(t));
 
-        footerBox.getChildren().addAll(lblDate, sp2, btnEdit, btnDelete);
+        footerBox.getChildren().addAll(lblDate, sp2, btnEdit, btnDel);
 
         card.getChildren().addAll(headerBox, lblTitre, lblDesc, footerBox);
         return card;
     }
 
-    // ── Navigate to UpdateTask.fxml passing the Tache ─────────────────
-    private void naviguerVersUpdateTask(Tache tache) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/task/UpdateTask.fxml"));
-            Parent root = loader.load();
-
-            UpdateTask controller = loader.getController();
-            controller.setTache(tache);
-
-            colAFaire.getScene().setRoot(root);
-        } catch (IOException e) {
-            System.err.println("Erreur navigation UpdateTask : " + e.getMessage());
-        }
-    }
-
-    // ── Delete directly from card with confirmation ───────────────────
     private void supprimerTache(Tache t) {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Confirmer la suppression");
-        confirm.setHeaderText(null);
-        confirm.setContentText("Supprimer la tâche « " + t.getTitre() + " » ?");
+        confirm.setTitle("Confirmation");
+        confirm.setHeaderText("Supprimer la tâche ?");
+        confirm.setContentText("Voulez-vous vraiment supprimer « " + t.getTitre() + " » ?");
         Optional<ButtonType> result = confirm.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
                 tacheService.supprimer(t.getId());
-                chargerTaches();
+                if (userCombo.getValue() != null) {
+                    chargerTachesParUtilisateur(userCombo.getValue().getId());
+                }
             } catch (SQLException e) {
                 System.err.println("Erreur suppression : " + e.getMessage());
             }
@@ -215,12 +306,6 @@ public class ReadTask implements Initializable {
 
     private String formatDeadline(Date deadline) {
         if (deadline == null) return "📅 Aucune date";
-        String s = "📅 " + SDF.format(deadline);
-        if (deadline.before(new Date())) s += "  ⚠ Retard";
-        return s;
-    }
-
-    public void rafraichir() {
-        chargerTaches();
+        return "📅 " + SDF.format(deadline);
     }
 }

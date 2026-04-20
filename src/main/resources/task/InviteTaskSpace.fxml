@@ -1,26 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1400.0" styleClass="root-pane" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.task.UpdateTask">
+<AnchorPane fx:id="root"
+            maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="780.0" prefWidth="1100.0"
+            styleClass="root-pane"
+            stylesheets="@stylespace.css"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Controller.task.InviteTaskSpace">
     <children>
 
-        <VBox prefHeight="780.0" prefWidth="229.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox prefHeight="780.0" prefWidth="229.0" styleClass="sidebar"
+              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
+
                 <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="229.0" spacing="10.0">
                     <padding><Insets left="20.0" /></padding>
                     <children>
@@ -33,9 +44,10 @@
                     </children>
                 </HBox>
 
-                <VBox prefHeight="300.0" prefWidth="229.0" spacing="5.0">
+                <VBox prefWidth="229.0" spacing="5.0">
                     <padding><Insets top="20.0" /></padding>
                     <children>
+
                         <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0" spacing="10.0" styleClass="nav-item">
                             <padding><Insets left="20.0" /></padding>
                             <children>
@@ -95,6 +107,7 @@
                                 <Label styleClass="nav-label" text="Temps"><font><Font size="14.0" /></font></Label>
                             </children>
                         </HBox>
+
                     </children>
                 </VBox>
 
@@ -110,134 +123,136 @@
                         <Label styleClass="account-label" text="compte"><font><Font size="14.0" /></font></Label>
                     </children>
                 </HBox>
+
             </children>
         </VBox>
 
-        <Line endX="0.0" endY="780.0" startX="0.0" startY="0.0" styleClass="sidebar-divider" AnchorPane.leftAnchor="229.0" AnchorPane.topAnchor="0.0" />
+        <Line endX="0.0" endY="780.0" startX="0.0" startY="0.0"
+              styleClass="sidebar-divider"
+              AnchorPane.leftAnchor="229.0" AnchorPane.topAnchor="0.0" />
 
-        <VBox prefHeight="780.0" prefWidth="1171.0" styleClass="main-content" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="229.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox styleClass="main-content"
+              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="229.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
 
-                <HBox alignment="CENTER_LEFT" prefHeight="75.0" spacing="15.0">
-                    <padding><Insets left="30.0" right="30.0" top="20.0" /></padding>
+                <HBox alignment="CENTER_LEFT" prefHeight="80.0" spacing="15.0">
+                    <padding><Insets left="35.0" right="35.0" top="25.0" bottom="10.0" /></padding>
                     <children>
-                        <VBox spacing="3.0" HBox.hgrow="ALWAYS">
-                            <children>
-                                <Label styleClass="page-title" text="Modifier la tâche">
-                                    <font><Font name="System Bold" size="20.0" /></font>
-                                </Label>
-                                <Label styleClass="page-subtitle" text="Mettez à jour les informations de votre tâche.">
-                                    <font><Font size="13.0" /></font>
-                                </Label>
-                            </children>
-                        </VBox>
 
-                        <Button fx:id="btnSupprimer" mnemonicParsing="false" onAction="#supprimerTache" prefHeight="38.0" styleClass="delete-button-main" text="🗑 Supprimer">
-                            <font><Font size="13.0" /></font>
+                        <Button mnemonicParsing="false"
+                                onAction="#retourVersKanban"
+                                prefHeight="36.0" prefWidth="36.0"
+                                styleClass="back-button">
+                            <graphic>
+                                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                    <image><Image url="@../../../assets/arrow_back_ios_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                                </ImageView>
+                            </graphic>
                         </Button>
+
+                        <HBox alignment="CENTER_LEFT" spacing="6.0">
+                            <children>
+                                <Label styleClass="breadcrumb-label" text="Projets" style="-fx-text-fill: #6b6b75; -fx-font-size: 13px;" />
+                                <Label text="/" style="-fx-text-fill: #6b6b75; -fx-font-size: 13px;" />
+                                <Label fx:id="lblBreadcrumbProject" styleClass="breadcrumb-label" text="" style="-fx-text-fill: #6b6b75; -fx-font-size: 13px;" />
+                                <Label text="/" style="-fx-text-fill: #6b6b75; -fx-font-size: 13px;" />
+                                <Label text="Inviter" style="-fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold;" />
+                            </children>
+                        </HBox>
+
                     </children>
                 </HBox>
 
-                <Line endX="1111.0" startX="0.0" styleClass="section-divider">
-                    <VBox.margin><Insets left="30.0" right="30.0" top="15.0" /></VBox.margin>
-                </Line>
-
-                <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
-                    <VBox.margin><Insets bottom="30.0" left="30.0" right="30.0" top="30.0" /></VBox.margin>
-                    <children>
-
-                        <VBox maxWidth="600.0" spacing="20.0" styleClass="form-container">
-                            <padding><Insets bottom="30.0" left="40.0" right="40.0" top="30.0" /></padding>
+                <ScrollPane styleClass="scroll-area" fitToWidth="true" VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox spacing="30.0">
+                            <padding><Insets bottom="40.0" left="35.0" right="35.0" top="10.0" /></padding>
                             <children>
 
                                 <VBox spacing="8.0">
                                     <children>
-                                        <Label styleClass="form-label" text="Titre de la tâche *">
-                                            <font><Font name="System Bold" size="14.0" /></font>
+                                        <Label styleClass="page-title" text="Inviter des membres">
+                                            <font><Font name="System Bold" size="28.0" /></font>
                                         </Label>
-                                        <TextField fx:id="titre" prefHeight="40.0" promptText="Ex: Faire le rapport de vente..." styleClass="form-input" />
+                                        <Label styleClass="page-subtitle" text="Recherchez un utilisateur par email ou nom pour l'ajouter au projet.">
+                                            <font><Font size="13.0" /></font>
+                                        </Label>
                                     </children>
                                 </VBox>
 
-                                <HBox spacing="20.0">
+                                <VBox spacing="0.0">
                                     <children>
-                                        <VBox spacing="8.0" HBox.hgrow="ALWAYS">
-                                            <children>
-                                                <Label styleClass="form-label" text="Statut"><font><Font name="System Bold" size="14.0" /></font></Label>
-                                                <ChoiceBox fx:id="statut" prefHeight="40.0" prefWidth="300.0" styleClass="form-choicebox" />
-                                            </children>
-                                        </VBox>
-                                        <VBox spacing="8.0" HBox.hgrow="ALWAYS">
-                                            <children>
-                                                <Label styleClass="form-label" text="Espace (Projet)"><font><Font name="System Bold" size="14.0" /></font></Label>
-                                                <ChoiceBox fx:id="taskSpace" prefHeight="40.0" prefWidth="300.0" styleClass="form-choicebox" />
-                                            </children>
-                                        </VBox>
-                                    </children>
-                                </HBox>
 
-                                <VBox spacing="8.0">
-                                    <children>
-                                        <Label styleClass="form-label" text="Description">
-                                            <font><Font name="System Bold" size="14.0" /></font>
-                                        </Label>
-                                        <TextArea fx:id="description" prefHeight="100.0" promptText="Détails de la tâche..." styleClass="form-input" wrapText="true" />
-                                    </children>
-                                </VBox>
-
-                                <VBox spacing="8.0">
-                                    <children>
-                                        <Label styleClass="form-label" text="Détails d'exécution"><font><Font name="System Bold" size="14.0" /></font></Label>
-                                        <HBox spacing="15.0">
+                                        <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="invite-search-box"
+                                              style="-fx-background-color: #0B0C10; -fx-background-radius: 12; -fx-border-color: #39393B; -fx-border-radius: 12; -fx-padding: 0 16 0 16; -fx-pref-height: 52;">
                                             <children>
-                                                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
-                                                    <children>
-                                                        <Label styleClass="form-sublabel" text="Priorité" />
-                                                        <ChoiceBox fx:id="priorite" prefHeight="38.0" prefWidth="200.0" styleClass="form-choicebox" />
-                                                    </children>
-                                                </VBox>
-                                                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
-                                                    <children>
-                                                        <Label styleClass="form-sublabel" text="Difficulté (1-5)" />
-                                                        <ChoiceBox fx:id="difficulte" prefHeight="38.0" prefWidth="200.0" styleClass="form-choicebox" />
-                                                    </children>
-                                                </VBox>
-                                                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
-                                                    <children>
-                                                        <Label styleClass="form-sublabel" text="Date limite" />
-                                                        <DatePicker fx:id="deadline" prefHeight="38.0" prefWidth="200.0" promptText="JJ/MM/AAAA" styleClass="form-datepicker" />
-                                                    </children>
-                                                </VBox>
+                                                <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                    <image><Image url="@../../../assets/search_24dp_A1A1AA_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                                                </ImageView>
+                                                <TextField fx:id="searchField"
+                                                           promptText="Taper un nom ou email..."
+                                                           styleClass="invite-search-field"
+                                                           maxWidth="1.7976931348623157E308"
+                                                           HBox.hgrow="ALWAYS"
+                                                           style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: white; -fx-prompt-text-fill: #6b6b75; -fx-font-size: 14px;" />
                                             </children>
                                         </HBox>
+
+                                        <VBox fx:id="searchResultsContainer" spacing="0.0" managed="false" visible="false"
+                                              style="-fx-background-color: #17191F; -fx-border-color: #39393B; -fx-border-radius: 0 0 12 12; -fx-background-radius: 0 0 12 12; -fx-border-width: 0 1 1 1;">
+                                            <children>
+                                                <Label fx:id="lblNoResults" text="Aucun utilisateur trouvé."
+                                                       styleClass="empty-state-label"
+                                                       managed="false" visible="false">
+                                                    <padding><Insets top="14.0" bottom="14.0" left="20.0" right="20.0" /></padding>
+                                                </Label>
+                                            </children>
+                                        </VBox>
+
                                     </children>
                                 </VBox>
 
-                                <HBox alignment="CENTER_RIGHT" spacing="12.0">
-                                    <VBox.margin><Insets top="10.0" /></VBox.margin>
+                                <HBox alignment="CENTER">
                                     <children>
-                                        <Button fx:id="btnAnnuler" mnemonicParsing="false" onAction="#annuler" prefHeight="42.0" prefWidth="130.0" styleClass="cancel-button" text="Annuler">
-                                            <font><Font size="13.0" /></font>
-                                        </Button>
-                                        <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#mettreAJour" prefHeight="42.0" prefWidth="160.0" styleClass="submit-button" text="Mettre à jour">
-                                            <font><Font name="System Bold" size="13.0" /></font>
-                                        </Button>
+                                        <Hyperlink fx:id="lienVoirEquipe"
+                                                   text="Voir les membres actuels de l'équipe →"
+                                                   onAction="#naviguerVersEquipe"
+                                                   style="-fx-text-fill: #8b5cf6; -fx-font-size: 14px; -fx-border-color: transparent; -fx-cursor: hand;" />
                                     </children>
                                 </HBox>
+
+                                <VBox fx:id="equipeSection" spacing="15.0" managed="false" visible="false">
+                                    <children>
+
+                                        <Line endX="800.0" startX="0.0" styleClass="section-divider" />
+
+                                        <HBox alignment="CENTER_LEFT" spacing="8.0">
+                                            <children>
+                                                <Label text="👥" style="-fx-font-size: 16px;" />
+                                                <Label styleClass="section-title" text="Membres de l'équipe">
+                                                    <font><Font name="System Bold" size="16.0" /></font>
+                                                </Label>
+                                            </children>
+                                        </HBox>
+
+                                        <VBox fx:id="membresContainer" spacing="10.0" />
+
+                                        <Label fx:id="lblAucunMembre"
+                                               styleClass="empty-state-label"
+                                               text="Aucun membre pour l'instant. Invitez quelqu'un ci-dessus."
+                                               managed="false" visible="false" />
+
+                                    </children>
+                                </VBox>
 
                             </children>
                         </VBox>
-
-                    </children>
-                </VBox>
+                    </content>
+                </ScrollPane>
 
             </children>
         </VBox>
 
     </children>
-   <stylesheets>
-      <URL value="@style.css" />
-      <URL value="@styleRead.css" />
-      <URL value="@stylespace.css" />
-   </stylesheets>
 </AnchorPane>

@@ -1,6 +1,7 @@
 package Controller.task;
 
 import enums.StatutTaskSpace;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -10,13 +11,17 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
+import model.user.User;
 import service.task.TaskSpaceService;
+import service.user.Userservice;
 
 import java.io.IOException;
 import java.net.URL;
@@ -29,18 +34,50 @@ public class TaskSpace implements Initializable {
 
     @FXML private FlowPane flowLeader;
     @FXML private FlowPane flowMembre;
+    @FXML private ComboBox<User> userCombo;
 
     private final TaskSpaceService taskSpaceService = new TaskSpaceService();
+    private final Userservice userService = new Userservice();
 
-    // Replace with real logged-in user id later
-    private static final int UTILISATEUR_ID = 2;
+    private int currentUserId = -1;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        chargerUsers();
         chargerTaskSpaces();
     }
 
-    // ── Navigate to CreataskSpace ─────────────────────────────
+    private void chargerUsers() {
+        try {
+            List<User> users = userService.findAll();
+            if (userCombo != null) {
+                userCombo.setItems(FXCollections.observableArrayList(users));
+
+                userCombo.setConverter(new StringConverter<User>() {
+                    @Override
+                    public String toString(User user) {
+                        if (user == null) return null;
+                        return user.getNom() + " " + user.getPrenom();
+                    }
+                    @Override
+                    public User fromString(String string) {
+                        return null;
+                    }
+                });
+
+                userCombo.setOnAction(event -> {
+                    User selectedUser = userCombo.getValue();
+                    if (selectedUser != null) {
+                        currentUserId = selectedUser.getId();
+                        chargerTaskSpaces();
+                    }
+                });
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur chargement utilisateurs : " + e.getMessage());
+        }
+    }
+
     @FXML
     private void naviguerVersCreataskSpace() {
         try {
@@ -51,7 +88,6 @@ public class TaskSpace implements Initializable {
         }
     }
 
-    // ── Navigate to personal tasks (ReadTask) ─────────────────
     @FXML
     private void naviguerVersMesTaches() {
         try {
@@ -62,39 +98,46 @@ public class TaskSpace implements Initializable {
         }
     }
 
-    // ── Load and distribute TaskSpaces ───────────────────────
     private void chargerTaskSpaces() {
         flowLeader.getChildren().clear();
         flowMembre.getChildren().clear();
 
+        if (currentUserId == -1) {
+            flowLeader.getChildren().add(makeEmptyLabel("Veuillez sélectionner un utilisateur en haut."));
+            flowMembre.getChildren().add(makeEmptyLabel("Veuillez sélectionner un utilisateur en haut."));
+            return;
+        }
+
         try {
-            List<model.task.TaskSpace> list = taskSpaceService.recupererParUtilisateur(UTILISATEUR_ID);
-            // For now all belong to the logged-in user → Leader section
-            // Extend with a members table later
-            if (list.isEmpty()) {
+            List<model.task.TaskSpace> listLeader = taskSpaceService.recupererParUtilisateur(currentUserId);
+            if (listLeader.isEmpty()) {
                 flowLeader.getChildren().add(makeEmptyLabel("Aucun projet. Cliquez sur « Nouveau Projet » pour commencer."));
             } else {
-                for (model.task.TaskSpace ts : list) {
+                for (model.task.TaskSpace ts : listLeader) {
                     flowLeader.getChildren().add(creerCarteTaskSpace(ts, true));
                 }
             }
 
-            // Membre section — empty until member logic is added
-            flowMembre.getChildren().add(makeEmptyLabel("Aucun projet partagé pour l'instant."));
+            List<model.task.TaskSpace> listMembre = taskSpaceService.recupererProjetsMembre(currentUserId);
+            if (listMembre.isEmpty()) {
+                flowMembre.getChildren().add(makeEmptyLabel("Aucun projet partagé pour l'instant."));
+            } else {
+                for (model.task.TaskSpace ts : listMembre) {
+                    flowMembre.getChildren().add(creerCarteTaskSpace(ts, false));
+                }
+            }
 
         } catch (SQLException e) {
             System.err.println("Erreur chargement TaskSpaces : " + e.getMessage());
         }
     }
 
-    // ── Build one project card ────────────────────────────────
     private VBox creerCarteTaskSpace(model.task.TaskSpace ts, boolean isLeader) {
         VBox card = new VBox(10);
         card.getStyleClass().add("project-card");
         card.setPadding(new Insets(18));
         card.setPrefWidth(360);
 
-        // Row 1: Name + Status badge
         HBox topRow = new HBox(10);
         topRow.setAlignment(Pos.CENTER_LEFT);
 
@@ -103,22 +146,20 @@ public class TaskSpace implements Initializable {
         lblNom.setWrapText(true);
         HBox.setHgrow(lblNom, Priority.ALWAYS);
 
-        Label lblStatut = new Label(ts.getStatus().getValeur());
+        Label lblStatut = new Label(ts.getStatus() != null ? ts.getStatus().getValeur() : "Inconnu");
         lblStatut.getStyleClass().add(statusStyleClass(ts.getStatus()));
         topRow.getChildren().addAll(lblNom, lblStatut);
 
-        // Row 2: Description
         String descText = (ts.getDescription() != null && !ts.getDescription().isBlank())
                 ? ts.getDescription() : "Aucune description";
         Label lblDesc = new Label(descText);
         lblDesc.getStyleClass().add("project-card-desc");
         lblDesc.setWrapText(true);
 
-        // Row 3: Type chip + duration
         HBox metaRow = new HBox(8);
         metaRow.setAlignment(Pos.CENTER_LEFT);
 
-        Label lblType = new Label(ts.getType().getValeur());
+        Label lblType = new Label(ts.getType() != null ? ts.getType().getValeur() : "Projet");
         lblType.getStyleClass().add("type-chip");
 
         Label lblDuration = new Label("⏱ " + ts.getDuration() + " jours");
@@ -126,7 +167,6 @@ public class TaskSpace implements Initializable {
 
         metaRow.getChildren().addAll(lblType, lblDuration);
 
-        // Row 4: action buttons
         HBox actionRow = new HBox(8);
         actionRow.setAlignment(Pos.CENTER_LEFT);
         VBox.setMargin(actionRow, new Insets(6, 0, 0, 0));
@@ -171,14 +211,32 @@ public class TaskSpace implements Initializable {
         };
     }
 
-    // ── Navigate to Kanban board for a given project ──────────
     private void naviguerVersGestion(model.task.TaskSpace ts) {
-        // TODO: load project kanban FXML and pass ts
-        System.out.println("Gérer le projet : " + ts.getNom());
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/task/ReadTaskSpace.fxml"));
+            Parent readRoot = loader.load();
+
+            ReadTaskSpace ctrl = loader.getController();
+            ctrl.setTaskSpace(ts, currentUserId, true);
+
+            flowLeader.getScene().setRoot(readRoot);
+        } catch (IOException e) {
+            System.err.println("Erreur navigation ReadTaskSpace : " + e.getMessage());
+        }
     }
 
     private void naviguerVersTachesAssignees(model.task.TaskSpace ts) {
-        System.out.println("Voir tâches de : " + ts.getNom());
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/task/ReadTaskSpace.fxml"));
+            Parent readRoot = loader.load();
+
+            ReadTaskSpace ctrl = loader.getController();
+            ctrl.setTaskSpace(ts, currentUserId, false);
+
+            flowLeader.getScene().setRoot(readRoot);
+        } catch (IOException e) {
+            System.err.println("Erreur navigation Taches Assignees : " + e.getMessage());
+        }
     }
 
     private void supprimerTaskSpace(model.task.TaskSpace ts) {

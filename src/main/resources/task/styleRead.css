@@ -1,14 +1,12 @@
 /* ============================================================
-   styleRead.css  —  LifeOps ReadTask + UpdateTask
-   Dark Mode default. Light mode: add "light-mode" to root.
+   styleRead.css — LifeOps  |  ReadTask (Kanban) · UpdateTask
+   Design System: "Deep Orbit" — dark navy + violet accent
    ============================================================ */
 
 
-/* ════════════════════════════════════════════════════════════
-   ROOT / WINDOW
-   ════════════════════════════════════════════════════════════ */
+/* ── Root ──────────────────────────────────────────────────── */
 .root-pane {
-    -fx-background-color: #171A21;
+    -fx-background-color: #0F1117;
 }
 
 
@@ -16,17 +14,20 @@
    SIDEBAR
    ════════════════════════════════════════════════════════════ */
 .sidebar {
-    -fx-background-color: #141416;
+    -fx-background-color: #161920;
+    -fx-border-color: transparent #23242F transparent transparent;
+    -fx-border-width: 0 1 0 0;
 }
 
 .logo-label {
-    -fx-text-fill: white;
-    -fx-font-size: 18px;
+    -fx-text-fill: #F0F0F8;
+    -fx-font-size: 19px;
     -fx-font-weight: bold;
 }
 
 .sidebar-divider {
-    -fx-stroke: #3b3b40;
+    -fx-stroke: #23242F;
+    -fx-stroke-width: 1;
 }
 
 .nav-item {
@@ -34,119 +35,131 @@
     -fx-background-radius: 10;
 }
 .nav-item:hover {
-    -fx-background-color: #1a1a1f;
+    -fx-background-color: #1E2030;
     -fx-background-radius: 10;
     -fx-cursor: hand;
 }
-
 .nav-item-active {
-    -fx-background-color: #1E1333;
+    -fx-background-color: linear-gradient(to right, #1C1040, #191030);
     -fx-background-radius: 10;
+    -fx-border-color: #7C4DFF;
+    -fx-border-width: 0 0 0 2;
+    -fx-border-radius: 10;
 }
 
 .nav-label {
-    -fx-text-fill: #a1a1aa;
+    -fx-text-fill: #9898AA;
     -fx-font-size: 14px;
 }
 .nav-label-active {
-    -fx-text-fill: #7a4ed4;
+    -fx-text-fill: #A580FF;
     -fx-font-size: 14px;
+    -fx-font-weight: bold;
 }
 
 .account-box {
-    -fx-background-color: #141416;
-    -fx-border-color: #5A2E8A;
-    -fx-border-radius: 15;
-    -fx-background-radius: 15;
+    -fx-background-color: #1C1F2A;
+    -fx-border-color: #3D2B70;
+    -fx-border-radius: 14;
+    -fx-background-radius: 14;
 }
 .account-label {
-    -fx-text-fill: #a1a1aa;
-    -fx-font-size: 14px;
+    -fx-text-fill: #9898AA;
+    -fx-font-size: 13px;
 }
 
 
 /* ════════════════════════════════════════════════════════════
    MAIN CONTENT
    ════════════════════════════════════════════════════════════ */
-
 .main-content {
-    -fx-background-color: #171A21;
-}
-
-.page-title {
-    -fx-text-fill: white;
-    -fx-font-size: 22px;
-    -fx-font-weight: bold;
-}
-.page-subtitle {
-    -fx-text-fill: #a1a1aa;
-    -fx-font-size: 13px;
-}
-
-.section-divider {
-    -fx-stroke: #3b3b40;
+    -fx-background-color: #0F1117;
 }
 
 .back-button {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-cursor: hand;
+    -fx-background-radius: 8;
 }
 .back-button:hover {
-    -fx-background-color: #1f2330;
+    -fx-background-color: #1C1F2A;
+    -fx-background-radius: 8;
+}
+
+.page-title {
+    -fx-text-fill: #F0F0F8;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+.page-subtitle {
+    -fx-text-fill: #9898AA;
+    -fx-font-size: 13px;
+}
+
+.section-divider {
+    -fx-stroke: #23242F;
+    -fx-stroke-width: 1;
 }
 
 
 /* ════════════════════════════════════════════════════════════
-   TOP ACTION BUTTONS (Kanban header)
+   HEADER ACTION BUTTONS
    ════════════════════════════════════════════════════════════ */
 .action-button {
-    -fx-background-color: #2a2a35;
+    -fx-background-color: #1C1F2A;
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-text-fill: #a1a1aa;
+    -fx-border-color: #2C2D38;
+    -fx-text-fill: #9898AA;
     -fx-font-size: 13px;
     -fx-cursor: hand;
-    -fx-padding: 8 15 8 15;
+    -fx-padding: 8 16 8 16;
 }
 .action-button:hover {
-    -fx-background-color: #35353f;
+    -fx-background-color: #261450;
+    -fx-border-color: #7C4DFF;
+    -fx-text-fill: #F0F0F8;
 }
 
 .action-button-active {
-    -fx-background-color: #1E1333;
-    -fx-border-color: #7a4ed4;
+    -fx-background-color: #1C1040;
+    -fx-border-color: #7C4DFF;
     -fx-border-width: 1;
-    -fx-text-fill: #7a4ed4;
+    -fx-text-fill: #A580FF;
+    -fx-font-weight: bold;
 }
 
 .action-button-primary {
-    -fx-background-color: #8b5cf6;
+    -fx-background-color: linear-gradient(to bottom, #8B5CF6, #7C4DFF);
+    -fx-border-color: transparent;
     -fx-text-fill: white;
     -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(124,77,255,0.35), 10, 0, 0, 3);
 }
 .action-button-primary:hover {
-    -fx-background-color: #7a4ed4;
+    -fx-background-color: linear-gradient(to bottom, #7C4DFF, #6A3DE8);
+    -fx-effect: dropshadow(gaussian, rgba(124,77,255,0.5), 14, 0, 0, 4);
 }
 
 
 /* ════════════════════════════════════════════════════════════
-   ALERT BANNER (Surcharge détectée — IA feature)
+   ALERT BANNER  (AI overload warning)
    ════════════════════════════════════════════════════════════ */
 .alert-banner {
-    -fx-background-color: #3f1f1f;
+    -fx-background-color: #200E0E;
     -fx-background-radius: 12;
-    -fx-border-color: #991b1b;
+    -fx-border-color: #7F1D1D;
     -fx-border-radius: 12;
     -fx-border-width: 1;
 }
 .alert-title {
-    -fx-text-fill: #ef4444;
+    -fx-text-fill: #F87171;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
 .alert-text {
-    -fx-text-fill: #fca5a5;
+    -fx-text-fill: #FCA5A5;
     -fx-font-size: 12px;
 }
 
@@ -155,24 +168,25 @@
    KANBAN COLUMNS
    ════════════════════════════════════════════════════════════ */
 .kanban-column {
-    -fx-background-color: #17191F;
-    -fx-background-radius: 12;
-    -fx-border-color: #39393B;
-    -fx-border-radius: 12;
+    -fx-background-color: #161920;
+    -fx-background-radius: 14;
+    -fx-border-color: #2C2D38;
+    -fx-border-radius: 14;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 8, 0, 0, 2);
 }
 
 .kanban-column-header {
-    -fx-text-fill: #a1a1aa;
+    -fx-text-fill: #D8D8E8;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
 
 .kanban-count-badge {
-    -fx-background-color: #2a2a35;
+    -fx-background-color: #1C1F2A;
     -fx-background-radius: 10;
-    -fx-text-fill: #a1a1aa;
+    -fx-text-fill: #9898AA;
     -fx-font-size: 12px;
-    -fx-padding: 2 8 2 8;
+    -fx-padding: 2 9 2 9;
 }
 
 
@@ -180,31 +194,32 @@
    TASK CARDS
    ════════════════════════════════════════════════════════════ */
 .task-card {
-    -fx-background-color: #1a1c24;
-    -fx-background-radius: 10;
-    -fx-border-color: #39393B;
-    -fx-border-radius: 10;
+    -fx-background-color: #1C1F2A;
+    -fx-background-radius: 12;
+    -fx-border-color: #2C2D38;
+    -fx-border-radius: 12;
     -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 6, 0, 0, 2);
 }
 .task-card:hover {
-    -fx-border-color: #7a4ed4;
-    -fx-effect: dropshadow(gaussian, rgba(122,78,212,0.25), 10, 0, 0, 0);
+    -fx-border-color: #7C4DFF;
+    -fx-effect: dropshadow(gaussian, rgba(124,77,255,0.25), 12, 0, 0, 0);
 }
 
 .task-title {
-    -fx-text-fill: white;
+    -fx-text-fill: #F0F0F8;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
 
 .task-description {
-    -fx-background-color: #0B0C10;
-    -fx-text-fill: #a1a1aa;
-
+    -fx-background-color: transparent;
+    -fx-text-fill: #9898AA;
     -fx-font-size: 12px;
 }
+
 .task-meta {
-    -fx-text-fill: #ef4444;
+    -fx-text-fill: #F87171;
     -fx-font-size: 11px;
 }
 
@@ -213,33 +228,33 @@
    PRIORITY BADGES
    ════════════════════════════════════════════════════════════ */
 .priority-urgent {
-    -fx-background-color: #ef4444;
-    -fx-background-radius: 12;
+    -fx-background-color: #EF4444;
+    -fx-background-radius: 20;
     -fx-text-fill: white;
     -fx-font-size: 11px;
     -fx-font-weight: bold;
     -fx-padding: 3 10 3 10;
 }
 .priority-haute {
-    -fx-background-color: #991b1b;
-    -fx-background-radius: 12;
+    -fx-background-color: #DC2626;
+    -fx-background-radius: 20;
     -fx-text-fill: white;
     -fx-font-size: 11px;
     -fx-font-weight: bold;
     -fx-padding: 3 10 3 10;
 }
 .priority-moyenne {
-    -fx-background-color: #eab308;
-    -fx-background-radius: 12;
-    -fx-text-fill: #1a1c24;
+    -fx-background-color: #D97706;
+    -fx-background-radius: 20;
+    -fx-text-fill: white;
     -fx-font-size: 11px;
     -fx-font-weight: bold;
     -fx-padding: 3 10 3 10;
 }
 .priority-basse {
-    -fx-background-color: #52525b;
-    -fx-background-radius: 12;
-    -fx-text-fill: white;
+    -fx-background-color: #374151;
+    -fx-background-radius: 20;
+    -fx-text-fill: #D1D5DB;
     -fx-font-size: 11px;
     -fx-font-weight: bold;
     -fx-padding: 3 10 3 10;
@@ -253,16 +268,16 @@
     -fx-spacing: 4;
 }
 .difficulty-dot {
-    -fx-background-color: #8b5cf6;
-    -fx-background-radius: 4;
+    -fx-background-color: #7C4DFF;
+    -fx-background-radius: 5;
     -fx-min-width: 8;
     -fx-min-height: 8;
     -fx-max-width: 8;
     -fx-max-height: 8;
 }
 .difficulty-dot-empty {
-    -fx-background-color: #3b3b40;
-    -fx-background-radius: 4;
+    -fx-background-color: #2C2D38;
+    -fx-background-radius: 5;
     -fx-min-width: 8;
     -fx-min-height: 8;
     -fx-max-width: 8;
@@ -271,391 +286,267 @@
 
 
 /* ════════════════════════════════════════════════════════════
-   TASK CARD ICON BUTTONS (edit ✏ purple | delete 🗑 dark)
-   Matches screenshot 3: rounded square, icon only
+   TASK CARD ICON BUTTONS  (edit ✏ | delete 🗑)
    ════════════════════════════════════════════════════════════ */
-
-/* ✏ Edit — purple rounded square */
 .card-icon-button-edit {
-    -fx-background-color: #6d28d9;
+    -fx-background-color: #6D28D9;
     -fx-background-radius: 10;
     -fx-border-radius: 10;
     -fx-text-fill: white;
     -fx-font-size: 14px;
-    -fx-min-width: 36;
-    -fx-min-height: 36;
-    -fx-max-width: 36;
-    -fx-max-height: 36;
+    -fx-min-width: 34;
+    -fx-min-height: 34;
+    -fx-max-width: 34;
+    -fx-max-height: 34;
     -fx-cursor: hand;
     -fx-padding: 0;
 }
 .card-icon-button-edit:hover {
-    -fx-background-color: #7c3aed;
-    -fx-effect: dropshadow(gaussian, rgba(109,40,217,0.5), 8, 0, 0, 0);
+    -fx-background-color: #7C3AED;
+    -fx-effect: dropshadow(gaussian, rgba(109,40,217,0.45), 8, 0, 0, 0);
 }
 .card-icon-button-edit:pressed {
-    -fx-background-color: #5b21b6;
+    -fx-background-color: #5B21B6;
 }
 
-/* 🗑 Delete — dark rounded square */
 .card-icon-button-delete {
-    -fx-background-color: #1e1e28;
+    -fx-background-color: #1C1F2A;
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-border-color: #39393B;
+    -fx-border-color: #2C2D38;
     -fx-border-width: 1;
-    -fx-text-fill: #a1a1aa;
+    -fx-text-fill: #9898AA;
     -fx-font-size: 14px;
-    -fx-min-width: 36;
-    -fx-min-height: 36;
-    -fx-max-width: 36;
-    -fx-max-height: 36;
+    -fx-min-width: 34;
+    -fx-min-height: 34;
+    -fx-max-width: 34;
+    -fx-max-height: 34;
     -fx-cursor: hand;
     -fx-padding: 0;
 }
 .card-icon-button-delete:hover {
-    -fx-background-color: #3f1f1f;
-    -fx-border-color: #ef4444;
-    -fx-text-fill: #ef4444;
+    -fx-background-color: #200E0E;
+    -fx-border-color: #EF4444;
+    -fx-text-fill: #EF4444;
 }
 .card-icon-button-delete:pressed {
-    -fx-background-color: #2d1515;
+    -fx-background-color: #2D1515;
 }
 
 
 /* ════════════════════════════════════════════════════════════
-   FORM CARD (UpdateTask / Creatask)
+   FORM CARD  (UpdateTask)
    ════════════════════════════════════════════════════════════ */
 .form-card {
-    -fx-background-color: #17191F;
-    -fx-background-radius: 20;
-    -fx-border-color: #39393B;
-    -fx-border-radius: 20;
+    -fx-background-color: #161920;
+    -fx-background-radius: 18;
+    -fx-border-color: #2C2D38;
+    -fx-border-radius: 18;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 16, 0, 0, 4);
 }
 
 .field-label {
-    -fx-text-fill: white;
+    -fx-text-fill: #D8D8E8;
     -fx-font-size: 13px;
+    -fx-font-weight: bold;
 }
 
-/* Text fields & TextArea */
 .form-field {
-    -fx-background-color: #0B0C10;
+    -fx-background-color: #0D0F15;
     -fx-background-radius: 9;
     -fx-border-radius: 9;
-    -fx-border-color: #39393B;
-    -fx-text-fill: white;
-    -fx-prompt-text-fill: #6b6b75;
+    -fx-border-color: #2C2D38;
+    -fx-border-width: 1;
+    -fx-text-fill: #F0F0F8;
+    -fx-prompt-text-fill: #55556A;
+    -fx-padding: 8 12 8 12;
 }
 .form-field:focused {
-    -fx-border-color: #7a4ed4;
+    -fx-border-color: #7C4DFF;
+    -fx-effect: dropshadow(gaussian, rgba(124,77,255,0.18), 8, 0, 0, 0);
 }
 
-/* ChoiceBox */
 .form-choice {
-    -fx-background-color: #0B0C10;
+    -fx-background-color: #0D0F15;
     -fx-background-radius: 9;
     -fx-border-radius: 9;
-    -fx-border-color: #39393B;
-    -fx-mark-color: #a1a1aa;
+    -fx-border-color: #2C2D38;
+    -fx-mark-color: #9898AA;
 }
-.form-choice .label {
-    -fx-text-fill: white;
-}
-.form-choice:focused {
-    -fx-border-color: #7a4ed4;
-}
+.form-choice .label { -fx-text-fill: #F0F0F8; }
+.form-choice:focused { -fx-border-color: #7C4DFF; }
 .form-choice .context-menu {
-    -fx-background-color: #17191F;
-    -fx-border-color: #39393B;
+    -fx-background-color: #1C1F2A;
+    -fx-border-color: #2C2D38;
     -fx-border-radius: 9;
     -fx-background-radius: 9;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 12, 0, 0, 4);
 }
-.form-choice .menu-item {
-    -fx-background-color: transparent;
-}
-.form-choice .menu-item:hover {
-    -fx-background-color: #1E1333;
-}
-.form-choice .menu-item .label {
-    -fx-text-fill: white;
-}
+.form-choice .menu-item { -fx-background-color: transparent; }
+.form-choice .menu-item:hover { -fx-background-color: #261450; }
+.form-choice .menu-item .label { -fx-text-fill: #F0F0F8; }
 
-/* DatePicker */
 .form-datepicker {
-    -fx-background-color: #0B0C10;
+    -fx-background-color: #0D0F15;
     -fx-background-radius: 9;
     -fx-border-radius: 9;
-    -fx-border-color: #39393B;
+    -fx-border-color: #2C2D38;
 }
 .form-datepicker .text-field {
     -fx-background-color: transparent;
-    -fx-text-fill: white;
-    -fx-prompt-text-fill: #6b6b75;
+    -fx-text-fill: #F0F0F8;
+    -fx-prompt-text-fill: #55556A;
 }
-.form-datepicker .arrow-button {
-    -fx-background-color: transparent;
-}
-.form-datepicker .arrow-button .arrow {
-    -fx-background-color: #a1a1aa;
-}
-.form-datepicker:focused {
-    -fx-border-color: #7a4ed4;
-}
+.form-datepicker .arrow-button { -fx-background-color: transparent; }
+.form-datepicker .arrow-button .arrow { -fx-background-color: #9898AA; }
+.form-datepicker:focused { -fx-border-color: #7C4DFF; }
 .form-datepicker .date-picker-popup {
-    -fx-background-color: #17191F;
-    -fx-border-color: #39393B;
+    -fx-background-color: #1C1F2A;
+    -fx-border-color: #2C2D38;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 14, 0, 0, 4);
 }
-.form-datepicker .date-picker-popup .month-year-pane {
-    -fx-background-color: #141416;
-}
+.form-datepicker .date-picker-popup .month-year-pane { -fx-background-color: #161920; }
 .form-datepicker .date-picker-popup .day-cell {
-    -fx-text-fill: white;
+    -fx-text-fill: #F0F0F8;
     -fx-background-color: transparent;
+    -fx-background-radius: 8;
 }
-.form-datepicker .date-picker-popup .day-cell:hover {
-    -fx-background-color: #1E1333;
-}
+.form-datepicker .date-picker-popup .day-cell:hover { -fx-background-color: #261450; }
 .form-datepicker .date-picker-popup .selected {
-    -fx-background-color: #7a4ed4;
+    -fx-background-color: #7C4DFF;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
 }
 
 
 /* ════════════════════════════════════════════════════════════
    FORM ACTION BUTTONS
    ════════════════════════════════════════════════════════════ */
-
-/* Primary: save / mettre à jour — purple */
 .submit-button {
-    -fx-background-color: #8b5cf6;
-    -fx-background-radius: 9;
-    -fx-border-radius: 9;
+    -fx-background-color: linear-gradient(to bottom, #8B5CF6, #7C4DFF);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
     -fx-text-fill: white;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
     -fx-cursor: hand;
+    -fx-padding: 10 24 10 24;
+    -fx-effect: dropshadow(gaussian, rgba(124,77,255,0.35), 10, 0, 0, 3);
 }
 .submit-button:hover {
-    -fx-background-color: #7a4ed4;
+    -fx-background-color: linear-gradient(to bottom, #7C4DFF, #6A3DE8);
+    -fx-effect: dropshadow(gaussian, rgba(124,77,255,0.5), 14, 0, 0, 4);
 }
 .submit-button:pressed {
-    -fx-background-color: #6a3ec4;
+    -fx-background-color: #5930CC;
+    -fx-effect: none;
 }
 
-/* Cancel — neutral dark */
 .cancel-button {
-    -fx-background-color: #2a2a35;
-    -fx-background-radius: 9;
-    -fx-border-radius: 9;
-    -fx-border-color: #39393B;
-    -fx-text-fill: #a1a1aa;
+    -fx-background-color: #1C1F2A;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #2C2D38;
+    -fx-text-fill: #9898AA;
     -fx-font-size: 13px;
     -fx-cursor: hand;
+    -fx-padding: 10 24 10 24;
 }
 .cancel-button:hover {
-    -fx-background-color: #35353f;
-    -fx-text-fill: white;
+    -fx-background-color: #252836;
+    -fx-text-fill: #F0F0F8;
+    -fx-border-color: #3C3D4A;
 }
-.cancel-button:pressed {
-    -fx-background-color: #1e1e28;
-}
+.cancel-button:pressed { -fx-background-color: #161920; }
 
-/* Delete — red (top-right of UpdateTask) */
 .delete-button {
-    -fx-background-color: #ef4444;
-    -fx-background-radius: 9;
-    -fx-border-radius: 9;
-    -fx-text-fill: white;
+    -fx-background-color: #200E0E;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #7F1D1D;
+    -fx-border-width: 1;
+    -fx-text-fill: #FCA5A5;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
     -fx-cursor: hand;
     -fx-padding: 10 20 10 20;
 }
 .delete-button:hover {
-    -fx-background-color: #dc2626;
-    -fx-effect: dropshadow(gaussian, rgba(239,68,68,0.4), 8, 0, 0, 0);
+    -fx-background-color: #7F1D1D;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(239,68,68,0.35), 10, 0, 0, 3);
 }
-.delete-button:pressed {
-    -fx-background-color: #b91c1c;
-}
+.delete-button:pressed { -fx-background-color: #991B1B; }
 
 
 /* ════════════════════════════════════════════════════════════
-   LIGHT MODE — add "light-mode" class to root AnchorPane
+   LIGHT MODE
    ════════════════════════════════════════════════════════════ */
-
-.light-mode.root-pane {
-    -fx-background-color: #f4f4f8;
-}
+.light-mode.root-pane { -fx-background-color: #F2F3F8; }
 .light-mode .sidebar {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #e0e0e8;
-    -fx-border-width: 0 1 0 0;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: transparent #E2E4EE transparent transparent;
 }
-.light-mode .logo-label {
-    -fx-text-fill: #1a1a2e;
-}
-.light-mode .sidebar-divider {
-    -fx-stroke: #d0d0d8;
-}
-.light-mode .nav-item:hover {
-    -fx-background-color: #f0ebfa;
-}
-.light-mode .nav-item-active {
-    -fx-background-color: #ede9fa;
-}
-.light-mode .nav-label {
-    -fx-text-fill: #6b6b80;
-}
-.light-mode .nav-label-active {
-    -fx-text-fill: #7a4ed4;
-}
-.light-mode .account-box {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #c9a8f5;
-}
-.light-mode .account-label {
-    -fx-text-fill: #6b6b80;
-}
-.light-mode .main-content {
-    -fx-background-color: #f4f4f8;
-}
-.light-mode .page-title {
-    -fx-text-fill: #1a1a2e;
-}
-.light-mode .page-subtitle {
-    -fx-text-fill: #6b6b80;
-}
-.light-mode .section-divider {
-    -fx-stroke: #d0d0d8;
-}
-.light-mode .kanban-column {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #e0e0e8;
-}
-.light-mode .kanban-column-header {
-    -fx-text-fill: #1a1a2e;
-}
-.light-mode .kanban-count-badge {
-    -fx-background-color: #f0f0f5;
-    -fx-text-fill: #6b6b80;
-}
-.light-mode .task-card {
-    -fx-background-color: #f7f7fb;
-    -fx-border-color: #e0e0e8;
-}
-.light-mode .task-card:hover {
-    -fx-border-color: #7a4ed4;
-}
-.light-mode .task-title {
-    -fx-text-fill: #1a1a2e;
-}
-.light-mode .task-description {
-    -fx-text-fill: #6b6b80;
-}
-.light-mode .difficulty-dot-empty {
-    -fx-background-color: #d0d0d8;
-}
-.light-mode .action-button {
-    -fx-background-color: #e8e8f0;
-    -fx-text-fill: #6b6b80;
-}
-.light-mode .action-button:hover {
-    -fx-background-color: #d8d8e8;
-}
-.light-mode .action-button-active {
-    -fx-background-color: #ede9fa;
-}
-.light-mode .card-icon-button-edit {
-    -fx-background-color: #6d28d9;
-}
-.light-mode .card-icon-button-delete {
-    -fx-background-color: #f0f0f5;
-    -fx-border-color: #d0d0d8;
-    -fx-text-fill: #6b6b80;
-}
-.light-mode .card-icon-button-delete:hover {
-    -fx-background-color: #fef2f2;
-    -fx-border-color: #fca5a5;
-    -fx-text-fill: #dc2626;
-}
-.light-mode .form-card {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #e0e0e8;
-}
-.light-mode .field-label {
-    -fx-text-fill: #1a1a2e;
-}
-.light-mode .form-field {
-    -fx-background-color: #f7f7fb;
-    -fx-border-color: #d0d0d8;
-    -fx-text-fill: #1a1a2e;
-    -fx-prompt-text-fill: #b0b0c0;
-}
-.light-mode .form-field:focused {
-    -fx-border-color: #7a4ed4;
-}
-.light-mode .form-choice {
-    -fx-background-color: #f7f7fb;
-    -fx-border-color: #d0d0d8;
-}
-.light-mode .form-choice .label {
-    -fx-text-fill: #1a1a2e;
-}
-.light-mode .form-choice .context-menu {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #d0d0d8;
-}
-.light-mode .form-choice .menu-item:hover {
-    -fx-background-color: #ede9fa;
-}
-.light-mode .form-choice .menu-item .label {
-    -fx-text-fill: #1a1a2e;
-}
-.light-mode .form-datepicker {
-    -fx-background-color: #f7f7fb;
-    -fx-border-color: #d0d0d8;
-}
-.light-mode .form-datepicker .text-field {
-    -fx-text-fill: #1a1a2e;
-    -fx-prompt-text-fill: #b0b0c0;
-}
-.light-mode .form-datepicker .arrow-button .arrow {
-    -fx-background-color: #6b6b80;
-}
-.light-mode .form-datepicker .date-picker-popup {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #d0d0d8;
-}
-.light-mode .form-datepicker .date-picker-popup .month-year-pane {
-    -fx-background-color: #f4f4f8;
-}
-.light-mode .form-datepicker .date-picker-popup .day-cell {
-    -fx-text-fill: #1a1a2e;
-}
-.light-mode .form-datepicker .date-picker-popup .day-cell:hover {
-    -fx-background-color: #ede9fa;
-}
-.light-mode .form-datepicker .date-picker-popup .selected {
-    -fx-background-color: #7a4ed4;
-    -fx-text-fill: white;
-}
-.light-mode .cancel-button {
-    -fx-background-color: #e8e8f0;
-    -fx-border-color: #d0d0d8;
-    -fx-text-fill: #6b6b80;
-}
-.light-mode .cancel-button:hover {
-    -fx-background-color: #d8d8e8;
-    -fx-text-fill: #1a1a2e;
-}
-.light-mode .alert-banner {
-    -fx-background-color: #fef2f2;
-    -fx-border-color: #fca5a5;
-}
-.light-mode .alert-title {
-    -fx-text-fill: #dc2626;
-}
-.light-mode .alert-text {
-    -fx-text-fill: #dc2626;
-}
+.light-mode .logo-label { -fx-text-fill: #1A1B2E; }
+.light-mode .sidebar-divider { -fx-stroke: #E2E4EE; }
+.light-mode .nav-item:hover { -fx-background-color: #EDE9FA; }
+.light-mode .nav-item-active { -fx-background-color: linear-gradient(to right, #EDE9FA, #E8E3F8); -fx-border-color: #7C4DFF; }
+.light-mode .nav-label { -fx-text-fill: #6B6B80; }
+.light-mode .nav-label-active { -fx-text-fill: #7C4DFF; }
+.light-mode .account-box { -fx-background-color: #FFFFFF; -fx-border-color: #C4A8F0; }
+.light-mode .account-label { -fx-text-fill: #6B6B80; }
+.light-mode .main-content { -fx-background-color: #F2F3F8; }
+.light-mode .back-button { -fx-background-color: transparent; }
+.light-mode .back-button:hover { -fx-background-color: #E8E9F4; }
+.light-mode .page-title { -fx-text-fill: #1A1B2E; }
+.light-mode .page-subtitle { -fx-text-fill: #6B6B80; }
+.light-mode .section-divider { -fx-stroke: #E2E4EE; }
+
+.light-mode .action-button { -fx-background-color: #EBEBF4; -fx-border-color: #D5D7E2; -fx-text-fill: #6B6B80; }
+.light-mode .action-button:hover { -fx-background-color: #EDE9FA; -fx-border-color: #7C4DFF; -fx-text-fill: #7C4DFF; }
+.light-mode .action-button-active { -fx-background-color: #EDE9FA; -fx-border-color: #7C4DFF; -fx-text-fill: #7C4DFF; }
+
+.light-mode .alert-banner { -fx-background-color: #FEF2F2; -fx-border-color: #FCA5A5; }
+.light-mode .alert-title { -fx-text-fill: #DC2626; }
+.light-mode .alert-text { -fx-text-fill: #B91C1C; }
+
+.light-mode .kanban-column { -fx-background-color: #FFFFFF; -fx-border-color: #E2E4EE; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.05),8,0,0,2); }
+.light-mode .kanban-column-header { -fx-text-fill: #1A1B2E; }
+.light-mode .kanban-count-badge { -fx-background-color: #EBEBF4; -fx-text-fill: #6B6B80; }
+
+.light-mode .task-card { -fx-background-color: #F5F6FA; -fx-border-color: #E2E4EE; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.05),6,0,0,2); }
+.light-mode .task-card:hover { -fx-border-color: #7C4DFF; -fx-effect: dropshadow(gaussian,rgba(124,77,255,0.15),10,0,0,0); }
+.light-mode .task-title { -fx-text-fill: #1A1B2E; }
+.light-mode .task-description { -fx-text-fill: #6B6B80; }
+.light-mode .task-meta { -fx-text-fill: #DC2626; }
+
+.light-mode .difficulty-dot-empty { -fx-background-color: #D5D7E2; }
+
+.light-mode .card-icon-button-edit { -fx-background-color: #7C3AED; }
+.light-mode .card-icon-button-delete { -fx-background-color: #F0F0F8; -fx-border-color: #D5D7E2; -fx-text-fill: #6B6B80; }
+.light-mode .card-icon-button-delete:hover { -fx-background-color: #FEF2F2; -fx-border-color: #FCA5A5; -fx-text-fill: #DC2626; }
+
+.light-mode .form-card { -fx-background-color: #FFFFFF; -fx-border-color: #E2E4EE; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.06),12,0,0,3); }
+.light-mode .field-label { -fx-text-fill: #1A1B2E; }
+.light-mode .form-field { -fx-background-color: #F5F6FA; -fx-border-color: #D5D7E2; -fx-text-fill: #1A1B2E; -fx-prompt-text-fill: #ABABC0; }
+.light-mode .form-field:focused { -fx-border-color: #7C4DFF; }
+.light-mode .form-choice { -fx-background-color: #F5F6FA; -fx-border-color: #D5D7E2; }
+.light-mode .form-choice .label { -fx-text-fill: #1A1B2E; }
+.light-mode .form-choice .context-menu { -fx-background-color: #FFFFFF; -fx-border-color: #D5D7E2; }
+.light-mode .form-choice .menu-item:hover { -fx-background-color: #EDE9FA; }
+.light-mode .form-choice .menu-item .label { -fx-text-fill: #1A1B2E; }
+.light-mode .form-datepicker { -fx-background-color: #F5F6FA; -fx-border-color: #D5D7E2; }
+.light-mode .form-datepicker .text-field { -fx-text-fill: #1A1B2E; -fx-prompt-text-fill: #ABABC0; }
+.light-mode .form-datepicker .arrow-button .arrow { -fx-background-color: #6B6B80; }
+.light-mode .form-datepicker .date-picker-popup { -fx-background-color: #FFFFFF; -fx-border-color: #D5D7E2; }
+.light-mode .form-datepicker .date-picker-popup .month-year-pane { -fx-background-color: #F2F3F8; }
+.light-mode .form-datepicker .date-picker-popup .day-cell { -fx-text-fill: #1A1B2E; }
+.light-mode .form-datepicker .date-picker-popup .day-cell:hover { -fx-background-color: #EDE9FA; }
+.light-mode .form-datepicker .date-picker-popup .selected { -fx-background-color: #7C4DFF; -fx-text-fill: white; }
+
+.light-mode .cancel-button { -fx-background-color: #EBEBF4; -fx-border-color: #D5D7E2; -fx-text-fill: #6B6B80; }
+.light-mode .cancel-button:hover { -fx-background-color: #E0E0EC; -fx-text-fill: #1A1B2E; }
+.light-mode .delete-button { -fx-background-color: #FEF2F2; -fx-border-color: #FCA5A5; -fx-text-fill: #B91C1C; }
+.light-mode .delete-button:hover { -fx-background-color: #FEE2E2; -fx-border-color: #F87171; }

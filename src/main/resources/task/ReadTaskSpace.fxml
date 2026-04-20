@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1400.0" styleClass="root-pane" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.task.ReadTaskSpace">
+    <children>
+
+        <VBox prefHeight="780.0" prefWidth="229.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="229.0" spacing="10.0">
+                    <padding><Insets left="20.0" /></padding>
+                    <children>
+                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                            <image><Image url="@../../../assets/5555.png" /></image>
+                        </ImageView>
+                        <Label styleClass="logo-label" text="LifeOps">
+                            <font><Font name="System Bold" size="18.0" /></font>
+                        </Label>
+                    </children>
+                </HBox>
+
+                <VBox prefWidth="229.0" spacing="5.0">
+                    <padding><Insets top="20.0" /></padding>
+                    <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0" spacing="10.0" styleClass="nav-item">
+                            <padding><Insets left="20.0" /></padding>
+                            <children>
+                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image><Image url="@../../../assets/home_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                                </ImageView>
+                                <Label styleClass="nav-label" text="Tableau de bord"><font><Font size="14.0" /></font></Label>
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0" spacing="10.0" styleClass="nav-item-active">
+                            <padding><Insets left="20.0" /></padding>
+                            <children>
+                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image><Image url="@../../../assets/done_all_24dp_7A4ED4_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                                </ImageView>
+                                <Label styleClass="nav-label-active" text="Tâches"><font><Font size="14.0" /></font></Label>
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0" spacing="10.0" styleClass="nav-item">
+                            <padding><Insets left="20.0" /></padding>
+                            <children>
+                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image><Image url="@../../../assets/account_balance_wallet_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                                </ImageView>
+                                <Label styleClass="nav-label" text="Finance"><font><Font size="14.0" /></font></Label>
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0" spacing="10.0" styleClass="nav-item">
+                            <padding><Insets left="20.0" /></padding>
+                            <children>
+                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image><Image url="@../../../assets/target_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                                </ImageView>
+                                <Label styleClass="nav-label" text="Objectifs"><font><Font size="14.0" /></font></Label>
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0" spacing="10.0" styleClass="nav-item">
+                            <padding><Insets left="20.0" /></padding>
+                            <children>
+                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image><Image url="@../../../assets/ecg_heart_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                                </ImageView>
+                                <Label styleClass="nav-label" text="Santé"><font><Font size="14.0" /></font></Label>
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0" spacing="10.0" styleClass="nav-item">
+                            <padding><Insets left="20.0" /></padding>
+                            <children>
+                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image><Image url="@../../../assets/schedule_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                                </ImageView>
+                                <Label styleClass="nav-label" text="Temps"><font><Font size="14.0" /></font></Label>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+                <VBox VBox.vgrow="ALWAYS" />
+                <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="229.0" spacing="10.0" styleClass="account-box">
+                    <padding><Insets bottom="10.0" left="15.0" right="15.0" top="10.0" /></padding>
+                    <VBox.margin><Insets bottom="20.0" left="10.0" right="10.0" /></VBox.margin>
+                    <children>
+                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                            <image><Image url="@../../../assets/account_circle_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                        </ImageView>
+                        <Label styleClass="account-label" text="compte"><font><Font size="14.0" /></font></Label>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <Line endX="0.0" endY="780.0" startX="0.0" startY="0.0" styleClass="sidebar-divider" AnchorPane.leftAnchor="229.0" AnchorPane.topAnchor="0.0" />
+
+        <VBox styleClass="main-content" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="229.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <HBox alignment="CENTER_LEFT" prefHeight="76.0" spacing="12.0">
+                    <padding><Insets bottom="10.0" left="30.0" right="30.0" top="18.0" /></padding>
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#retourVersTaskSpace" prefHeight="36.0" prefWidth="36.0" styleClass="back-button">
+                            <graphic>
+                                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                    <image><Image url="@../../../assets/arrow_back_ios_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <VBox spacing="3.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                    <children>
+                                        <Label styleClass="page-subtitle" text="Mes Projets"><font><Font size="11.0" /></font></Label>
+                                        <Label styleClass="page-subtitle" text="/"><font><Font size="11.0" /></font></Label>
+                                        <Label fx:id="lblBreadcrumb" styleClass="page-subtitle" text="—">
+                                            <font><Font name="System Bold" size="11.0" /></font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <children>
+                                        <Label fx:id="lblProjectTitle" styleClass="page-title" text="">
+                                            <font><Font name="System Bold" size="21.0" /></font>
+                                        </Label>
+                                        <Label fx:id="lblRoleBadge" style="-fx-background-color:#1E1333;-fx-background-radius:6;-fx-text-fill:#c084fc;-fx-font-size:11px;-fx-padding:3 8 3 8;-fx-font-weight:bold;" text="👑 LEADER" />
+                                        <Label fx:id="lblStatusBadge" style="-fx-background-radius:6;-fx-font-size:11px;-fx-padding:3 8 3 8;" text="" />
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                        <Button mnemonicParsing="false" onAction="#ouvrirCreerTache" prefHeight="38.0" prefWidth="155.0" styleClass="btn-primary" text="＋ Nouvelle Tâche">
+                            <font><Font name="System Bold" size="13.0" /></font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#naviguerVersModifier" prefHeight="38.0" prefWidth="130.0" styleClass="btn-secondary" text="✏ Modifier">
+                            <font><Font size="13.0" /></font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#autoAssignationIA" prefHeight="38.0" prefWidth="180.0" style="-fx-background-color:#2d1b5e;-fx-background-radius:10;-fx-border-color:#7a4ed4;-fx-border-radius:10;-fx-text-fill:#c084fc;-fx-font-size:12px;-fx-font-weight:bold;-fx-cursor:hand;" text="✨ Auto-Assignation IA">
+                            <font><Font name="System Bold" size="12.0" /></font>
+                        </Button>
+                    </children>
+                </HBox>
+
+                <HBox spacing="40.0" style="-fx-background-color: #17191F; -fx-background-radius: 12; -fx-border-color: #2a2a30; -fx-border-radius: 12; -fx-border-width: 1;">
+                    <VBox.margin><Insets bottom="15.0" left="30.0" right="30.0" top="0.0" /></VBox.margin>
+                    <padding><Insets bottom="16.0" left="24.0" right="24.0" top="16.0" /></padding>
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <children>
+                                <Region prefHeight="40.0" prefWidth="4.0" style="-fx-background-color: #7a4ed4; -fx-background-radius: 2;" />
+                                <VBox spacing="2.0">
+                                    <children>
+                                        <Label style="-fx-text-fill: #a1a1aa; -fx-font-size: 11px; -fx-font-weight: bold;" text="TYPE" />
+                                        <Label fx:id="lblType" style="-fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;" text="—" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <children>
+                                <Region prefHeight="40.0" prefWidth="4.0" style="-fx-background-color: #3b82f6; -fx-background-radius: 2;" />
+                                <VBox spacing="2.0">
+                                    <children>
+                                        <Label style="-fx-text-fill: #a1a1aa; -fx-font-size: 11px; -fx-font-weight: bold;" text="DURÉE" />
+                                        <Label fx:id="lblDuration" style="-fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;" text="—" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <children>
+                                <Region prefHeight="40.0" prefWidth="4.0" style="-fx-background-color: #10b981; -fx-background-radius: 2;" />
+                                <VBox spacing="2.0">
+                                    <children>
+                                        <Label style="-fx-text-fill: #a1a1aa; -fx-font-size: 11px; -fx-font-weight: bold;" text="CRÉATION" />
+                                        <Label fx:id="lblDateCreation" style="-fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;" text="—" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <HBox alignment="CENTER" spacing="15.0">
+                            <children>
+                                <VBox alignment="CENTER" spacing="2.0">
+                                    <Label style="-fx-text-fill: #6b6b75; -fx-font-size: 11px;" text="À faire" />
+                                    <Label fx:id="cntAFaire" style="-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;" text="0" />
+                                </VBox>
+                                <VBox alignment="CENTER" spacing="2.0">
+                                    <Label style="-fx-text-fill: #6b6b75; -fx-font-size: 11px;" text="En cours" />
+                                    <Label fx:id="cntEnCours" style="-fx-text-fill: #3b82f6; -fx-font-size: 16px; -fx-font-weight: bold;" text="0" />
+                                </VBox>
+                                <VBox alignment="CENTER" spacing="2.0">
+                                    <Label style="-fx-text-fill: #6b6b75; -fx-font-size: 11px;" text="En révision" />
+                                    <Label fx:id="cntEnRevision" style="-fx-text-fill: #f59e0b; -fx-font-size: 16px; -fx-font-weight: bold;" text="0" />
+                                </VBox>
+                                <VBox alignment="CENTER" spacing="2.0">
+                                    <Label style="-fx-text-fill: #6b6b75; -fx-font-size: 11px;" text="Terminé" />
+                                    <Label fx:id="cntTermine" style="-fx-text-fill: #10b981; -fx-font-size: 16px; -fx-font-weight: bold;" text="0" />
+                                </VBox>
+                            </children>
+                        </HBox>
+                    </children>
+                </HBox>
+
+                <Line endX="1100.0" startX="0.0" styleClass="section-divider">
+                    <VBox.margin><Insets left="30.0" right="30.0" /></VBox.margin>
+                </Line>
+
+                <ScrollPane fitToHeight="true" pannable="false" styleClass="scroll-area" VBox.vgrow="ALWAYS">
+                    <content>
+                        <HBox fillHeight="true" spacing="14.0">
+                            <padding><Insets bottom="20.0" left="30.0" right="30.0" top="14.0" /></padding>
+                            <children>
+                                <VBox prefWidth="283.0" spacing="0.0" style="-fx-background-color:#17191F;-fx-background-radius:14;-fx-border-color:#2a2a30;-fx-border-radius:14;">
+                                    <HBox alignment="CENTER_LEFT" prefHeight="46.0" spacing="8.0" style="-fx-background-color:#1c1e29;-fx-background-radius:14 14 0 0;">
+                                        <padding><Insets left="14.0" right="14.0" /></padding>
+                                        <children>
+                                            <Region prefHeight="9.0" prefWidth="9.0" style="-fx-background-color:#6b6b75;-fx-background-radius:5;" />
+                                            <Label styleClass="section-title" text="À faire" HBox.hgrow="ALWAYS">
+                                                <font><Font name="System Bold" size="13.0" /></font>
+                                            </Label>
+                                            <Label fx:id="badgeAFaire" style="-fx-background-color:#2a2a38;-fx-background-radius:10;-fx-text-fill:#a1a1aa;-fx-font-size:11px;-fx-padding:2 8 2 8;" text="0" />
+                                        </children>
+                                    </HBox>
+                                    <ScrollPane fitToWidth="true" prefHeight="555.0" styleClass="scroll-area" VBox.vgrow="ALWAYS">
+                                        <content>
+                                            <VBox fx:id="cardsAFaire" spacing="10.0">
+                                                <padding><Insets bottom="12.0" left="10.0" right="10.0" top="12.0" /></padding>
+                                                <Label fx:id="emptyAFaire" maxWidth="1.7976931348623157E308" style="-fx-alignment:center;-fx-padding:28 0 28 0;" styleClass="empty-state-label" text="Aucune tâche" />
+                                            </VBox>
+                                        </content>
+                                    </ScrollPane>
+                                </VBox>
+
+                                <VBox prefWidth="283.0" spacing="0.0" style="-fx-background-color:#17191F;-fx-background-radius:14;-fx-border-color:#2a2a30;-fx-border-radius:14;">
+                                    <HBox alignment="CENTER_LEFT" prefHeight="46.0" spacing="8.0" style="-fx-background-color:#1e293b;-fx-background-radius:14 14 0 0;">
+                                        <padding><Insets left="14.0" right="14.0" /></padding>
+                                        <children>
+                                            <Region prefHeight="9.0" prefWidth="9.0" style="-fx-background-color:#3b82f6;-fx-background-radius:5;" />
+                                            <Label styleClass="section-title" text="En cours" HBox.hgrow="ALWAYS">
+                                                <font><Font name="System Bold" size="13.0" /></font>
+                                            </Label>
+                                            <Label fx:id="badgeEnCours" style="-fx-background-color:#1e3a8a;-fx-background-radius:10;-fx-text-fill:#93c5fd;-fx-font-size:11px;-fx-padding:2 8 2 8;" text="0" />
+                                        </children>
+                                    </HBox>
+                                    <ScrollPane fitToWidth="true" prefHeight="555.0" styleClass="scroll-area" VBox.vgrow="ALWAYS">
+                                        <content>
+                                            <VBox fx:id="cardsEnCours" spacing="10.0">
+                                                <padding><Insets bottom="12.0" left="10.0" right="10.0" top="12.0" /></padding>
+                                                <Label fx:id="emptyEnCours" maxWidth="1.7976931348623157E308" style="-fx-alignment:center;-fx-padding:28 0 28 0;" styleClass="empty-state-label" text="Aucune tâche" />
+                                            </VBox>
+                                        </content>
+                                    </ScrollPane>
+                                </VBox>
+
+                                <VBox prefWidth="283.0" spacing="0.0" style="-fx-background-color:#17191F;-fx-background-radius:14;-fx-border-color:#2a2a30;-fx-border-radius:14;">
+                                    <HBox alignment="CENTER_LEFT" prefHeight="46.0" spacing="8.0" style="-fx-background-color:#422006;-fx-background-radius:14 14 0 0;">
+                                        <padding><Insets left="14.0" right="14.0" /></padding>
+                                        <children>
+                                            <Region prefHeight="9.0" prefWidth="9.0" style="-fx-background-color:#f59e0b;-fx-background-radius:5;" />
+                                            <Label styleClass="section-title" text="En révision" HBox.hgrow="ALWAYS">
+                                                <font><Font name="System Bold" size="13.0" /></font>
+                                            </Label>
+                                            <Label fx:id="badgeEnRevision" style="-fx-background-color:#78350f;-fx-background-radius:10;-fx-text-fill:#fcd34d;-fx-font-size:11px;-fx-padding:2 8 2 8;" text="0" />
+                                        </children>
+                                    </HBox>
+                                    <ScrollPane fitToWidth="true" prefHeight="555.0" styleClass="scroll-area" VBox.vgrow="ALWAYS">
+                                        <content>
+                                            <VBox fx:id="cardsEnRevision" spacing="10.0">
+                                                <padding><Insets bottom="12.0" left="10.0" right="10.0" top="12.0" /></padding>
+                                                <Label fx:id="emptyEnRevision" maxWidth="1.7976931348623157E308" style="-fx-alignment:center;-fx-padding:28 0 28 0;" styleClass="empty-state-label" text="Aucune tâche" />
+                                            </VBox>
+                                        </content>
+                                    </ScrollPane>
+                                </VBox>
+
+                                <VBox prefWidth="283.0" spacing="0.0" style="-fx-background-color:#17191F;-fx-background-radius:14;-fx-border-color:#2a2a30;-fx-border-radius:14;">
+                                    <HBox alignment="CENTER_LEFT" prefHeight="46.0" spacing="8.0" style="-fx-background-color:#064e3b;-fx-background-radius:14 14 0 0;">
+                                        <padding><Insets left="14.0" right="14.0" /></padding>
+                                        <children>
+                                            <Region prefHeight="9.0" prefWidth="9.0" style="-fx-background-color:#10b981;-fx-background-radius:5;" />
+                                            <Label styleClass="section-title" text="Terminé" HBox.hgrow="ALWAYS">
+                                                <font><Font name="System Bold" size="13.0" /></font>
+                                            </Label>
+                                            <Label fx:id="badgeTermine" style="-fx-background-color:#14532d;-background-radius:10;-fx-text-fill:#4ade80;-fx-font-size:11px;-fx-padding:2 8 2 8;" text="0" />
+                                        </children>
+                                    </HBox>
+                                    <ScrollPane fitToWidth="true" prefHeight="555.0" styleClass="scroll-area" VBox.vgrow="ALWAYS">
+                                        <content>
+                                            <VBox fx:id="cardsTermine" spacing="10.0">
+                                                <padding><Insets bottom="12.0" left="10.0" right="10.0" top="12.0" /></padding>
+                                                <Label fx:id="emptyTermine" maxWidth="1.7976931348623157E308" style="-fx-alignment:center;-fx-padding:28 0 28 0;" styleClass="empty-state-label" text="Aucune tâche" />
+                                            </VBox>
+                                        </content>
+                                    </ScrollPane>
+                                </VBox>
+                            </children>
+                        </HBox>
+                    </content>
+                </ScrollPane>
+            </children>
+        </VBox>
+    </children>
+   <stylesheets>
+      <URL value="@stylespace.css" />
+      <URL value="@style.css" />
+      <URL value="@styleRead.css" />
+   </stylesheets>
+</AnchorPane>
