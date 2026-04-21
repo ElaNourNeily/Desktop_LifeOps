@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="taskCardRoot" onMouseClicked="#handleCardClick" spacing="10.0" styleClass="task-card" stylesheets="@board_style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TaskCardController">
+   <children>
+      <HBox alignment="CENTER_LEFT" spacing="8.0">
+         <children>
+            <Region fx:id="priorityIndicator" prefHeight="15.0" prefWidth="4.0" styleClass="priority-indicator, priority-high" />
+            <Label fx:id="lblTitle" styleClass="task-title" text="Design System Update" wrapText="true" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" spacing="12.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="4.0">
+               <children>
+                  <Label styleClass="task-info-tag" text="⏳" />
+                  <Label fx:id="lblEstimatedTime" styleClass="task-info-tag" text="4h" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="4.0">
+               <children>
+                  <Label styleClass="task-info-tag" text="📊" />
+                  <Label fx:id="lblDifficulty" styleClass="task-info-tag" text="Medium" />
+               </children>
+            </HBox>
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="lblUserAvatar" style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-font-size: 10px; -fx-font-weight: bold; -fx-background-radius: 50%; -fx-min-width: 20; -fx-min-height: 20; -fx-alignment: center;" text="JD" visible="false" />
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+   </padding>
+</VBox>

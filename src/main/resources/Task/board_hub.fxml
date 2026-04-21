@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="700.0" prefWidth="940.0" spacing="25.0" style="-fx-background-color: #121417;" stylesheets="@board_style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BoardHubController">
+   <children>
+      <!-- Header -->
+      <HBox alignment="CENTER_LEFT" spacing="20.0">
+         <children>
+            <VBox>
+               <children>
+                  <Label styleClass="title-label" text="Vos Tableaux" />
+                  <Label styleClass="subtitle-label" text="Gérez vos projets personnels et d'équipe" />
+               </children>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER_LEFT" spacing="12.0">
+               <children>
+                  <TextField fx:id="searchField" prefWidth="250.0" promptText="Rechercher un tableau..." styleClass="search-field" />
+                  <Button fx:id="btnCreateBoard" onAction="#handleCreateBoard" mnemonicParsing="false" styleClass="btn-primary" text="+ Créer un tableau" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+
+      <!-- Filters/Tabs -->
+      <HBox spacing="15.0">
+         <children>
+            <Button fx:id="btnFilterAll" onAction="#handleFilterAll" mnemonicParsing="false" styleClass="filter-btn-active" text="Tous" />
+            <Button fx:id="btnFilterPersonal" onAction="#handleFilterPersonal" mnemonicParsing="false" styleClass="filter-btn" text="Personnels" />
+            <Button fx:id="btnFilterTeam" onAction="#handleFilterTeam" mnemonicParsing="false" styleClass="filter-btn" text="Équipe" />
+         </children>
+      </HBox>
+
+      <!-- Grid of Boards -->
+      <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;">
+         <content>
+            <FlowPane fx:id="boardGrid" hgap="20.0" vgap="20.0">
+               <children>
+                  <!-- Example Board Card -->
+                  <VBox prefWidth="280.0" spacing="15.0" styleClass="board-card">
+                     <children>
+                        <HBox alignment="CENTER_LEFT">
+                           <children>
+                              <Label styleClass="board-type-tag" text="TEAM" />
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Label text="⭐" style="-fx-text-fill: #8a8d91;" />
+                           </children>
+                        </HBox>
+                        <VBox spacing="5.0">
+                           <children>
+                              <Label styleClass="board-title" text="Refonte Site Web" />
+                              <Label styleClass="subtitle-label" text="Dernière modification: il y a 2h" />
+                           </children>
+                        </VBox>
+                        <HBox alignment="CENTER_LEFT" spacing="-8.0">
+                           <children>
+                              <Label style="-fx-background-color: #ef4444; -fx-text-fill: white; -fx-background-radius: 50%; -fx-min-width: 28; -fx-min-height: 28; -fx-alignment: center; -fx-border-color: #1c1e22; -fx-border-width: 2; -fx-border-radius: 50%;" text="AS" />
+                              <Label style="-fx-background-color: #10b981; -fx-text-fill: white; -fx-background-radius: 50%; -fx-min-width: 28; -fx-min-height: 28; -fx-alignment: center; -fx-border-color: #1c1e22; -fx-border-width: 2; -fx-border-radius: 50%;" text="MK" />
+                              <Label style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-background-radius: 50%; -fx-min-width: 28; -fx-min-height: 28; -fx-alignment: center; -fx-border-color: #1c1e22; -fx-border-width: 2; -fx-border-radius: 50%;" text="JD" />
+                              <Label style="-fx-background-color: #2a2d32; -fx-text-fill: #8a8d91; -fx-background-radius: 50%; -fx-min-width: 28; -fx-min-height: 28; -fx-alignment: center; -fx-border-color: #1c1e22; -fx-border-width: 2; -fx-border-radius: 50%; -fx-font-size: 10px;" text="+5" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  
+                  <!-- Solo Board example -->
+                  <VBox prefWidth="280.0" spacing="15.0" styleClass="board-card">
+                     <children>
+                        <HBox alignment="CENTER_LEFT">
+                           <children>
+                              <Label styleClass="board-type-tag" style="-fx-background-color: #1e293b; -fx-text-fill: #94a3b8;" text="SOLO" />
+                              <Region HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <VBox spacing="5.0">
+                           <children>
+                              <Label styleClass="board-title" text="Apprentissage JavaFX" />
+                              <Label styleClass="subtitle-label" text="Dernière modification: hier" />
+                           </children>
+                        </VBox>
+                        <HBox alignment="CENTER_LEFT">
+                           <children>
+                              <Label style="-fx-background-color: #8b5cf6; -fx-text-fill: white; -fx-background-radius: 50%; -fx-min-width: 28; -fx-min-height: 28; -fx-alignment: center;" text="ME" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </FlowPane>
+         </content>
+      </ScrollPane>
+   </children>
+   <padding>
+      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+   </padding>
+</VBox>

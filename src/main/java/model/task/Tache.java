@@ -2,6 +2,7 @@ package model.task;
 
 import enums.PrioriteTache;
 import enums.StatutTache;
+
 import java.util.Date;
 
 public class Tache {
@@ -9,15 +10,16 @@ public class Tache {
     private int id;
     private String titre;
     private String description;
-    private PrioriteTache priorite;
-    private int difficulte;
-    private StatutTache statut;
-    private Date deadline;
+    private PrioriteTache priorite = PrioriteTache.MOYENNE;
+    private int difficulte = 1;
+    private StatutTache statut = StatutTache.A_FAIRE;
+    private Date deadline;           // nullable
     private Date createdAt;
     private Date updatedAt;
-    private int taskSpaceId;
+    private int taskSpaceId;         // 0 = Solo (Aucun projet)
     private int utilisateurId;
 
+    // ─── Constructeur sans ID (INSERT) ───────────────────────────────
     public Tache(String titre, String description, PrioriteTache priorite,
                  int difficulte, StatutTache statut, Date deadline,
                  int taskSpaceId, int utilisateurId) {
@@ -27,12 +29,13 @@ public class Tache {
         this.difficulte = difficulte;
         this.statut = statut;
         this.deadline = deadline;
-        this.taskSpaceId = taskSpaceId;
+        this.taskSpaceId = taskSpaceId; // 0 = Solo
         this.utilisateurId = utilisateurId;
         this.createdAt = new Date();
         this.updatedAt = new Date();
     }
 
+    // ─── Constructeur avec ID (UPDATE) ────────────────────────────────
     public Tache(int id, String titre, String description, PrioriteTache priorite,
                  int difficulte, StatutTache statut, Date deadline,
                  int taskSpaceId, int utilisateurId) {
@@ -45,13 +48,12 @@ public class Tache {
         this.deadline = deadline;
         this.taskSpaceId = taskSpaceId;
         this.utilisateurId = utilisateurId;
-        this.createdAt = new Date();
         this.updatedAt = new Date();
     }
 
-    public Tache() {
-    }
+    public Tache() {}
 
+    // ─── Getters & Setters ────────────────────────────────────────────
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -67,7 +69,7 @@ public class Tache {
     public int getDifficulte() { return difficulte; }
     public void setDifficulte(int difficulte) {
         if (difficulte < 1 || difficulte > 5)
-            throw new IllegalArgumentException("La difficulté doit être entre 1 et 5.");
+            throw new IllegalArgumentException("Difficulté doit être entre 1 et 5 !");
         this.difficulte = difficulte;
     }
 
@@ -83,6 +85,7 @@ public class Tache {
     public Date getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
 
+    // 0 = Solo (aucun projet)
     public int getTaskSpaceId() { return taskSpaceId; }
     public void setTaskSpaceId(int taskSpaceId) { this.taskSpaceId = taskSpaceId; }
 
@@ -98,7 +101,7 @@ public class Tache {
                 ", difficulte=" + difficulte + "/5" +
                 ", statut=" + (statut != null ? statut.getValeur() : "null") +
                 ", deadline=" + deadline +
-                ", taskSpaceId=" + taskSpaceId +
+                ", projet=" + (taskSpaceId == 0 ? "Solo" : "TaskSpace#" + taskSpaceId) +
                 ", utilisateurId=" + utilisateurId +
                 '}';
     }

@@ -5,6 +5,8 @@ public enum TypeTaskSpace {
     DESIGN("Design"),
     MARKETING("Marketing"),
     RECHERCHE("Recherche"),
+    SOLO("Solo"),
+    TEAM("Équipe"),
     AUTRE("Autre");
 
     private final String valeur;

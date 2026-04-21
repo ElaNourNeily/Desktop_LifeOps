@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefWidth="450.0" spacing="20.0" style="-fx-background-color: #1c1e22; -fx-background-radius: 12; -fx-border-color: #2a2d32; -fx-border-radius: 12; -fx-border-width: 1;" stylesheets="@board_style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateBoardController">
+   <children>
+      <VBox spacing="5.0">
+         <children>
+            <Label styleClass="title-label" style="-fx-font-size: 20px;" text="Créer un nouveau tableau" />
+            <Label styleClass="subtitle-label" text="Configurez votre workspace avec tous les détails nécessaires" />
+            <Label fx:id="lblError" style="-fx-text-fill: #ef4444; -fx-font-size: 11px;" visible="false" wrapText="true" />
+         </children>
+      </VBox>
+
+      <VBox spacing="15.0">
+         <children>
+            <!-- Name -->
+            <VBox spacing="8.0">
+               <children>
+                  <Label styleClass="form-label" text="Nom du tableau *" />
+                  <TextField fx:id="txtName" promptText="ex: Projet Marketing 2024" styleClass="form-field" />
+               </children>
+            </VBox>
+            
+            <HBox spacing="15.0">
+               <children>
+                  <!-- Mode (Solo / Equipe) -->
+                  <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="form-label" text="Mode *" />
+                        <ComboBox fx:id="comboMode" maxWidth="1.7976931348623157E308" promptText="Choisir mode" styleClass="form-field" />
+                     </children>
+                  </VBox>
+                  <!-- Category -->
+                  <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="form-label" text="Catégorie *" />
+                        <ComboBox fx:id="comboCategory" maxWidth="1.7976931348623157E308" promptText="Choisir catégorie" styleClass="form-field" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+
+            <VBox spacing="8.0">
+               <children>
+                  <Label styleClass="form-label" text="Description" />
+                  <TextArea fx:id="txtDescription" prefHeight="70.0" promptText="Décrivez l'objectif de ce board..." styleClass="form-field" wrapText="true" />
+               </children>
+            </VBox>
+
+            <!-- Duration -->
+            <VBox spacing="8.0">
+               <children>
+                  <Label styleClass="form-label" text="Durée du Sprint (Jours) *" />
+                  <TextField fx:id="txtSprintDuration" promptText="ex: 14" styleClass="form-field" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+
+      <HBox alignment="CENTER_RIGHT" spacing="12.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#handleCancel" style="-fx-background-color: transparent; -fx-text-fill: #8a8d91;" text="Annuler" />
+            <Button mnemonicParsing="false" onAction="#handleCreate" styleClass="btn-primary" text="Créer le tableau" />
+         </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+   </padding>
+</VBox>

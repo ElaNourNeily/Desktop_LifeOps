@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="700.0" prefWidth="920.0"
+            stylesheets="@style.css"
+            style="-fx-background-color: #121417;"
+            xmlns="http://javafx.com/javafx/19"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Controllers.DashboardController">
+
+    <padding>
+        <Insets bottom="30" left="40" right="40" top="30" />
+    </padding>
+
+    <top>
+        <VBox spacing="4">
+            <Label styleClass="title-label" text="Tableau de bord" />
+            <Label styleClass="subtitle-label" text="Vue d'ensemble de vos objectifs et plans d'action" />
+            <BorderPane.margin>
+                <Insets bottom="20" />
+            </BorderPane.margin>
+        </VBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true"
+                    style="-fx-background: #121417; -fx-background-color: transparent;">
+            <VBox spacing="25">
+
+                <!-- ── CARTES KPI ─────────────────────────────────── -->
+                <GridPane hgap="15" vgap="15">
+                    <!-- Ligne 1 -->
+                    <VBox fx:id="cardTotal"        styleClass="stat-card" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <VBox fx:id="cardEnCours"      styleClass="stat-card" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <VBox fx:id="cardTermines"     styleClass="stat-card" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                    <!-- Ligne 2 -->
+                    <VBox fx:id="cardEnRetard"     styleClass="stat-card" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <VBox fx:id="cardPlans"        styleClass="stat-card" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <VBox fx:id="cardProgression"  styleClass="stat-card" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                </GridPane>
+
+                <!-- ── GRAPHIQUES LIGNE 1 ─────────────────────────── -->
+                <HBox spacing="20">
+                    <!-- Camembert : objectifs par catégorie -->
+                    <VBox styleClass="chart-card" HBox.hgrow="ALWAYS" prefWidth="420">
+                        <Label text="Objectifs par catégorie"
+                               style="-fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;" />
+                        <PieChart fx:id="pieCategorie" prefHeight="280"
+                                  style="-fx-background-color: transparent;" />
+                    </VBox>
+
+                    <!-- Camembert : objectifs par statut -->
+                    <VBox styleClass="chart-card" HBox.hgrow="ALWAYS" prefWidth="420">
+                        <Label text="Objectifs par statut"
+                               style="-fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;" />
+                        <PieChart fx:id="pieStatut" prefHeight="280"
+                                  style="-fx-background-color: transparent;" />
+                    </VBox>
+                </HBox>
+
+                <!-- ── GRAPHIQUES LIGNE 2 ─────────────────────────── -->
+                <HBox spacing="20">
+                    <!-- Barres : progression moyenne par catégorie -->
+                    <VBox styleClass="chart-card" HBox.hgrow="ALWAYS">
+                        <Label text="Progression moyenne par catégorie (%)"
+                               style="-fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;" />
+                        <BarChart fx:id="barProgression" prefHeight="260"
+                                  style="-fx-background-color: transparent;">
+                            <xAxis><CategoryAxis /></xAxis>
+                            <yAxis><NumberAxis lowerBound="0" upperBound="100" tickUnit="20" /></yAxis>
+                        </BarChart>
+                    </VBox>
+
+                    <!-- Barres : plans d'action par statut -->
+                    <VBox styleClass="chart-card" HBox.hgrow="ALWAYS">
+                        <Label text="Plans d'action par statut"
+                               style="-fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;" />
+                        <BarChart fx:id="barPlans" prefHeight="260"
+                                  style="-fx-background-color: transparent;">
+                            <xAxis><CategoryAxis /></xAxis>
+                            <yAxis><NumberAxis /></yAxis>
+                        </BarChart>
+                    </VBox>
+                </HBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

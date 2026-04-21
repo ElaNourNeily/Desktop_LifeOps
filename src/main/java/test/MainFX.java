@@ -11,10 +11,10 @@ public class MainFX extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/task/ReadTask.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Task/board_hub.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
-        stage.setTitle("Read task ");
+        stage.setTitle("Read taskspace ");
         stage.setScene(scene);
         stage.show();
     }
