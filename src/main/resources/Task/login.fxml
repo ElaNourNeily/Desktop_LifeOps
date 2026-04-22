@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+
+<VBox alignment="CENTER" prefHeight="500.0" prefWidth="400.0" spacing="25.0" style="-fx-background-color: #121417;" stylesheets="@board_style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+   <children>
+      <VBox alignment="CENTER" spacing="10.0">
+         <children>
+            <Label style="-fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;" text="LIFEOPS" />
+            <Label styleClass="subtitle-label" text="Connectez-vous pour gérer vos tâches" />
+         </children>
+      </VBox>
+
+      <VBox spacing="15.0" maxWidth="300.0">
+         <children>
+            <VBox spacing="8.0">
+               <children>
+                  <Label styleClass="form-label" text="Email" />
+                  <TextField fx:id="txtEmail" promptText="votre@email.com" styleClass="form-field" />
+               </children>
+            </VBox>
+            <VBox spacing="8.0">
+               <children>
+                  <Label styleClass="form-label" text="Mot de passe" />
+                  <PasswordField fx:id="txtPassword" promptText="••••••••" styleClass="form-field" />
+               </children>
+            </VBox>
+            <Label fx:id="lblError" style="-fx-text-fill: #ef4444; -fx-font-size: 11px;" visible="false" wrapText="true" />
+         </children>
+      </VBox>
+
+      <Button fx:id="btnLogin" onAction="#handleLogin" prefWidth="300.0" styleClass="btn-primary" text="Connexion" />
+
+      <HBox alignment="CENTER" spacing="10.0">
+         <children>
+            <Label styleClass="subtitle-label" text="Nouveau ici ?" />
+            <Button mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: #3b82f6; -fx-padding: 0;" text="Créer un compte" />
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+   </padding>
+</VBox>

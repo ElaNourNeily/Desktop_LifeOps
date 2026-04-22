@@ -7,44 +7,18 @@ public class TaskSpace {
 
     private int id;
     private String nom;
-    private String mode;      // solo / equipe
+    private String mode;      // Solo / Equipe
     private String category;  // Recherche, Marketing, Design, Développement, Autre
     private Date dateCreation;
     private String description;
     private int duration;
     private StatutTaskSpace status;
-    private int utilisateurId;
-
-    // ─── Constructeur sans ID (INSERT) ───────────────────────────────
-    public TaskSpace(String nom, String mode, String category, Date dateCreation,
-                     String description, int duration, StatutTaskSpace status, int utilisateurId) {
-        this.nom = nom;
-        this.mode = mode;
-        this.category = category;
-        this.dateCreation = dateCreation;
-        this.description = description;
-        this.duration = duration;
-        this.status = status;
-        this.utilisateurId = utilisateurId;
-    }
-
-    // ─── Constructeur avec ID (UPDATE / affichage) ────────────────────
-    public TaskSpace(int id, String nom, String mode, String category, Date dateCreation,
-                     String description, int duration, StatutTaskSpace status, int utilisateurId) {
-        this.id = id;
-        this.nom = nom;
-        this.mode = mode;
-        this.category = category;
-        this.dateCreation = dateCreation;
-        this.description = description;
-        this.duration = duration;
-        this.status = status;
-        this.utilisateurId = utilisateurId;
-    }
+    private int leaderId;     // NEW: The user who created the board
+    private int utilisateurId; // Keeping for compatibility, but leaderId is the new secondary key
 
     public TaskSpace() {}
 
-    // ─── Getters & Setters ────────────────────────────────────────────
+    // Getters & Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -69,18 +43,18 @@ public class TaskSpace {
     public StatutTaskSpace getStatus() { return status; }
     public void setStatus(StatutTaskSpace status) { this.status = status; }
 
+    public int getLeaderId() { return leaderId; }
+    public void setLeaderId(int leaderId) { this.leaderId = leaderId; }
+
     public int getUtilisateurId() { return utilisateurId; }
     public void setUtilisateurId(int utilisateurId) { this.utilisateurId = utilisateurId; }
 
+    public boolean isTeam() {
+        return "Equipe".equalsIgnoreCase(mode);
+    }
+
     @Override
     public String toString() {
-        return "TaskSpace{" +
-                "id=" + id +
-                ", nom='" + nom + '\'' +
-                ", mode='" + mode + '\'' +
-                ", category='" + category + '\'' +
-                ", status=" + (status != null ? status.getValeur() : "null") +
-                ", duration=" + duration +
-                '}';
+        return nom + " [" + mode + "]";
     }
 }

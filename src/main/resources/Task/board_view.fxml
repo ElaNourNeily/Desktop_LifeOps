@@ -36,10 +36,10 @@
                            <children>
                               <Label style="-fx-background-color: #ef4444; -fx-text-fill: white; -fx-background-radius: 50%; -fx-min-width: 28; -fx-min-height: 28; -fx-alignment: center; -fx-border-color: #121417; -fx-border-width: 2; -fx-border-radius: 50%;" text="AS" />
                               <Label style="-fx-background-color: #10b981; -fx-text-fill: white; -fx-background-radius: 50%; -fx-min-width: 28; -fx-min-height: 28; -fx-alignment: center; -fx-border-color: #121417; -fx-border-width: 2; -fx-border-radius: 50%;" text="MK" />
-                              <Button mnemonicParsing="false" style="-fx-background-color: #2a2d32; -fx-text-fill: #c0c3c8; -fx-background-radius: 50%; -fx-min-width: 28; -fx-min-height: 28; -fx-padding: 0; -fx-border-color: #121417; -fx-border-width: 2; -fx-border-radius: 50%;" text="+" />
+                              <Button fx:id="btnInvite" onAction="#handleInviteMember" mnemonicParsing="false" style="-fx-background-color: #2a2d32; -fx-text-fill: #3b82f6; -fx-background-radius: 50%; -fx-min-width: 28; -fx-min-height: 28; -fx-padding: 0; -fx-border-color: #121417; -fx-border-width: 2; -fx-border-radius: 50%;" text="+" />
                            </children>
                         </HBox>
-                        <Button onAction="#handleDeleteBoard" mnemonicParsing="false" style="-fx-background-color: #ef4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6;" text="Supprimer le Board" />
+                        <Button fx:id="btnDeleteBoard" onAction="#handleDeleteBoard" mnemonicParsing="false" style="-fx-background-color: #ef4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6;" text="Supprimer le Board" />
                         <Button mnemonicParsing="false" styleClass="btn-primary" text="Convertir en Équipe" visible="false" />
                      </children>
                   </HBox>

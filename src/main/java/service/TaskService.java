@@ -21,8 +21,7 @@ public class TaskService {
         if (t.getDescription() == null) {
             t.setDescription("");
         }
-        // Aligned with DB dump: only real existing columns
-        String sql = "INSERT INTO tache (titre, description, priorite, difficulte, statut, deadline, task_space_id, utilisateur_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO tache (titre, description, priorite, difficulte, statut, deadline, task_space_id, utilisateur_id, assigned_user_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, t.getTitre());
             ps.setString(2, t.getDescription());
@@ -32,8 +31,9 @@ public class TaskService {
             ps.setTimestamp(6, t.getDeadline() != null ? new java.sql.Timestamp(t.getDeadline().getTime()) : null);
             ps.setInt(7, t.getTaskSpaceId());
             ps.setInt(8, t.getUtilisateurId());
-            ps.setTimestamp(9, new java.sql.Timestamp(System.currentTimeMillis()));
+            if (t.getAssignedUserId() != null) ps.setInt(9, t.getAssignedUserId()); else ps.setNull(9, Types.INTEGER);
             ps.setTimestamp(10, new java.sql.Timestamp(System.currentTimeMillis()));
+            ps.setTimestamp(11, new java.sql.Timestamp(System.currentTimeMillis()));
             ps.executeUpdate();
             
             ResultSet rs = ps.getGeneratedKeys();
@@ -49,7 +49,7 @@ public class TaskService {
         if (t.getDescription() == null) {
             t.setDescription("");
         }
-        String sql = "UPDATE tache SET titre=?, description=?, priorite=?, difficulte=?, statut=?, deadline=?, task_space_id=?, updated_at=? WHERE id=?";
+        String sql = "UPDATE tache SET titre=?, description=?, priorite=?, difficulte=?, statut=?, deadline=?, assigned_user_id=?, updated_at=? WHERE id=?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, t.getTitre());
             ps.setString(2, t.getDescription());
@@ -57,7 +57,7 @@ public class TaskService {
             ps.setInt(4, t.getDifficulte());
             ps.setString(5, t.getStatut().getValeur()); 
             ps.setTimestamp(6, t.getDeadline() != null ? new java.sql.Timestamp(t.getDeadline().getTime()) : null);
-            ps.setInt(7, t.getTaskSpaceId());
+            if (t.getAssignedUserId() != null) ps.setInt(7, t.getAssignedUserId()); else ps.setNull(7, Types.INTEGER);
             ps.setTimestamp(8, new java.sql.Timestamp(System.currentTimeMillis()));
             ps.setInt(9, t.getId());
             ps.executeUpdate();
@@ -74,19 +74,6 @@ public class TaskService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public List<Tache> getAllTasks() {
-        List<Tache> tasks = new ArrayList<>();
-        String sql = "SELECT * FROM tache";
-        try (Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(sql)) {
-            while (rs.next()) {
-                tasks.add(mapResultSetToTache(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return tasks;
     }
 
     public List<Tache> getTasksByBoard(int boardId) {
@@ -117,6 +104,8 @@ public class TaskService {
         t.setUpdatedAt(rs.getTimestamp("updated_at"));
         t.setTaskSpaceId(rs.getInt("task_space_id"));
         t.setUtilisateurId(rs.getInt("utilisateur_id"));
+        int assignedId = rs.getInt("assigned_user_id");
+        if (!rs.wasNull()) t.setAssignedUserId(assignedId);
         return t;
     }
 }

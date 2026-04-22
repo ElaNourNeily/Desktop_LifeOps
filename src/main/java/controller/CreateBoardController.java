@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.task.TaskSpace;
 import service.TaskSpaceService;
+import utils.Session;
 
 import java.util.Date;
 
@@ -57,7 +58,17 @@ public class CreateBoardController {
             newSpace.setDuration(Integer.parseInt(txtSprintDuration.getText()));
             newSpace.setStatus(StatutTaskSpace.ACTIF);
             newSpace.setDateCreation(new Date());
-            newSpace.setUtilisateurId(1); // Assume current user ID = 1 for now
+            
+            // Set both IDs from the current session user
+            if (Session.isLoggedIn()) {
+                int currentUserId = Session.getCurrentUser().getId();
+                newSpace.setLeaderId(currentUserId);
+                newSpace.setUtilisateurId(currentUserId);
+            } else {
+                // Fallback for testing/unauthenticated cases
+                newSpace.setLeaderId(1);
+                newSpace.setUtilisateurId(1);
+            }
 
             spaceService.addTaskSpace(newSpace);
             

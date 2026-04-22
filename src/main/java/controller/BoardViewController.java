@@ -5,12 +5,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import model.task.Tache;
 import model.task.TaskSpace;
 import service.TaskService;
 import service.TaskSpaceService;
+import service.TaskSpaceUserService;
+import utils.Session;
 
 import java.io.IOException;
 import java.util.List;
@@ -24,10 +27,14 @@ public class BoardViewController {
     @FXML private VBox colInProgress;
     @FXML private VBox colReview;
     @FXML private VBox colDone;
+    @FXML private Button btnInvite;
+    @FXML private Button btnDeleteBoard;
 
     private TaskSpace currentBoard;
+    private String currentUserRole;
     private final TaskService taskService = new TaskService();
     private final TaskSpaceService spaceService = new TaskSpaceService();
+    private final TaskSpaceUserService spaceUserService = new TaskSpaceUserService();
 
     @FXML
     public void initialize() {
@@ -36,9 +43,20 @@ public class BoardViewController {
 
     public void setBoard(TaskSpace space) {
         this.currentBoard = space;
+        
+        if (Session.isLoggedIn()) {
+            currentUserRole = spaceUserService.getUserRoleInBoard(Session.getCurrentUser().getId(), space.getId());
+            if (currentUserRole == null && Session.getCurrentUser().getId() == space.getLeaderId()) {
+                currentUserRole = "LEADER";
+            }
+        }
+
+        boolean isLeader = "LEADER".equals(currentUserRole);
+        btnInvite.setVisible(isLeader);
+        btnDeleteBoard.setVisible(isLeader);
+
         lblBoardTitle.setText(space.getNom());
-        // Updated to use Category and Mode
-        lblBoardType.setText(space.getCategory().toUpperCase() + " (" + space.getMode() + ")");
+        lblBoardType.setText(space.getCategory().toUpperCase() + " (" + (currentUserRole != null ? currentUserRole : "VIEWER") + ")");
         lblBoardSubtitle.setText("Sprint de " + space.getDuration() + " jours");
         loadTasks();
     }
@@ -63,14 +81,15 @@ public class BoardViewController {
             TaskCardController controller = loader.getController();
             controller.setData(task, this);
 
-            // Enable Drag
-            card.setOnDragDetected(event -> {
-                javafx.scene.input.Dragboard db = card.startDragAndDrop(javafx.scene.input.TransferMode.MOVE);
-                javafx.scene.input.ClipboardContent content = new javafx.scene.input.ClipboardContent();
-                content.putString(String.valueOf(task.getId()));
-                db.setContent(content);
-                event.consume();
-            });
+            if (canManageTask(task)) {
+                card.setOnDragDetected(event -> {
+                    javafx.scene.input.Dragboard db = card.startDragAndDrop(javafx.scene.input.TransferMode.MOVE);
+                    javafx.scene.input.ClipboardContent content = new javafx.scene.input.ClipboardContent();
+                    content.putString(String.valueOf(task.getId()));
+                    db.setContent(content);
+                    event.consume();
+                });
+            }
 
             switch (task.getStatut()) {
                 case A_FAIRE -> colToDo.getChildren().add(card);
@@ -93,7 +112,9 @@ public class BoardViewController {
     private void setupColumnDragHandlers(VBox column, StatutTache targetStatus) {
         column.setOnDragOver(event -> {
             if (event.getGestureSource() != column && event.getDragboard().hasString()) {
-                event.acceptTransferModes(javafx.scene.input.TransferMode.MOVE);
+                if (canTransitionTo(targetStatus)) {
+                    event.acceptTransferModes(javafx.scene.input.TransferMode.MOVE);
+                }
             }
             event.consume();
         });
@@ -109,6 +130,16 @@ public class BoardViewController {
             event.setDropCompleted(success);
             event.consume();
         });
+    }
+
+    private boolean canManageTask(Tache t) {
+        if ("LEADER".equals(currentUserRole)) return true;
+        return Session.isLoggedIn() && Session.getCurrentUser().getId() == t.getAssignedUserId();
+    }
+
+    private boolean canTransitionTo(StatutTache status) {
+        if ("LEADER".equals(currentUserRole)) return true;
+        return status != StatutTache.TERMINE;
     }
 
     private void updateTaskStatus(int taskId, StatutTache newStatus) {
@@ -129,8 +160,9 @@ public class BoardViewController {
             Parent root = loader.load();
             
             TaskFormPopupController controller = loader.getController();
-            controller.setContext(currentBoard.getId(), currentBoard.getUtilisateurId(), this);
-            controller.fillForm(task); // Edit mode
+            controller.setContext(currentBoard.getId(), currentBoard.getLeaderId(), this);
+            controller.setBoardContext(currentBoard, currentUserRole);
+            controller.fillForm(task);
 
             javafx.stage.Stage stage = new javafx.stage.Stage();
             stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
@@ -144,13 +176,30 @@ public class BoardViewController {
 
     @FXML
     private void handleAddTask(ActionEvent event) {
+        if (!"LEADER".equals(currentUserRole)) return;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Task/task_form_popup.fxml"));
             Parent root = loader.load();
-            
             TaskFormPopupController controller = loader.getController();
-            controller.setContext(currentBoard.getId(), currentBoard.getUtilisateurId(), this);
+            controller.setContext(currentBoard.getId(), Session.getCurrentUser().getId(), this);
+            controller.setBoardContext(currentBoard, currentUserRole);
+            javafx.stage.Stage stage = new javafx.stage.Stage();
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            stage.initStyle(javafx.stage.StageStyle.UNDECORATED);
+            stage.setScene(new javafx.scene.Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    @FXML
+    private void handleInviteMember(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Task/invite_member_popup.fxml"));
+            Parent root = loader.load();
+            InviteMemberController controller = loader.getController();
+            controller.setTaskSpaceId(currentBoard.getId());
             javafx.stage.Stage stage = new javafx.stage.Stage();
             stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
             stage.initStyle(javafx.stage.StageStyle.UNDECORATED);
@@ -163,14 +212,13 @@ public class BoardViewController {
 
     @FXML
     private void handleDeleteBoard(ActionEvent event) {
+        if (!"LEADER".equals(currentUserRole)) return;
         javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation de suppression");
-        alert.setHeaderText("Supprimer ce tableau ?");
-        alert.setContentText("Cette action supprimera également toutes les tâches associées.");
-
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Supprimer le board ?");
         if (alert.showAndWait().get() == javafx.scene.control.ButtonType.OK) {
             spaceService.deleteTaskSpace(currentBoard.getId());
-            handleBack(null); // Return to hub
+            handleBack(null);
         }
     }
 

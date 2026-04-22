@@ -2,58 +2,25 @@ package model.task;
 
 import enums.PrioriteTache;
 import enums.StatutTache;
-
 import java.util.Date;
 
 public class Tache {
-
     private int id;
     private String titre;
     private String description;
-    private PrioriteTache priorite = PrioriteTache.MOYENNE;
-    private int difficulte = 1;
-    private StatutTache statut = StatutTache.A_FAIRE;
-    private Date deadline;           // nullable
+    private PrioriteTache priorite;
+    private int difficulte;
+    private StatutTache statut;
+    private Date deadline;
     private Date createdAt;
     private Date updatedAt;
-    private int taskSpaceId;         // 0 = Solo (Aucun projet)
-    private int utilisateurId;
-
-    // ─── Constructeur sans ID (INSERT) ───────────────────────────────
-    public Tache(String titre, String description, PrioriteTache priorite,
-                 int difficulte, StatutTache statut, Date deadline,
-                 int taskSpaceId, int utilisateurId) {
-        this.titre = titre;
-        this.description = description;
-        this.priorite = priorite;
-        this.difficulte = difficulte;
-        this.statut = statut;
-        this.deadline = deadline;
-        this.taskSpaceId = taskSpaceId; // 0 = Solo
-        this.utilisateurId = utilisateurId;
-        this.createdAt = new Date();
-        this.updatedAt = new Date();
-    }
-
-    // ─── Constructeur avec ID (UPDATE) ────────────────────────────────
-    public Tache(int id, String titre, String description, PrioriteTache priorite,
-                 int difficulte, StatutTache statut, Date deadline,
-                 int taskSpaceId, int utilisateurId) {
-        this.id = id;
-        this.titre = titre;
-        this.description = description;
-        this.priorite = priorite;
-        this.difficulte = difficulte;
-        this.statut = statut;
-        this.deadline = deadline;
-        this.taskSpaceId = taskSpaceId;
-        this.utilisateurId = utilisateurId;
-        this.updatedAt = new Date();
-    }
+    private int taskSpaceId;
+    private int utilisateurId;   // Creator
+    private Integer assignedUserId; // NEW: The user responsible for the task
 
     public Tache() {}
 
-    // ─── Getters & Setters ────────────────────────────────────────────
+    // Getters & Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -67,11 +34,7 @@ public class Tache {
     public void setPriorite(PrioriteTache priorite) { this.priorite = priorite; }
 
     public int getDifficulte() { return difficulte; }
-    public void setDifficulte(int difficulte) {
-        if (difficulte < 1 || difficulte > 5)
-            throw new IllegalArgumentException("Difficulté doit être entre 1 et 5 !");
-        this.difficulte = difficulte;
-    }
+    public void setDifficulte(int difficulte) { this.difficulte = difficulte; }
 
     public StatutTache getStatut() { return statut; }
     public void setStatut(StatutTache statut) { this.statut = statut; }
@@ -85,24 +48,12 @@ public class Tache {
     public Date getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
 
-    // 0 = Solo (aucun projet)
     public int getTaskSpaceId() { return taskSpaceId; }
     public void setTaskSpaceId(int taskSpaceId) { this.taskSpaceId = taskSpaceId; }
 
     public int getUtilisateurId() { return utilisateurId; }
     public void setUtilisateurId(int utilisateurId) { this.utilisateurId = utilisateurId; }
 
-    @Override
-    public String toString() {
-        return "Tache{" +
-                "id=" + id +
-                ", titre='" + titre + '\'' +
-                ", priorite=" + (priorite != null ? priorite.getValeur() : "null") +
-                ", difficulte=" + difficulte + "/5" +
-                ", statut=" + (statut != null ? statut.getValeur() : "null") +
-                ", deadline=" + deadline +
-                ", projet=" + (taskSpaceId == 0 ? "Solo" : "TaskSpace#" + taskSpaceId) +
-                ", utilisateurId=" + utilisateurId +
-                '}';
-    }
+    public Integer getAssignedUserId() { return assignedUserId; }
+    public void setAssignedUserId(Integer assignedUserId) { this.assignedUserId = assignedUserId; }
 }
