@@ -11,6 +11,5 @@ public interface CRUD <T>{
     T findbyMail(String mail) throws SQLException;
     List<T> findAll() throws SQLException;
     List<T> sortbyName() throws SQLException;
-
-
+    boolean recherche(T t) throws SQLException;
 }

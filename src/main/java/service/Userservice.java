@@ -66,6 +66,7 @@ public class Userservice implements CRUD<User>{
             user.setPrenom(rs.getString("prenom"));
             user.setEmail(rs.getString("email"));
             user.setAge(rs.getInt("age"));
+            user.setMot_de_passe(rs.getString("mot_de_passe"));
 
             users.add(user);
         }
@@ -77,4 +78,14 @@ public class Userservice implements CRUD<User>{
     public List<User> sortbyName() throws SQLException {
         return  this.findAll().stream().sorted(Comparator.comparing(User::getNom)).toList();
     }
+
+    @Override
+    public boolean recherche(User user) throws SQLException {
+       User result = this.findbyMail(user.getEmail());
+        if (result.getMot_de_passe().equals(user.getMot_de_passe())) {
+            return true;
+        }
+        else return false;
+    }
+
 }
