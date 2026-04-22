@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="main-content" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PlanningDashboardController">
+   <children>
+      <VBox spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <padding>
+            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+         </padding>
+         <children>
+            <!-- Header Section (Matching Screenshot 1) -->
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
+               <children>
+                  <VBox HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="badge-ai" text="TABLAU DE BORD" />
+                        <Label fx:id="lblCurrentDateTitle" styleClass="page-title" text="13 avr. - 19 avr. 2026">
+                           <font>
+                              <Font name="System Bold" size="32.0" />
+                           </font>
+                        </Label>
+                        <Label styleClass="page-subtitle" text="Gérez votre temps avec précision et élégance." />
+                     </children>
+                  </VBox>
+                  
+                  <!-- View Toggles -->
+                  <HBox alignment="CENTER" styleClass="toggle-group-container">
+                     <children>
+                        <Button fx:id="btnViewJour" mnemonicParsing="false" onAction="#handleViewJour" styleClass="toggle-btn" text="JOUR" />
+                        <Button fx:id="btnViewSemaine" mnemonicParsing="false" onAction="#handleViewSemaine" styleClass="toggle-btn, toggle-btn-active" text="SEMAINE" />
+                     </children>
+                  </HBox>
+
+                  <!-- Navigation arrows -->
+                  <HBox alignment="CENTER" spacing="5.0" styleClass="glass-card" style="-fx-padding: 6 12;">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#handlePrev" styleClass="nav-arrow" text="‹" />
+                        <Button mnemonicParsing="false" onAction="#handleToday" styleClass="toggle-btn" text="AUJOURD'HUI" style="-fx-font-size: 10;" />
+                        <Button mnemonicParsing="false" onAction="#handleNext" styleClass="nav-arrow" text="›" />
+                     </children>
+                  </HBox>
+
+                  <!-- Action Buttons -->
+                  <HBox spacing="10.0">
+                     <children>
+                        <Button mnemonicParsing="false" prefHeight="45.0" styleClass="btn-ia" text="🤖 Optimiser avec l'IA">
+                           <padding>
+                              <Insets left="20.0" right="20.0" />
+                           </padding>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#handleNewPlanning" prefHeight="45.0" styleClass="submit-button" text="+ Nouveau Planning">
+                           <padding>
+                              <Insets left="20.0" right="20.0" />
+                           </padding>
+                        </Button>
+                        <Button mnemonicParsing="false" prefHeight="45.0" styleClass="icon-button" text="📄" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+
+            <!-- Main Calendar Grid Section -->
+            <VBox styleClass="card-dark" VBox.vgrow="ALWAYS">
+               <children>
+                  <!-- FILTER BAR -->
+                  <HBox alignment="CENTER_LEFT" spacing="8.0" style="-fx-padding: 10 20; -fx-border-color: transparent transparent rgba(255,255,255,0.04) transparent;">
+                     <children>
+                        <!-- Search field -->
+                        <HBox alignment="CENTER_LEFT" spacing="6.0" style="-fx-background-color: rgba(255,255,255,0.05); -fx-background-radius: 20; -fx-padding: 4 14; -fx-border-color: rgba(255,255,255,0.08); -fx-border-radius: 20; -fx-border-width: 1;">
+                           <children>
+                              <Label text="🔍" style="-fx-font-size: 11; -fx-text-fill: #71717a;" />
+                              <TextField fx:id="txtSearch" promptText="Rechercher une activité..." style="-fx-background-color: transparent; -fx-text-fill: white; -fx-prompt-text-fill: #71717a; -fx-font-size: 11; -fx-min-width: 180; -fx-border-width: 0; -fx-padding: 0;" />
+                           </children>
+                        </HBox>
+                        <!-- Priority filters -->
+                        <Label text="PRIORITÉ" style="-fx-text-fill: #39393B; -fx-font-size: 9; -fx-font-weight: bold; -fx-padding: 0 4 0 8;" />
+                        <Button fx:id="btnFilterHaute" mnemonicParsing="false" onAction="#handleFilterHaute" text="🔥 Haute" style="-fx-background-color: rgba(244,63,94,0.12); -fx-text-fill: #f43f5e; -fx-background-radius: 20; -fx-font-size: 10; -fx-font-weight: bold; -fx-padding: 4 12; -fx-cursor: hand;" />
+                        <Button fx:id="btnFilterMoyenne" mnemonicParsing="false" onAction="#handleFilterMoyenne" text="⚡ Moyenne" style="-fx-background-color: rgba(245,158,11,0.12); -fx-text-fill: #f59e0b; -fx-background-radius: 20; -fx-font-size: 10; -fx-font-weight: bold; -fx-padding: 4 12; -fx-cursor: hand;" />
+                        <Button fx:id="btnFilterBasse" mnemonicParsing="false" onAction="#handleFilterBasse" text="🌿 Basse" style="-fx-background-color: rgba(16,185,129,0.12); -fx-text-fill: #10b981; -fx-background-radius: 20; -fx-font-size: 10; -fx-font-weight: bold; -fx-padding: 4 12; -fx-cursor: hand;" />
+                        <!-- State filters -->
+                        <Label text="ÉTAT" style="-fx-text-fill: #39393B; -fx-font-size: 9; -fx-font-weight: bold; -fx-padding: 0 4 0 12;" />
+                        <Button fx:id="btnFilterEnCours" mnemonicParsing="false" onAction="#handleFilterEnCours" text="▶ En cours" style="-fx-background-color: rgba(139,92,246,0.12); -fx-text-fill: #8b5cf6; -fx-background-radius: 20; -fx-font-size: 10; -fx-font-weight: bold; -fx-padding: 4 12; -fx-cursor: hand;" />
+                        <Button fx:id="btnFilterAttente" mnemonicParsing="false" onAction="#handleFilterAttente" text="⏳ En attente" style="-fx-background-color: rgba(113,113,122,0.12); -fx-text-fill: #71717a; -fx-background-radius: 20; -fx-font-size: 10; -fx-font-weight: bold; -fx-padding: 4 12; -fx-cursor: hand;" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btnFilterReset" mnemonicParsing="false" onAction="#handleFilterReset" text="✕ Tout afficher" style="-fx-background-color: transparent; -fx-text-fill: #71717a; -fx-font-size: 10; -fx-cursor: hand;" />
+                     </children>
+                  </HBox>
+
+                  <HBox fx:id="gridHeader" alignment="CENTER" prefHeight="60.0" style="-fx-background-color: rgba(255,255,255,0.02); -fx-border-color: transparent transparent rgba(255,255,255,0.05) transparent;">
+                     <children>
+                        <!-- Column 0 Header: TRACK -->
+                        <Label alignment="CENTER" prefWidth="60.0" text="TRACK" style="-fx-text-fill: #71717a; -fx-font-size: 10; -fx-font-weight: bold;" />
+                     </children>
+                  </HBox>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;" VBox.vgrow="ALWAYS">
+                     <content>
+                        <GridPane fx:id="calendarGrid" styleClass="calendar-grid">
+                           <!-- Dynamic Content -->
+                        </GridPane>
+                     </content>
+                  </ScrollPane>
+               </children>
+            </VBox>
+
+            <!-- Bottom Section (Matching Screenshot 2) -->
+            <HBox spacing="25.0">
+               <children>
+                  <!-- OBJECTIFS Block -->
+                  <VBox prefWidth="320.0" spacing="20.0" styleClass="card-dark" style="-fx-padding: 25;">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                           <children>
+                              <Label style="-fx-background-color: rgba(139, 92, 246, 0.1); -fx-background-radius: 8; -fx-padding: 8;" text="🎯" />
+                              <Label text="OBJECTIFS" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 12;" />
+                           </children>
+                        </HBox>
+                        <VBox spacing="10.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT">
+                                 <children>
+                                    <Label text="PROGRESSION" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 11;" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <Label fx:id="lblCompletionValue" text="78%" style="-fx-text-fill: #8b5cf6; -fx-font-weight: bold; -fx-font-size: 11;" />
+                                 </children>
+                              </HBox>
+                              <AnchorPane prefHeight="8.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-background-radius: 10;">
+                                 <children>
+                                    <AnchorPane fx:id="progressFill" prefHeight="8.0" prefWidth="150.0" styleClass="gradient-primary" style="-fx-background-radius: 10;" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </VBox>
+                        <Label text="Vous êtes en avance sur votre planning hebdomadaire. Continuez ainsi !" wrapText="true" style="-fx-text-fill: #a1a1aa; -fx-font-size: 11;" />
+                     </children>
+                  </VBox>
+
+                  <!-- INDICATEURS DE PERFORMANCE Block -->
+                  <VBox spacing="15.0" styleClass="card-dark" style="-fx-padding: 25;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <HBox alignment="CENTER_LEFT">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <Label style="-fx-background-color: rgba(139, 92, 246, 0.1); -fx-background-radius: 8; -fx-padding: 8;" text="👤" />
+                                    <Label text="INDICATEURS DE PERFORMANCE" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 12;" />
+                                 </children>
+                              </HBox>
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Button mnemonicParsing="false" onAction="#handleSeeAll" style="-fx-background-color: transparent; -fx-text-fill: #8b5cf6; -fx-font-size: 10; -fx-font-weight: bold;" text="TOUT VOIR" />
+                           </children>
+                        </HBox>
+                        
+                        <!-- 4 indicator cards in a row -->
+                        <HBox spacing="15.0">
+                           <children>
+                              <!-- Total Activities -->
+                              <VBox styleClass="indicator-card" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label text="ACTIVITÉS" styleClass="indicator-label" />
+                                    <HBox alignment="BASELINE_LEFT" spacing="8.0">
+                                       <children>
+                                          <Label fx:id="lblTotalActivities" text="0" styleClass="indicator-value" />
+                                          <Label text="+12%" styleClass="trend-positive" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <!-- Average -->
+                              <VBox styleClass="indicator-card" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label text="MOYENNE" styleClass="indicator-label" />
+                                    <HBox alignment="BASELINE_LEFT" spacing="8.0">
+                                       <children>
+                                          <Label fx:id="lblAvgActivities" text="0.0" styleClass="indicator-value" />
+                                          <Label text="/jour" style="-fx-text-fill: #71717a; -fx-font-size: 10;" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <!-- Focus Time -->
+                              <VBox styleClass="indicator-card" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label text="FOCUS TIME" styleClass="indicator-label" />
+                                    <HBox alignment="BASELINE_LEFT" spacing="8.0">
+                                       <children>
+                                          <Label fx:id="lblFocusTime" text="18h" styleClass="indicator-value" />
+                                          <Label text="+4h" styleClass="trend-positive" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <!-- Availability -->
+                              <VBox styleClass="indicator-card" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label text="DISPO" styleClass="indicator-label" />
+                                    <HBox alignment="BASELINE_LEFT" spacing="8.0">
+                                       <children>
+                                          <Label fx:id="lblDispoRate" text="42%" styleClass="indicator-value" />
+                                          <Label text="-5%" styleClass="trend-negative" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

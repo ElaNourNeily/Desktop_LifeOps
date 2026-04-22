@@ -1,0 +1,755 @@
+/* ============================================================
+   style.css  —  LifeOps / Workshop1
+   Thème : PREMIUM DARK (Default)
+   ============================================================ */
+
+/* --- Root / Fond de fenêtre --- */
+.root-pane, .main-container {
+    -fx-background-color: #0F1117;
+    -fx-font-family: 'Segoe UI', 'Inter', sans-serif;
+    -fx-font-size: 13px;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+    -fx-background-color: #141416;
+}
+
+/* --- Logo label --- */
+.logo-label {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* --- Sidebar divider --- */
+.sidebar-divider {
+    -fx-stroke: #3b3b40;
+}
+
+/* --- Nav item --- */
+.nav-item {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10;
+}
+
+.nav-item:hover {
+    -fx-background-color: #1a1a1f;
+    -fx-cursor: hand;
+}
+
+.nav-item-active {
+    -fx-background-color: #1E1333;
+    -fx-background-radius: 10;
+}
+
+.nav-label {
+    -fx-text-fill: #a1a1aa;
+    -fx-font-size: 14px;
+}
+
+.nav-label-active {
+    -fx-text-fill: #8b5cf6;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* --- Account Box --- */
+.account-box {
+    -fx-background-color: #141416;
+    -fx-border-color: #5A2E8A;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+}
+
+.account-label {
+    -fx-text-fill: #a1a1aa;
+    -fx-font-size: 14px;
+}
+
+/* --- Main Content --- */
+.main-content, .content-area {
+    -fx-background-color: #0F1117;
+}
+
+.page-title {
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.page-subtitle {
+    -fx-text-fill: #a1a1aa;
+    -fx-font-size: 13px;
+}
+
+.section-divider {
+    -fx-stroke: #3b3b40;
+}
+
+/* --- Form Card --- */
+.form-card {
+    -fx-background-color: #17191F;
+    -fx-background-radius: 20;
+    -fx-border-color: #39393B;
+    -fx-border-radius: 20;
+}
+
+/* --- Label de champ --- */
+.field-label {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+}
+
+/* --- Champs texte --- */
+.form-field {
+    -fx-background-color: #0B0C10;
+    -fx-background-radius: 9;
+    -fx-border-radius: 9;
+    -fx-border-color: #39393B;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #6b6b75;
+}
+
+.form-field:focused {
+    -fx-border-color: #7a4ed4;
+}
+
+/* --- Champs texte génériques (TextField non .form-field) --- */
+.text-field {
+    -fx-background-color: #0B0C10;
+    -fx-background-radius: 9;
+    -fx-border-radius: 9;
+    -fx-border-color: #39393B;
+    -fx-border-width: 1.5;
+    -fx-text-fill: white;
+    -fx-padding: 8 12;
+}
+
+.text-field:focused {
+    -fx-border-color: #7a4ed4;
+    -fx-effect: dropshadow(three-pass-box, rgba(122, 78, 212, 0.2), 6, 0, 0, 0);
+}
+
+/* --- ChoiceBox / ComboBox --- */
+.form-choice, .combo-box {
+    -fx-background-color: #0B0C10;
+    -fx-background-radius: 9;
+    -fx-border-radius: 9;
+    -fx-border-color: #39393B;
+    -fx-border-width: 1.5;
+    -fx-mark-color: #a1a1aa;
+}
+
+.form-choice .label, .combo-box .label {
+    -fx-text-fill: white;
+}
+
+.form-choice:focused, .combo-box:focused {
+    -fx-border-color: #7a4ed4;
+}
+
+.form-choice .context-menu, .combo-box .context-menu {
+    -fx-background-color: #17191F;
+    -fx-border-color: #39393B;
+    -fx-border-radius: 9;
+    -fx-background-radius: 9;
+}
+
+.form-choice .menu-item:hover, .combo-box .menu-item:hover {
+    -fx-background-color: #1E1333;
+}
+
+.form-choice .menu-item .label, .combo-box .menu-item .label {
+    -fx-text-fill: white;
+}
+
+/* --- DatePicker --- */
+.form-datepicker, .date-picker {
+    -fx-background-color: #0B0C10;
+    -fx-background-radius: 9;
+    -fx-border-radius: 9;
+    -fx-border-color: #39393B;
+    -fx-border-width: 1.5;
+}
+
+.form-datepicker .text-field, .date-picker .text-field {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #6b6b75;
+    -fx-border-color: transparent;
+}
+
+.form-datepicker .arrow-button, .date-picker .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.form-datepicker .arrow-button .arrow, .date-picker .arrow-button .arrow {
+    -fx-background-color: #a1a1aa;
+}
+
+.form-datepicker:focused, .date-picker:focused {
+    -fx-border-color: #7a4ed4;
+}
+
+/* --- Bouton submit principal --- */
+.submit-button {
+    -fx-background-color: #8b5cf6;
+    -fx-background-radius: 9;
+    -fx-border-radius: 9;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.submit-button:hover {
+    -fx-background-color: #7a4ed4;
+}
+
+.submit-button:pressed {
+    -fx-background-color: #6a3ec4;
+}
+
+/* --- Boutons génériques --- */
+.button {
+    -fx-background-radius: 9;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-border-radius: 9;
+    -fx-border-color: transparent;
+}
+
+.button:hover {
+    -fx-opacity: 0.88;
+}
+
+/* --- Boutons d'action CRUD --- */
+.btn-add {
+    -fx-background-color: #16a34a;
+    -fx-text-fill: white;
+}
+.btn-add:hover { -fx-background-color: #15803d; }
+
+.btn-edit {
+    -fx-background-color: #7a4ed4;
+    -fx-text-fill: white;
+}
+.btn-edit:hover { -fx-background-color: #6a3ec4; }
+
+.btn-delete {
+    -fx-background-color: #dc2626;
+    -fx-text-fill: white;
+}
+.btn-delete:hover { -fx-background-color: #b91c1c; }
+
+.btn-clear {
+    -fx-background-color: #39393B;
+    -fx-text-fill: #a1a1aa;
+}
+.btn-clear:hover { -fx-background-color: #4a4a4e; }
+
+/* --- Labels génériques --- */
+.label {
+    -fx-text-fill: #a1a1aa;
+}
+
+/* --- TableView --- */
+.table-view {
+    -fx-background-color: #17191F;
+    -fx-border-color: #39393B;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #141416;
+    -fx-background-radius: 12 12 0 0;
+}
+
+.table-view .column-header-background .filler {
+    -fx-background-color: transparent;
+}
+
+.table-view .filler {
+    -fx-background-color: transparent;
+}
+
+.table-view .corner {
+    -fx-background-color: #141416;
+}
+
+.table-view .column-drag-header {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #3b3b40 transparent;
+    -fx-padding: 12 10;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #a1a1aa;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+.table-row-cell {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #1f1f25 transparent;
+    -fx-cell-size: 45px;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #1a1a1f;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #1E1333;
+    -fx-text-fill: #7a4ed4;
+}
+
+.table-cell {
+    -fx-text-fill: #d1d5db;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 0 10;
+}
+
+/* --- Alert banner --- */
+.alert-banner {
+    -fx-background-color: #3f1f1f;
+    -fx-background-radius: 12;
+    -fx-border-color: #991b1b;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+}
+
+.alert-title {
+    -fx-text-fill: #ef4444;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.alert-text {
+    -fx-text-fill: #fca5a5;
+    -fx-font-size: 12px;
+}
+
+/* --- Boutons actions haut de page --- */
+.action-button {
+    -fx-background-color: #2a2a35;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-text-fill: #a1a1aa;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+    -fx-padding: 8 15 8 15;
+}
+
+.action-button:hover { -fx-background-color: #35353f; }
+
+.action-button-active {
+    -fx-background-color: #1E1333;
+    -fx-border-color: #7a4ed4;
+    -fx-border-width: 1;
+    -fx-text-fill: #7a4ed4;
+}
+
+.action-button-primary {
+    -fx-background-color: #8b5cf6;
+    -fx-text-fill: white;
+}
+
+.action-button-primary:hover { -fx-background-color: #7a4ed4; }
+
+/* --- Stat card --- */
+.stat-card {
+    -fx-background-color: #17191F;
+    -fx-background-radius: 16;
+    -fx-border-color: #39393B;
+    -fx-border-radius: 16;
+    -fx-border-width: 1;
+}
+
+/* --- CheckBox --- */
+.check-box .box {
+    -fx-background-color: #0B0C10;
+    -fx-border-color: #475569;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.check-box:selected .box {
+    -fx-background-color: #7a4ed4;
+    -fx-border-color: #7a4ed4;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: white;
+}
+
+/* --- Scrollbar --- */
+.scroll-bar { -fx-background-color: transparent; }
+.scroll-bar:vertical { -fx-pref-width: 5px; }
+.scroll-bar .thumb {
+    -fx-background-color: #39393B;
+    -fx-background-radius: 10;
+}
+.scroll-bar .thumb:hover { -fx-background-color: #7a4ed4; }
+.scroll-bar .track { -fx-background-color: transparent; }
+.scroll-bar .increment-button, .scroll-bar .decrement-button {
+    -fx-padding: 0; -fx-background-color: transparent;
+}
+
+/* --- ScrollPane --- */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+
+/* ============================================================
+   LIGHT MODE — Activer với root.getStyleClass().add("light-mode")
+   ============================================================ */
+
+.light-mode.root-pane {
+    -fx-background-color: #f4f4f8;
+}
+
+.light-mode .sidebar {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e0e0e8;
+    -fx-border-width: 0 1 0 0;
+}
+
+.light-mode .logo-label { -fx-text-fill: #1a1a2e; }
+.light-mode .sidebar-divider { -fx-stroke: #d0d0d8; }
+.light-mode .nav-item:hover { -fx-background-color: #f0ebfa; }
+.light-mode .nav-item-active { -fx-background-color: #ede9fa; }
+.light-mode .nav-label { -fx-text-fill: #6b6b80; }
+.light-mode .nav-label-active { -fx-text-fill: #7a4ed4; }
+
+.light-mode .account-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #c9a8f5;
+}
+
+.light-mode .account-label { -fx-text-fill: #6b6b80; }
+.light-mode .main-content { -fx-background-color: #f4f4f8; }
+.light-mode .page-title { -fx-text-fill: #1a1a2e; }
+.light-mode .page-subtitle { -fx-text-fill: #6b6b80; }
+.light-mode .section-divider { -fx-stroke: #d0d0d8; }
+
+.light-mode .form-card {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e0e0e8;
+}
+
+.light-mode .field-label { -fx-text-fill: #1a1a2e; }
+
+.light-mode .text-field, .light-mode .form-field {
+    -fx-background-color: #f7f7fb;
+    -fx-border-color: #d0d0d8;
+    -fx-text-fill: #1a1a2e;
+    -fx-prompt-text-fill: #b0b0c0;
+}
+
+.light-mode .text-field:focused, .light-mode .form-field:focused {
+    -fx-border-color: #7a4ed4;
+}
+
+.light-mode .combo-box, .light-mode .form-choice {
+    -fx-background-color: #f7f7fb;
+    -fx-border-color: #d0d0d8;
+}
+
+.light-mode .combo-box .label, .light-mode .form-choice .label {
+    -fx-text-fill: #1a1a2e;
+}
+
+.light-mode .date-picker, .light-mode .form-datepicker {
+    -fx-background-color: #f7f7fb;
+    -fx-border-color: #d0d0d8;
+}
+
+.light-mode .date-picker .text-field, .light-mode .form-datepicker .text-field {
+    -fx-text-fill: #1a1a2e;
+}
+
+.light-mode .table-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e0e0e8;
+}
+
+.light-mode .table-view .column-header-background {
+    -fx-background-color: #f4f4f8;
+}
+
+.light-mode .table-view .column-header .label { -fx-text-fill: #1a1a2e; }
+.light-mode .table-row-cell:hover { -fx-background-color: #f0ebfa; }
+.light-mode .table-row-cell:selected { -fx-background-color: #ede9fa; }
+.light-mode .table-cell { -fx-text-fill: #1a1a2e; }
+
+.light-mode .stat-card {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e0e0e8;
+}
+
+.light-mode .label { -fx-text-fill: #1a1a2e; }
+
+/* ============================================================
+   PREMIUM LUXE / GLASSMORPHISM (Inspired by Symfony LifeOps)
+   ============================================================ */
+
+.glass-card {
+    -fx-background-color: rgba(15, 17, 23, 0.95);
+    -fx-background-radius: 24;
+    -fx-border-color: rgba(255, 255, 255, 0.08);
+    -fx-border-radius: 24;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 30, 0, 0, 15);
+}
+
+/* --- Premium Form & Activity CRUD --- */
+.back-button-circle {
+    -fx-background-color: rgba(255,255,255,0.05);
+    -fx-background-radius: 12;
+    -fx-min-width: 45;
+    -fx-min-height: 45;
+    -fx-cursor: hand;
+    -fx-border-color: rgba(255,255,255,0.1);
+    -fx-border-radius: 12;
+}
+
+.back-button-circle:hover {
+    -fx-background-color: rgba(255,255,255,0.1);
+}
+
+.color-circle-selection {
+    -fx-cursor: hand;
+    -fx-stroke-width: 0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 0);
+}
+
+.color-circle-selection:hover {
+    -fx-stroke: white;
+    -fx-stroke-width: 2;
+}
+
+.color-circle-selected {
+    -fx-stroke: white;
+    -fx-stroke-width: 3;
+    -fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.5), 10, 0, 0, 0);
+}
+
+.btn-ghost {
+    -fx-background-color: transparent;
+    -fx-text-fill: #71717a;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.btn-ghost:hover {
+    -fx-text-fill: white;
+}
+
+.btn-delete-ghost {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ef4444;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.btn-delete-ghost:hover {
+    -fx-text-fill: #f87171;
+    -fx-underline: true;
+}
+
+.priority-toggle-group {
+    -fx-background-color: rgba(255,255,255,0.03);
+    -fx-background-radius: 12;
+    -fx-border-color: rgba(255,255,255,0.05);
+    -fx-border-radius: 12;
+}
+
+.card-dark {
+    -fx-background-color: #121215;
+    -fx-background-radius: 20;
+    -fx-border-color: rgba(255, 255, 255, 0.05);
+    -fx-border-radius: 20;
+}
+
+/* --- Calendar Grid Cases (1-hour slots) --- */
+.calendar-cell {
+    -fx-background-color: rgba(255, 255, 255, 0.01);
+    -fx-border-color: rgba(255, 255, 255, 0.1);
+    -fx-border-width: 0.5;
+    -fx-cursor: hand;
+}
+
+.calendar-cell:hover {
+    -fx-background-color: rgba(139, 92, 246, 0.15); /* Much more visible purple highlight */
+}
+
+.gradient-primary {
+    -fx-background-color: linear-gradient(to right, #8b5cf6, #6366f1);
+}
+
+.calendar-grid {
+    -fx-background-color: transparent;
+}
+
+.calendar-header {
+    -fx-background-color: rgba(255, 255, 255, 0.03);
+    -fx-border-color: transparent transparent rgba(255, 255, 255, 0.1) transparent;
+}
+
+.calendar-cell {
+    -fx-border-color: transparent rgba(255, 255, 255, 0.05) rgba(255, 255, 255, 0.05) transparent;
+}
+
+.activity-block {
+    -fx-background-radius: 12;
+    -fx-padding: 8;
+    -fx-cursor: hand;
+}
+
+.activity-block:hover {
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.chart-bar {
+    -fx-bar-fill: #8b5cf6;
+}
+
+/* Specific chart styling */
+.chart-series-line { -fx-stroke: #8b5cf6; }
+.chart-line-symbol { -fx-background-color: #8b5cf6, white; }
+.default-color0.chart-pie { -fx-pie-color: #10b981; }
+.default-color1.chart-pie { -fx-pie-color: #f59e0b; }
+.default-color2.chart-pie { -fx-pie-color: #f43f5e; }
+
+/* --- Form & Grid Interaction Enhancements --- */
+.form-field:hover, .form-datepicker:hover, .form-choice:hover {
+    -fx-border-color: rgba(139, 92, 246, 0.5);
+}
+
+.form-field:focused {
+    -fx-border-color: #8b5cf6;
+    -fx-effect: dropshadow(three-pass-box, rgba(139, 92, 246, 0.3), 10, 0, 0, 0);
+}
+
+/* --- Navigation & Toggles --- */
+.toggle-group-container {
+    -fx-background-color: rgba(0,0,0,0.3);
+    -fx-background-radius: 30;
+    -fx-padding: 4;
+}
+
+.toggle-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #a1a1aa;
+    -fx-background-radius: 25;
+    -fx-font-size: 11;
+    -fx-font-weight: bold;
+    -fx-padding: 8 16;
+}
+
+.toggle-btn-active {
+    -fx-background-color: #5b21b6;
+    -fx-text-fill: white;
+    -fx-background-radius: 25;
+}
+
+.nav-arrow {
+    -fx-background-color: rgba(255,255,255,0.05);
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-min-width: 32;
+    -fx-min-height: 32;
+}
+
+.nav-arrow:hover {
+    -fx-background-color: rgba(255,255,255,0.1);
+}
+
+/* --- Indicator Cards --- */
+.indicator-card {
+    -fx-background-color: rgba(255,255,255,0.02);
+    -fx-background-radius: 12;
+    -fx-padding: 15;
+    -fx-border-color: rgba(255,255,255,0.03);
+    -fx-border-radius: 12;
+}
+
+.indicator-value {
+    -fx-text-fill: white;
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+}
+
+.indicator-label {
+    -fx-text-fill: #71717a;
+    -fx-font-size: 10;
+    -fx-font-weight: bold;
+    -fx-text-transform: uppercase;
+}
+
+.trend-positive {
+    -fx-text-fill: #10b981;
+    -fx-font-size: 10;
+    -fx-font-weight: bold;
+}
+
+.trend-negative {
+    -fx-text-fill: #f43f5e;
+    -fx-font-size: 10;
+    -fx-font-weight: bold;
+}
+
+.btn-ia {
+    -fx-background-color: linear-gradient(to right, #4c1d95, #3b82f6);
+    -fx-text-fill: rgba(255,255,255,0.8);
+    -fx-background-radius: 12;
+    -fx-font-weight: bold;
+}
+
+.btn-ia:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(59, 130, 246, 0.4), 15, 0, 0, 0);
+}
+
+/* --- Home Summary Dashboard --- */
+.home-activity-card {
+    -fx-background-color: rgba(255,255,255,0.03);
+    -fx-background-radius: 12;
+    -fx-padding: 15 25;
+    -fx-border-color: rgba(255,255,255,0.05);
+    -fx-border-radius: 12;
+    -fx-cursor: hand;
+}
+
+.home-activity-card:hover {
+    -fx-background-color: rgba(255,255,255,0.05);
+}
+
+.home-accent-bar {
+    -fx-background-color: #8b5cf6;
+    -fx-background-radius: 5;
+}
+
+.home-header-link {
+    -fx-text-fill: #8b5cf6;
+    -fx-font-weight: bold;
+    -fx-font-size: 11;
+    -fx-cursor: hand;
+}
+
+.home-header-link:hover {
+    -fx-text-fill: #a78bfa;
+    -fx-underline: true;
+}

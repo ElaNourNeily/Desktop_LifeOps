@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: transparent;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DashboardHomeController">
+   <children>
+      <VBox spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <padding>
+            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+         </padding>
+         <children>
+            <!-- Welcome Header -->
+            <VBox spacing="5.0">
+               <children>
+                  <Label styleClass="badge-ai" text="DASHBOARD" />
+                  <Label styleClass="page-title" text="Bienvenue sur LifeOps">
+                     <font>
+                        <Font name="System Bold" size="36.0" />
+                     </font>
+                  </Label>
+                  <Label styleClass="page-subtitle" text="Voici un aperçu de vos tâches prioritaires pour aujourd'hui." />
+               </children>
+            </VBox>
+
+            <!-- Planning du Jour Container (Matching Screenshot) -->
+            <VBox maxWidth="600.0" spacing="20.0" styleClass="card-dark" style="-fx-padding: 30;">
+               <children>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                        <Label text="Planning du jour" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 18;" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" onAction="#handleSeeAll" styleClass="home-header-link" text="Voir tout →" />
+                     </children>
+                  </HBox>
+
+                  <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;" VBox.vgrow="ALWAYS">
+                     <content>
+                        <VBox fx:id="vboxTodayActivities" spacing="12.0">
+                           <!-- Dynamic Activity Cards -->
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+               </children>
+            </VBox>
+
+            <!-- Secondary Stats Area (Empty for future small widgets) -->
+            <HBox spacing="25.0">
+               <children>
+                  <VBox prefWidth="280.0" styleClass="indicator-card">
+                     <children>
+                        <Label text="RESTANT" styleClass="indicator-label" />
+                        <Label fx:id="lblItemsLeft" text="0 tâches" styleClass="indicator-value" />
+                     </children>
+                  </VBox>
+                  <VBox prefWidth="280.0" styleClass="indicator-card">
+                     <children>
+                        <Label text="PROCHAINE" styleClass="indicator-label" />
+                        <Label fx:id="lblNextTask" text="Aucune" styleClass="indicator-value" style="-fx-font-size: 18;" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

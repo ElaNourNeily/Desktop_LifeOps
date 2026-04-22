@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefWidth="450.0" style="-fx-background-color: transparent;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PlanningFormController">
+   <children>
+      <VBox spacing="25.0" styleClass="glass-card" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <padding>
+            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+         </padding>
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="15.0">
+               <children>
+                  <Label text="📅" style="-fx-font-size: 24;" />
+                  <VBox>
+                     <children>
+                        <Label styleClass="page-title" text="Configuration du Jour">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label styleClass="page-subtitle" text="Définissez vos horaires pour cette date." />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+
+            <VBox spacing="10.0">
+               <children>
+                  <Label styleClass="field-label" text="Date cible" />
+                  <DatePicker fx:id="datePicker" maxWidth="1.7976931348623157E308" styleClass="form-datepicker" />
+                  <Label fx:id="lblErrorDate" managed="false" style="-fx-text-fill: #ef4444; -fx-font-size: 11;" visible="false" />
+               </children>
+            </VBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="form-card" style="-fx-padding: 15; -fx-background-color: rgba(255,255,255,0.03);">
+               <children>
+                  <VBox HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="Disponibilité générale" style="-fx-text-fill: white; -fx-font-weight: bold;" />
+                        <Label text="Activer pour planifier des tâches." style="-fx-text-fill: #6b7280; -fx-font-size: 11;" />
+                     </children>
+                  </VBox>
+                  <CheckBox fx:id="checkDisponibilite" mnemonicParsing="false" selected="true" />
+               </children>
+            </HBox>
+
+            <HBox spacing="20.0">
+               <children>
+                  <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="field-label" text="Début de journée" />
+                        <TextField fx:id="txtHeureDebut" promptText="08:00" styleClass="form-field" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="field-label" text="Fin de journée" />
+                        <TextField fx:id="txtHeureFin" promptText="20:00" styleClass="form-field" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+
+            <HBox spacing="15.0" alignment="CENTER_RIGHT">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#handleCancel" prefHeight="45.0" styleClass="btn-clear" text="Annuler" />
+                  <Button fx:id="btnSubmit" mnemonicParsing="false" onAction="#handleSave" prefHeight="45.0" styleClass="submit-button" text="Enregistrer la journée" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

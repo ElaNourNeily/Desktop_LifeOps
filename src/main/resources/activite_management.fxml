@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ActiviteManagementController">
+   <children>
+      <VBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label text="Gestion des Activités">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <HBox spacing="20.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <!-- SORT BAR -->
+                        <HBox alignment="CENTER_LEFT" spacing="8.0" style="-fx-padding: 8 12; -fx-background-color: rgba(139,92,246,0.06); -fx-background-radius: 12; -fx-border-color: rgba(139,92,246,0.15); -fx-border-radius: 12; -fx-border-width: 1;">
+                           <children>
+                              <Label style="-fx-text-fill: #8b5cf6; -fx-font-weight: bold; -fx-font-size: 11;" text="⇅ Trier par :" />
+                              <Button fx:id="btnSortPrio" mnemonicParsing="false" onAction="#handleSortPriorite" styleClass="action-button" text="🔥 Priorité" />
+                              <Button fx:id="btnSortTime" mnemonicParsing="false" onAction="#handleSortHeure" styleClass="action-button" text="🕒 Heure" />
+                              <Button fx:id="btnSortEtat" mnemonicParsing="false" onAction="#handleSortEtat" styleClass="action-button" text="📋 État" />
+                              <Button fx:id="btnSortDuree" mnemonicParsing="false" onAction="#handleSortDuree" styleClass="action-button" text="⏱ Durée" />
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Button mnemonicParsing="false" onAction="#handleResetSort" styleClass="btn-clear" text="✕ Réinitialiser" />
+                           </children>
+                        </HBox>
+                        <TableView fx:id="activiteTable" prefHeight="400.0" prefWidth="400.0">
+                          <columns>
+                            <TableColumn fx:id="colId" prefWidth="50.0" text="ID" />
+                            <TableColumn fx:id="colTitre" prefWidth="150.0" text="Titre" />
+                              <TableColumn fx:id="colDuree" prefWidth="75.0" text="Durée" />
+                              <TableColumn fx:id="colEtat" prefWidth="100.0" text="État" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </VBox>
+                  <VBox prefWidth="300.0" spacing="10.0" styleClass="stat-card">
+                     <children>
+                        <Label text="Détails de l'Activité">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <GridPane hgap="10.0" vgap="10.0">
+                           <children>
+                              <Label text="Titre:" />
+                              <TextField fx:id="txtTitre" text="educatuion" GridPane.columnIndex="1" />
+                              <Label text="Durée (min):" GridPane.rowIndex="1" />
+                              <TextField fx:id="txtDuree" text="60" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label text="Priorité:" GridPane.rowIndex="2" />
+                              <TextField fx:id="txtPriorite" text="1" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label text="État:" GridPane.rowIndex="3" />
+                              <ComboBox fx:id="comboEtat" prefWidth="150.0" promptText="en cours" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Label text="Début (HH:mm:ss):" GridPane.rowIndex="4" />
+                              <TextField fx:id="txtHeureDebut" text="01:00:00" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Label text="Fin (HH:mm:ss):" GridPane.rowIndex="5" />
+                              <TextField fx:id="txtHeureFin" text="02:00:00" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <Label text="Catégorie:" GridPane.rowIndex="6" />
+                              <TextField fx:id="txtCategorie" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <Label text="Planning ID:" GridPane.rowIndex="7" />
+                              <TextField fx:id="txtPlanningId" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                              <Label text="Couleur:" GridPane.rowIndex="8" />
+                              <ColorPicker fx:id="colorPicker" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints />
+                              <ColumnConstraints />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                           </rowConstraints>
+                        </GridPane>
+                        <HBox spacing="10.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#handleAdd" style="-fx-background-color: #27ae60; -fx-text-fill: white;" text="Ajouter" />
+                              <Button mnemonicParsing="false" onAction="#handleUpdate" style="-fx-background-color: #2980b9; -fx-text-fill: white;" text="Modifier" />
+                              <Button mnemonicParsing="false" onAction="#handleDelete" style="-fx-background-color: #c0392b; -fx-text-fill: white;" text="Supprimer" />
+                           </children>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleClear" text="Effacer" />
+                     </children>
+                     <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>
