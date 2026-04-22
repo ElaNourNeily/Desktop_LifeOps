@@ -75,9 +75,9 @@ public class TaskDetailsController {
         currentTask.setDifficulte(difficulty != null ? difficulty : 1);
 
         if (currentTask.getId() == 0) {
-            taskService.addTask(currentTask);
+            taskService.add(currentTask);
         } else {
-            taskService.updateTask(currentTask);
+            taskService.update(currentTask);
         }
         
         boardController.loadTasks(); // Refresh board
@@ -86,7 +86,7 @@ public class TaskDetailsController {
     @FXML
     private void handleDelete(ActionEvent event) {
         if (currentTask != null && currentTask.getId() != 0) {
-            taskService.deleteTask(currentTask.getId());
+            taskService.delete(currentTask.getId());
             boardController.loadTasks();
             handleClose();
         }

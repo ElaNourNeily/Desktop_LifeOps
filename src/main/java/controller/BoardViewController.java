@@ -147,7 +147,7 @@ public class BoardViewController {
         for (Tache t : tasks) {
             if (t.getId() == taskId) {
                 t.setStatut(newStatus);
-                taskService.updateTask(t);
+                taskService.update(t);
                 loadTasks();
                 break;
             }
@@ -217,7 +217,7 @@ public class BoardViewController {
         alert.setTitle("Confirmation");
         alert.setHeaderText("Supprimer le board ?");
         if (alert.showAndWait().get() == javafx.scene.control.ButtonType.OK) {
-            spaceService.deleteTaskSpace(currentBoard.getId());
+            spaceService.delete(currentBoard.getId());
             handleBack(null);
         }
     }

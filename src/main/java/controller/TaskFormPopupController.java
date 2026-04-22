@@ -149,10 +149,10 @@ public class TaskFormPopupController {
 
         Tache task = extractTaskFromForm();
         if (editingTask == null) {
-            taskService.addTask(task);
+            taskService.add(task);
         } else {
             task.setId(editingTask.getId());
-            taskService.updateTask(task);
+            taskService.update(task);
         }
         
         if (boardController != null) {
@@ -233,7 +233,7 @@ public class TaskFormPopupController {
         alert.setTitle("Confirmation");
         alert.setHeaderText("Supprimer la tâche ?");
         if (alert.showAndWait().get() == ButtonType.OK) {
-            taskService.deleteTask(editingTask.getId());
+            taskService.delete(editingTask.getId());
             if (boardController != null) boardController.loadTasks();
             handleClose();
         }

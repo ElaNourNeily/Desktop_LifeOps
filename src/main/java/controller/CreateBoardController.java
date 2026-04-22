@@ -70,7 +70,7 @@ public class CreateBoardController {
                 newSpace.setUtilisateurId(1);
             }
 
-            spaceService.addTaskSpace(newSpace);
+            spaceService.add(newSpace);
             
             if (hubController != null) {
                 hubController.loadBoards();

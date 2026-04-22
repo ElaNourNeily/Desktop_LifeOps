@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskSpaceService {
+public class TaskSpaceService implements CRUD<TaskSpace> {
 
     private final Connection connection;
     private final TaskSpaceUserService spaceUserService = new TaskSpaceUserService();
@@ -18,7 +18,8 @@ public class TaskSpaceService {
         this.connection = MyDatabase.getInstance().getConnection();
     }
 
-    public void addTaskSpace(TaskSpace ts) {
+    @Override
+    public void add(TaskSpace ts) {
         // Updated SQL to include both leader_id and utilisateur_id to satisfy DB constraints
         // We use a safe check for leader_id column in case it's not yet migrated, but utilisateur_id is required
         String sql = "INSERT INTO task_space (nom, type, date_creation, description, duration, status, leader_id, utilisateur_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -76,7 +77,8 @@ public class TaskSpaceService {
         }
     }
 
-    public void updateTaskSpace(TaskSpace ts) {
+    @Override
+    public void update(TaskSpace ts) {
         String sql = "UPDATE task_space SET nom=?, type=?, description=?, duration=?, status=? WHERE id=?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, ts.getNom());
@@ -91,7 +93,8 @@ public class TaskSpaceService {
         }
     }
 
-    public void deleteTaskSpace(int id) {
+    @Override
+    public void delete(int id) {
         String sqlDeleteMembers = "DELETE FROM taskspace_user WHERE taskspace_id = ?";
         String sqlDeleteTasks = "DELETE FROM tache WHERE task_space_id = ?";
         String sqlDeleteSpace = "DELETE FROM task_space WHERE id = ?";
@@ -152,7 +155,8 @@ public class TaskSpaceService {
         return spaces;
     }
 
-    public List<TaskSpace> getAllTaskSpaces() {
+    @Override
+    public List<TaskSpace> readAll() {
         if (Session.isLoggedIn()) {
             return getTaskSpacesForUser(Session.getCurrentUser().getId());
         }

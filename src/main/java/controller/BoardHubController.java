@@ -56,7 +56,7 @@ public class BoardHubController {
     }
 
     public void loadBoards() {
-        masterData.setAll(spaceService.getAllTaskSpaces());
+        masterData.setAll(spaceService.readAll());
         applyFilters();
     }
 

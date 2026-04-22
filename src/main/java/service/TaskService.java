@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskService {
+public class TaskService implements CRUD<Tache> {
 
     private final Connection connection;
 
@@ -17,7 +17,8 @@ public class TaskService {
         this.connection = MyDatabase.getInstance().getConnection();
     }
 
-    public void addTask(Tache t) {
+    @Override
+    public void add(Tache t) {
         if (t.getDescription() == null) {
             t.setDescription("");
         }
@@ -45,7 +46,8 @@ public class TaskService {
         }
     }
 
-    public void updateTask(Tache t) {
+    @Override
+    public void update(Tache t) {
         if (t.getDescription() == null) {
             t.setDescription("");
         }
@@ -66,7 +68,8 @@ public class TaskService {
         }
     }
 
-    public void deleteTask(int id) {
+    @Override
+    public void delete(int id) {
         String sql = "DELETE FROM tache WHERE id=?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -81,6 +84,21 @@ public class TaskService {
         String sql = "SELECT * FROM tache WHERE task_space_id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, boardId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                tasks.add(mapResultSetToTache(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tasks;
+    }
+
+    @Override
+    public List<Tache> readAll() {
+        List<Tache> tasks = new ArrayList<>();
+        String sql = "SELECT * FROM tache";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 tasks.add(mapResultSetToTache(rs));
