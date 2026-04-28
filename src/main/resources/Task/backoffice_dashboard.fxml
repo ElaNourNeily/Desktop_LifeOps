@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane style="-fx-background-color: #121417;" stylesheets="@board_style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BackOfficeController">
+    <top>
+        <VBox spacing="15" style="-fx-padding: 20 20 10 20;">
+            <VBox>
+                <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;" text="⚡ Smart Control Center" />
+                <Label style="-fx-text-fill: #94a3b8; -fx-font-size: 13px;" text="Système automatisé de détection et d'aide à la décision" />
+            </VBox>
+            
+            <!-- KPI CARDS -->
+            <FlowPane hgap="15" vgap="15">
+                <VBox fx:id="kpiOverdue" onMouseClicked="#filterOverdue" prefWidth="180" styleClass="kpi-card" style="-fx-background-color: #1e293b; -fx-padding: 15; -fx-background-radius: 8; -fx-cursor: hand; -fx-border-color: #ef4444; -fx-border-radius: 8; -fx-border-width: 0 0 0 4;">
+                    <Label style="-fx-text-fill: #94a3b8; -fx-font-size: 12px;" text="Tâches Critiques (Retard)" />
+                    <Label fx:id="lblOverdueCount" style="-fx-text-fill: #ef4444; -fx-font-size: 24px; -fx-font-weight: bold;" text="0" />
+                </VBox>
+                <VBox fx:id="kpiStuck" onMouseClicked="#filterStuck" prefWidth="180" styleClass="kpi-card" style="-fx-background-color: #1e293b; -fx-padding: 15; -fx-background-radius: 8; -fx-cursor: hand; -fx-border-color: #f59e0b; -fx-border-radius: 8; -fx-border-width: 0 0 0 4;">
+                    <Label style="-fx-text-fill: #94a3b8; -fx-font-size: 12px;" text="Tâches Bloquées" />
+                    <Label fx:id="lblStuckCount" style="-fx-text-fill: #f59e0b; -fx-font-size: 24px; -fx-font-weight: bold;" text="0" />
+                </VBox>
+                <VBox fx:id="kpiOverloaded" onMouseClicked="#filterOverloaded" prefWidth="180" styleClass="kpi-card" style="-fx-background-color: #1e293b; -fx-padding: 15; -fx-background-radius: 8; -fx-cursor: hand; -fx-border-color: #eab308; -fx-border-radius: 8; -fx-border-width: 0 0 0 4;">
+                    <Label style="-fx-text-fill: #94a3b8; -fx-font-size: 12px;" text="Utilisateurs Surchargés" />
+                    <Label fx:id="lblOverloadedCount" style="-fx-text-fill: #eab308; -fx-font-size: 24px; -fx-font-weight: bold;" text="0" />
+                </VBox>
+            </FlowPane>
+        </VBox>
+    </top>
+    
+    <center>
+        <VBox spacing="15" style="-fx-padding: 0 20 20 20;">
+            <!-- CHARTS SECTION -->
+            <HBox spacing="15" prefHeight="200">
+                <VBox style="-fx-background-color: #1a1d21; -fx-border-color: #2a2d32; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 10;" HBox.hgrow="ALWAYS">
+                    <Label text="Répartition des Statuts" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <PieChart fx:id="statusPieChart" VBox.vgrow="ALWAYS" legendVisible="false" style="-fx-pie-label-visible: false;" />
+                </VBox>
+                <VBox style="-fx-background-color: #1a1d21; -fx-border-color: #2a2d32; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 10;" HBox.hgrow="ALWAYS">
+                    <Label text="Activité (Créées vs Terminées)" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <LineChart fx:id="activityLineChart" VBox.vgrow="ALWAYS" createSymbols="false" animated="false">
+                        <xAxis><CategoryAxis fx:id="dateAxis" /></xAxis>
+                        <yAxis><NumberAxis /></yAxis>
+                    </LineChart>
+                </VBox>
+                <VBox style="-fx-background-color: #1a1d21; -fx-border-color: #2a2d32; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 10;" HBox.hgrow="ALWAYS">
+                    <Label text="Charge de travail / Utilisateur" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <BarChart fx:id="workloadBarChart" VBox.vgrow="ALWAYS" legendVisible="false" animated="false">
+                        <xAxis><CategoryAxis /></xAxis>
+                        <yAxis><NumberAxis /></yAxis>
+                    </BarChart>
+                </VBox>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;" text="🤖 Recommandations de l'IA (Action Requise)" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Label fx:id="lblActiveFilter" style="-fx-text-fill: #94a3b8; -fx-font-size: 12px; -fx-padding: 4 10; -fx-background-color: #1e293b; -fx-background-radius: 12;" text="Filtre: Tous" />
+            </HBox>
+            
+            <ListView fx:id="problemsList" style="-fx-background-color: transparent; -fx-border-color: #2a2d32; -fx-border-radius: 8;" VBox.vgrow="ALWAYS" />
+        </VBox>
+    </center>
+    
+    <right>
+        <VBox spacing="15" style="-fx-padding: 0 20 20 0; -fx-pref-width: 320;">
+            <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;" text="👥 Performance Utilisateurs" />
+            <ListView fx:id="usersPerformanceList" style="-fx-background-color: transparent; -fx-border-color: #2a2d32; -fx-border-radius: 8;" VBox.vgrow="ALWAYS" />
+        </VBox>
+    </right>
+</BorderPane>

@@ -14,7 +14,7 @@ public class MainFX extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Task/login.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
-        stage.setTitle("Read taskspace ");
+        stage.setTitle("LifeOps - Login");
         stage.setScene(scene);
         stage.show();
     }

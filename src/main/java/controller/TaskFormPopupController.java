@@ -241,7 +241,6 @@ public class TaskFormPopupController {
 
     @FXML
     private void handleClose() {
-        Stage stage = (Stage) txtTitle.getScene().getWindow();
-        stage.close();
+        MainLayoutController.getInstance().closePopup();
     }
 }

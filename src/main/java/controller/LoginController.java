@@ -49,8 +49,11 @@ public class LoginController {
 
     private void openMainApp() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Task/board_hub.fxml"));
-            txtEmail.getScene().setRoot(root);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Task/MainLayout.fxml"));
+            Parent root = loader.load();
+
+            javafx.stage.Stage stage = (javafx.stage.Stage) txtEmail.getScene().getWindow();
+            stage.setScene(new javafx.scene.Scene(root));
         } catch (IOException e) {
             e.printStackTrace();
             showError("Erreur lors du chargement de l'application.");

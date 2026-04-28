@@ -164,11 +164,7 @@ public class BoardViewController {
             controller.setBoardContext(currentBoard, currentUserRole);
             controller.fillForm(task);
 
-            javafx.stage.Stage stage = new javafx.stage.Stage();
-            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
-            stage.initStyle(javafx.stage.StageStyle.UNDECORATED);
-            stage.setScene(new javafx.scene.Scene(root));
-            stage.show();
+            MainLayoutController.getInstance().showPopup(root);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -183,11 +179,7 @@ public class BoardViewController {
             TaskFormPopupController controller = loader.getController();
             controller.setContext(currentBoard.getId(), Session.getCurrentUser().getId(), this);
             controller.setBoardContext(currentBoard, currentUserRole);
-            javafx.stage.Stage stage = new javafx.stage.Stage();
-            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
-            stage.initStyle(javafx.stage.StageStyle.UNDECORATED);
-            stage.setScene(new javafx.scene.Scene(root));
-            stage.show();
+            MainLayoutController.getInstance().showPopup(root);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -202,9 +194,9 @@ public class BoardViewController {
             controller.setTaskSpaceId(currentBoard.getId());
             javafx.stage.Stage stage = new javafx.stage.Stage();
             stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
-            stage.initStyle(javafx.stage.StageStyle.UNDECORATED);
+            stage.initStyle(javafx.stage.StageStyle.UNDECORATED); // Optional, for clean UI
             stage.setScene(new javafx.scene.Scene(root));
-            stage.show();
+            stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -224,11 +216,6 @@ public class BoardViewController {
 
     @FXML
     private void handleBack(ActionEvent event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Task/board_hub.fxml"));
-            lblBoardTitle.getScene().setRoot(root);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        MainLayoutController.getInstance().loadPage("board_hub.fxml");
     }
 }

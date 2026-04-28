@@ -159,7 +159,7 @@ public class BoardHubController {
             Parent root = loader.load();
             BoardViewController controller = loader.getController();
             controller.setBoard(space);
-            boardGrid.getScene().setRoot(root);
+            MainLayoutController.getInstance().loadContent(root);
         } catch (IOException e) {
             e.printStackTrace();
         }
