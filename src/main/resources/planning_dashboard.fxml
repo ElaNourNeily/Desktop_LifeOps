@@ -56,7 +56,7 @@
                   <!-- Action Buttons -->
                   <HBox spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="45.0" styleClass="btn-ia" text="🤖 Optimiser avec l'IA">
+                        <Button fx:id="btnIA" mnemonicParsing="false" onAction="#handleAIOptimize" prefHeight="45.0" styleClass="btn-ia" text="🤖 Optimiser avec l'IA">
                            <padding>
                               <Insets left="20.0" right="20.0" />
                            </padding>

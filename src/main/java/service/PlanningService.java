@@ -133,6 +133,28 @@ public class PlanningService implements IService<Planning> {
         return plannings;
     }
 
+    // ─── DASHBOARD : Récupérer les plannings d'une période ──────────────
+    public List<Planning> recupererParPeriode(int utilisateurId, java.sql.Date debut, java.sql.Date fin) throws SQLException {
+        List<Planning> plannings = new ArrayList<>();
+        String sql = "SELECT * FROM planning WHERE utilisateur_id = ? AND date >= ? AND date <= ? ORDER BY date ASC";
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setInt(1, utilisateurId);
+        ps.setDate(2, debut);
+        ps.setDate(3, fin);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            plannings.add(new Planning(
+                    rs.getInt("id"),
+                    rs.getDate("date"),
+                    rs.getBoolean("disponibilite"),
+                    rs.getTime("heure_debut_journee"),
+                    rs.getTime("heure_fin_journee"),
+                    rs.getInt("utilisateur_id")
+            ));
+        }
+        return plannings;
+    }
+
     // ─── DASHBOARD : Récupérer les plannings d'une semaine ──────────────
     public List<Planning> recupererParSemaine(int utilisateurId, java.sql.Date debutSemaine) throws SQLException {
         List<Planning> plannings = new ArrayList<>();

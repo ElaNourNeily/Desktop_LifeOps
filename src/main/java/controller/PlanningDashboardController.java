@@ -18,6 +18,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,8 +55,11 @@ public class PlanningDashboardController {
     // Active filter: "ALL", "HAUTE", "MOYENNE", "BASSE", "EN_COURS", "ATTENTE"
     private String currentFilter = "ALL";
 
+    @FXML private javafx.scene.control.Button btnIA;
+
     private final PlanningService planningService = new PlanningService();
     private final ActiviteService activiteService = new ActiviteService();
+    private final service.AIService aiService = new service.AIService("AIzaSyBURe5qg2szXdtNuoiVmyq0Gw0x5dAflTM");
     
     // Navigation Jump
     private static LocalDate jumpToDate;
@@ -113,14 +117,20 @@ public class PlanningDashboardController {
         calendarGrid.getChildren().clear();
 
         // Time column
-        ColumnConstraints timeCol = new ColumnConstraints(60);
+        ColumnConstraints timeCol = new ColumnConstraints();
+        timeCol.setPrefWidth(60);
+        timeCol.setMinWidth(60);
         calendarGrid.getColumnConstraints().add(timeCol);
 
         int numCols = viewMode.equals("DAY") ? 1 : 7;
+        double dayPercent = 100.0 / (numCols); // Grid will handle the fixed timeCol automatically if we don't set it to percent
+        
         for (int i = 0; i < numCols; i++) {
             ColumnConstraints dayCol = new ColumnConstraints();
             dayCol.setHgrow(Priority.ALWAYS);
-            dayCol.setMinWidth(viewMode.equals("DAY") ? 300 : 120);
+            if (!viewMode.equals("DAY")) {
+                dayCol.setPercentWidth(90.0 / 7.0); // Roughly 12.8% each, leaving space for time column
+            }
             calendarGrid.getColumnConstraints().add(dayCol);
         }
 
@@ -220,12 +230,15 @@ public class PlanningDashboardController {
                     lblDayNum.setStyle("-fx-font-size: 18; -fx-text-fill: white; -fx-font-weight: bold;");
                 }
 
+                Label lblFullDate = new Label(date.format(DateTimeFormatter.ofPattern("MM/yyyy")));
+                lblFullDate.setStyle("-fx-font-size: 9; -fx-text-fill: rgba(113,113,122,0.5); -fx-font-weight: bold;");
+
                 // CLICK → Switch to Day View for this date
                 final LocalDate clickedDate = date;
                 dayHeader.setOnMouseClicked(e -> switchToDayView(clickedDate));
                 lblDayNum.setOnMouseClicked(e -> switchToDayView(clickedDate));
 
-                dayHeader.getChildren().addAll(lblDayName, lblDayNum);
+                dayHeader.getChildren().addAll(lblDayName, lblDayNum, lblFullDate);
                 gridHeader.getChildren().add(dayHeader);
                 date = date.plusDays(1);
             }
@@ -548,5 +561,139 @@ public class PlanningDashboardController {
         if (DashboardController.getInstance() != null) {
             DashboardController.getInstance().setView("planning_management.fxml");
         }
+    }
+
+    @FXML
+    private void handleAIOptimize() {
+        List<String> choices = new ArrayList<>();
+        choices.add("Aujourd'hui uniquement (" + (viewMode.equals("DAY") ? currentDayView : LocalDate.now()) + ")");
+        choices.add("Toute la semaine (du " + currentMonday + " au " + currentMonday.plusDays(6) + ")");
+
+        javafx.scene.control.ChoiceDialog<String> scopeDialog = new javafx.scene.control.ChoiceDialog<>(choices.get(0), choices);
+        scopeDialog.setTitle("IA Assistance");
+        scopeDialog.setHeaderText("Portée de l'optimisation");
+        scopeDialog.setContentText("Que voulez-vous optimiser ?");
+
+        scopeDialog.showAndWait().ifPresent(scope -> {
+            boolean onlyDay = scope.startsWith("Aujourd'hui");
+            
+            javafx.scene.control.TextInputDialog dialog = new javafx.scene.control.TextInputDialog("Organise ma productivité");
+            dialog.setTitle("IA Assistance");
+            dialog.setHeaderText("Instructions pour l'IA (" + (onlyDay ? "Journée" : "Semaine") + ")");
+            dialog.setContentText("Que voulez-vous demander à l'IA ?");
+            
+            dialog.showAndWait().ifPresent(userRequest -> {
+                btnIA.setDisable(true);
+                btnIA.setText("🤖 Analyse en cours...");
+                
+                final LocalDate start, end;
+                if (onlyDay) {
+                    start = viewMode.equals("DAY") ? currentDayView : LocalDate.now();
+                    end = start;
+                } else {
+                    start = currentMonday;
+                    end = currentMonday.plusDays(6);
+                }
+                
+                javafx.concurrent.Task<com.google.gson.JsonObject> task = new javafx.concurrent.Task<>() {
+                    @Override
+                    protected com.google.gson.JsonObject call() throws Exception {
+                        return aiService.optimizePlanning(userRequest, start, end, currentUserId);
+                    }
+                };
+            
+            task.setOnSucceeded(e -> {
+                com.google.gson.JsonObject result = task.getValue();
+                btnIA.setDisable(false);
+                btnIA.setText("🤖 Optimiser avec l'IA");
+
+                // Build a detailed breakdown of suggestions per day
+                StringBuilder details = new StringBuilder();
+                details.append(result.get("summary").getAsString()).append("\n\n");
+                details.append("--- DÉTAILS DES CHANGEMENTS ---\n");
+
+                com.google.gson.JsonArray suggestions = result.getAsJsonArray("suggestions");
+                if (suggestions != null) {
+                    for (com.google.gson.JsonElement dayElem : suggestions) {
+                        com.google.gson.JsonObject day = dayElem.getAsJsonObject();
+                        details.append("\n📅 ").append(day.get("date").getAsString()).append(" :\n");
+
+                        com.google.gson.JsonArray newActs = day.getAsJsonArray("new_activities");
+                        if (newActs != null && !newActs.isEmpty()) {
+                            details.append("   ➕ Nouvelles : ");
+                            for (com.google.gson.JsonElement a : newActs) {
+                                details.append(a.getAsJsonObject().get("title").getAsString()).append(", ");
+                            }
+                            details.setLength(details.length() - 2); // remove last comma
+                            details.append("\n");
+                        }
+
+                        com.google.gson.JsonArray mods = day.getAsJsonArray("modifications");
+                        if (mods != null && !mods.isEmpty()) {
+                            details.append("   🔄 Modifiées : ");
+                            for (com.google.gson.JsonElement m : mods) {
+                                details.append(m.getAsJsonObject().get("original_title").getAsString()).append(", ");
+                            }
+                            details.setLength(details.length() - 2);
+                            details.append("\n");
+                        }
+                    }
+                }
+                details.append("\nVoulez-vous appliquer ces changements ?");
+
+                // Show confirmation dialog before applying
+                javafx.scene.control.Alert confirm = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION);
+                confirm.setTitle("Suggestions de l'IA");
+                confirm.setHeaderText("Plan d'optimisation généré");
+                
+                // Use a ScrollPane for the detailed content if it's too long
+                javafx.scene.control.TextArea textArea = new javafx.scene.control.TextArea(details.toString());
+                textArea.setEditable(false);
+                textArea.setWrapText(true);
+                textArea.setPrefHeight(300);
+                confirm.getDialogPane().setContent(textArea);
+                
+                javafx.scene.control.ButtonType btnAppliquer = new javafx.scene.control.ButtonType("Appliquer");
+                javafx.scene.control.ButtonType btnAnnuler = new javafx.scene.control.ButtonType("Annuler", javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE);
+                confirm.getButtonTypes().setAll(btnAppliquer, btnAnnuler);
+
+                confirm.showAndWait().ifPresent(response -> {
+                    if (response == btnAppliquer) {
+                        try {
+                            aiService.saveConfirmedSuggestions(result, currentUserId);
+                            handleFilterReset(); // Reset filters to show the new activities
+                            refresh();
+                            
+                            javafx.scene.control.Alert success = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+                            success.setTitle("Succès");
+                            success.setHeaderText(null);
+                            success.setContentText("Les recommandations ont été appliquées avec succès !");
+                            success.show();
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                            showError("Erreur lors de l'enregistrement : " + ex.getMessage());
+                        }
+                    }
+                });
+            });
+            
+            task.setOnFailed(e -> {
+                btnIA.setDisable(false);
+                btnIA.setText("🤖 Optimiser avec l'IA");
+                showError("L'IA n'a pas pu traiter votre demande : " + task.getException().getMessage());
+                task.getException().printStackTrace();
+            });
+            
+            new Thread(task).start();
+        });
+    });
+}
+
+    private void showError(String message) {
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.show();
     }
 }

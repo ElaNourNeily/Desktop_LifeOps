@@ -66,6 +66,13 @@ public class ActiviteService implements IService<Activite> {
         ps.executeUpdate();
     }
 
+    public void supprimerSuggestionsIA(int planningId) throws SQLException {
+        String sql = "DELETE FROM activite WHERE planning_id = ? AND suggested_by_ai = 1";
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setInt(1, planningId);
+        ps.executeUpdate();
+    }
+
     @Override
     public List<Activite> recuperer() throws SQLException {
         List<Activite> activites = new ArrayList<>();
