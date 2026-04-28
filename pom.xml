@@ -35,6 +35,11 @@
             <artifactId>tess4j</artifactId>
             <version>5.9.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.twilio.sdk</groupId>
+            <artifactId>twilio</artifactId>
+            <version>10.1.2</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -45,6 +50,10 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>test.MainFX</mainClass>
+                    <!-- Keep JavaFX native cache under the project (avoids ~/.openjfx permission issues). -->
+                    <options>
+                        <option>-Djavafx.cachedir=${project.build.directory}/javafx-cache</option>
+                    </options>
                 </configuration>
             </plugin>
         </plugins>

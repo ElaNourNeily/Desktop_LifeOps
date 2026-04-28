@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -10,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="700.0" prefWidth="980.0" styleClass="root-pane" stylesheets="@../styleRead.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddDepenseController">
+<AnchorPane prefHeight="700.0" prefWidth="980.0" styleClass="root-pane" stylesheets="@../styleRead.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AddDepenseController">
    <children>
       <VBox prefHeight="700.0" prefWidth="980.0" styleClass="main-content">
          <children>
@@ -64,6 +65,17 @@
                            <children>
                               <Label styleClass="field-label" text="Budget" />
                               <ComboBox fx:id="budgetComboBox" prefWidth="250.0" styleClass="form-choice" />
+                           </children>
+                        </VBox>
+                        <VBox spacing="8.0">
+                           <children>
+                              <CheckBox fx:id="importantCheckBox" styleClass="field-label" text="Important (Send SMS Alert)" />
+                           </children>
+                        </VBox>
+                        <VBox fx:id="phoneContainer" spacing="8.0" visible="false" managed="false">
+                           <children>
+                              <Label styleClass="field-label" text="Phone Number (e.g., +21612345678)" />
+                              <TextField fx:id="phoneNumberField" promptText="+216..." styleClass="form-field" />
                            </children>
                         </VBox>
                         <Label fx:id="messageLabel" styleClass="page-subtitle" text="" />

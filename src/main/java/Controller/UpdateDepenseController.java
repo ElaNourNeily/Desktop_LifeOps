@@ -1,4 +1,4 @@
-package controller;
+package Controller;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -15,6 +15,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import service.SmsService;
 
 public class UpdateDepenseController {
 
@@ -50,6 +51,7 @@ public class UpdateDepenseController {
 
     private final DepenseService depenseService = new DepenseService();
     private final BudgetService budgetService = new BudgetService();
+    private final SmsService smsService = new SmsService();
     private Depense selectedDepense;
 
     @FXML
@@ -112,10 +114,23 @@ public class UpdateDepenseController {
                     Date.valueOf(selectedDate),
                     requiredSelection(typePaiementComboBox.getValue(), "type de paiement"),
                     selectedDepense.getUtilisateurId(),
-                    selectedBudget.getId()
+                    selectedBudget.getId(),
+                    selectedDepense.isImportant(),
+                    selectedDepense.getPhoneNumber()
             );
 
             depenseService.modifier(updated);
+
+            // Send SMS if it is important AND the date is today
+            if (updated.isImportant() && selectedDate.equals(LocalDate.now())) {
+                String msg = "Alerte LifeOps: La dépense importante '" + updated.getTitre() + "' de " + updated.getMontant() + " TND a été mise à jour pour aujourd'hui.";
+                smsService.sendSms(updated.getPhoneNumber(), msg);
+                
+                // Mark as sent so the scheduler doesn't send it again
+                updated.setSmsSent(true);
+                depenseService.modifier(updated);
+            }
+
             FinanceSelectionContext.setSelectedDepense(updated);
             ViewNavigator.navigate(event, "/finance/finance.fxml", "LifeOps - Finance");
         } catch (IllegalArgumentException | SQLException e) {
@@ -130,8 +145,9 @@ public class UpdateDepenseController {
 
     private double parseDouble(String value, String fieldName) {
         try {
-            return Double.parseDouble(requiredText(value, fieldName));
-        } catch (NumberFormatException e) {
+            String raw = requiredText(value, fieldName);
+            return utils.CurrencyUtils.parseAndConvert(raw, 0.0);
+        } catch (Exception e) {
             throw new IllegalArgumentException("Valeur invalide pour " + fieldName + ".");
         }
     }
@@ -149,4 +165,5 @@ public class UpdateDepenseController {
         }
         return value;
     }
+
 }

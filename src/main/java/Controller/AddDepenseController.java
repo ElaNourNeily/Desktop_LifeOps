@@ -1,4 +1,4 @@
-package controller;
+package Controller;
 
 import javafx.collections.FXCollections;
 import javafx.event.Event;
@@ -28,7 +28,10 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.VBox;
+import service.SmsService;
 
 public class AddDepenseController {
 
@@ -64,12 +67,19 @@ public class AddDepenseController {
     private Label currentUserLabel;
     @FXML
     private Button scanReceiptButton;
+    @FXML
+    private CheckBox importantCheckBox;
+    @FXML
+    private VBox phoneContainer;
+    @FXML
+    private TextField phoneNumberField;
 
     private final DepenseService depenseService = new DepenseService();
     private final BudgetService budgetService = new BudgetService();
     private final ReceiptOcrService receiptOcrService = new ReceiptOcrService();
     private final ReceiptParser receiptParser = new ReceiptParser();
     private final CategorizationService categorizationService = new CategorizationService();
+    private final SmsService smsService = new SmsService();
     private volatile boolean scanInProgress = false;
 
     @FXML
@@ -80,6 +90,12 @@ public class AddDepenseController {
         typePaiementComboBox.setItems(FXCollections.observableArrayList("Card", "Cash"));
         budgetComboBox.setCellFactory(param -> new BudgetListCell());
         budgetComboBox.setButtonCell(new BudgetListCell());
+
+        // Toggle phone field based on checkbox
+        if (importantCheckBox != null && phoneContainer != null) {
+            phoneContainer.visibleProperty().bind(importantCheckBox.selectedProperty());
+            phoneContainer.managedProperty().bind(importantCheckBox.selectedProperty());
+        }
 
         try {
             budgetComboBox.setItems(FXCollections.observableArrayList(
@@ -111,6 +127,15 @@ public class AddDepenseController {
             String titre = requiredText(titreField.getText(), "titre");
             String categorie = categorieComboBox.getValue();
 
+            boolean isImportant = importantCheckBox.isSelected();
+            String phoneNumber = null;
+            if (isImportant) {
+                phoneNumber = requiredText(phoneNumberField.getText(), "numéro de téléphone");
+                if (!phoneNumber.startsWith("+")) {
+                    throw new IllegalArgumentException("Le numéro de téléphone doit être au format international (ex: +216...).");
+                }
+            }
+
             // Auto-categorize if no category selected
             if (categorie == null || categorie.isBlank()) {
                 CategorizationService.CategorizationResult result = categorizationService.categorizeExpense(titre);
@@ -125,10 +150,24 @@ public class AddDepenseController {
                     Date.valueOf(selectedDate),
                     requiredSelection(typePaiementComboBox.getValue(), "type de paiement"),
                     CURRENT_UTILISATEUR_ID,
-                    selectedBudget.getId()
+                    selectedBudget.getId(),
+                    isImportant,
+                    phoneNumber
             );
 
             depenseService.ajouter(depense);
+
+            // Immediate SMS check: only if date is today. 
+            // The NotificationScheduler will handle future dates.
+            if (isImportant && selectedDate.equals(LocalDate.now())) {
+                String msg = "Alerte LifeOps: Une dépense importante '" + titre + "' de " + depense.getMontant() + " TND a été enregistrée pour aujourd'hui.";
+                smsService.sendSms(phoneNumber, msg);
+                
+                // Mark as sent so the scheduler doesn't send it again
+                depense.setSmsSent(true);
+                depenseService.modifier(depense);
+            }
+
             ViewNavigator.navigate(event, "/finance/finance.fxml", "LifeOps - Finance");
         } catch (IllegalArgumentException | SQLException e) {
             messageLabel.setText(e.getMessage());
@@ -240,10 +279,12 @@ public class AddDepenseController {
         });
     }
 
+
     private double parseDouble(String value, String fieldName) {
         try {
-            return Double.parseDouble(requiredText(value, fieldName));
-        } catch (NumberFormatException e) {
+            String raw = requiredText(value, fieldName);
+            return utils.CurrencyUtils.parseAndConvert(raw, 0.0);
+        } catch (Exception e) {
             throw new IllegalArgumentException("Valeur invalide pour " + fieldName + ".");
         }
     }

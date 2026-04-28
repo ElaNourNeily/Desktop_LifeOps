@@ -1,4 +1,4 @@
-package controller;
+package Controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,8 +14,15 @@ import model.Budget;
 import model.Depense;
 import service.BudgetService;
 import service.DepenseService;
+import service.ExpenseInsightsService;
+import service.ExpenseInsightsService.PriorityResult;
+import service.ExpenseInsightsService.RecurringCandidate;
 
 import java.sql.SQLException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -47,10 +54,37 @@ public class FinanceController {
     @FXML
     private ComboBox<String> sortDepenseComboBox;
 
+    @FXML
+    private VBox remindersBanner;
+    @FXML
+    private Label remindersKickerLabel;
+    @FXML
+    private Label remindersTitleLabel;
+    @FXML
+    private Label remindersDetailLabel;
+    @FXML
+    private Label remindersMetaLabel;
+
+    @FXML
+    private Label insightsSubtitleLabel;
+    @FXML
+    private VBox recurringBox;
+    @FXML
+    private Label recurringSummaryLabel;
+    @FXML
+    private VBox priorityBox;
+    @FXML
+    private Label prioritySummaryLabel;
+
     private final BudgetService budgetService = new BudgetService();
     private final DepenseService depenseService = new DepenseService();
+    private final ExpenseInsightsService insightsService = new ExpenseInsightsService();
     private List<Budget> allBudgets = new ArrayList<>();
     private List<Depense> allDepenses = new ArrayList<>();
+    private List<Depense> reminderDepensesToday = List.of();
+    private List<Depense> reminderDepensesTomorrow = List.of();
+    private boolean remindersDismissed = false;
+    private boolean insightsDismissed = false;
 
     @FXML
     public void initialize() {
@@ -81,9 +115,213 @@ public class FinanceController {
             allBudgets = budgetService.recupererParUtilisateur(CURRENT_UTILISATEUR_ID);
             allDepenses = depenseService.recupererParUtilisateur(CURRENT_UTILISATEUR_ID);
             applyFilters();
+            refreshRemindersBanner();
+            refreshInsights();
         } catch (SQLException e) {
             financeMessageLabel.setText(e.getMessage());
         }
+    }
+
+    private void refreshInsights() {
+        if (insightsDismissed) {
+            if (insightsSubtitleLabel != null) insightsSubtitleLabel.setText("");
+            if (recurringBox != null) {
+                recurringBox.setVisible(false);
+                recurringBox.setManaged(false);
+            }
+            if (priorityBox != null) {
+                priorityBox.setVisible(false);
+                priorityBox.setManaged(false);
+            }
+            return;
+        }
+
+        if (insightsSubtitleLabel != null) {
+            insightsSubtitleLabel.setText("Detection automatique: abonnements probables + priorisation.");
+        }
+
+        // Recurring detection
+        List<RecurringCandidate> recurring = insightsService.detectRecurring(allDepenses);
+        if (recurringSummaryLabel != null) {
+            if (recurring.isEmpty()) {
+                recurringSummaryLabel.setText("Aucune recurrence fiable detectee (il faut en general 3 occurrences).");
+            } else {
+                StringBuilder sb = new StringBuilder();
+                int take = Math.min(3, recurring.size());
+                for (int i = 0; i < take; i++) {
+                    RecurringCandidate c = recurring.get(i);
+                    sb.append("- ")
+                            .append(c.getLabel())
+                            .append(" ~ ")
+                            .append(String.format(Locale.US, "%.2f", c.getAmount()))
+                            .append(" DT / ")
+                            .append(c.getCadence())
+                            .append(" (")
+                            .append(c.getConfidence())
+                            .append("%, prochaine: ")
+                            .append(c.getNextExpectedDate())
+                            .append(")\n");
+                }
+                recurringSummaryLabel.setText(sb.toString().trim());
+            }
+        }
+
+        // Priority suggestion (current month only; stable ranking)
+        YearMonth currentMonth = YearMonth.now();
+        ZoneId zone = ZoneId.systemDefault();
+
+        List<Depense> monthDepenses = allDepenses.stream()
+                .filter(d -> d.getDate() != null)
+                .filter(d -> {
+                    LocalDate ld = Instant.ofEpochMilli(d.getDate().getTime()).atZone(zone).toLocalDate();
+                    return YearMonth.from(ld).equals(currentMonth);
+                })
+                .toList();
+
+        if (prioritySummaryLabel != null) {
+            if (monthDepenses.isEmpty()) {
+                prioritySummaryLabel.setText("Aucune depense pour " + currentMonth + ". Ajoutez des depenses pour voir des priorites proposees.");
+                return;
+            }
+
+            // Rank: HIGH first, then MEDIUM, then LOW. Tie-break by amount desc, then date desc.
+            List<Depense> ranked = monthDepenses.stream()
+                    .sorted((a, b) -> {
+                        PriorityResult pa = insightsService.prioritize(a);
+                        PriorityResult pb = insightsService.prioritize(b);
+                        int cmp = Integer.compare(priorityRank(pa.getPriority()), priorityRank(pb.getPriority()));
+                        if (cmp != 0) return cmp;
+                        cmp = Double.compare(b.getMontant(), a.getMontant());
+                        if (cmp != 0) return cmp;
+                        return b.getDate().compareTo(a.getDate());
+                    })
+                    .toList();
+
+            StringBuilder sb = new StringBuilder();
+            int take = Math.min(8, ranked.size());
+            for (int i = 0; i < take; i++) {
+                Depense d = ranked.get(i);
+                PriorityResult pr = insightsService.prioritize(d);
+                sb.append("- ")
+                        .append(d.getTitre() == null ? "(sans titre)" : d.getTitre())
+                        .append(" : ")
+                        .append(String.format(Locale.US, "%.2f", d.getMontant()))
+                        .append(" DT -> ")
+                        .append(pr.getPriority())
+                        .append(" (")
+                        .append(pr.getReason())
+                        .append(")\n");
+            }
+            prioritySummaryLabel.setText(sb.toString().trim());
+        }
+    }
+
+    private int priorityRank(ExpenseInsightsService.Priority p) {
+        if (p == null) return 2;
+        return switch (p) {
+            case HIGH -> 0;
+            case MEDIUM -> 1;
+            case LOW -> 2;
+        };
+    }
+
+    @FXML
+    public void dismissInsights() {
+        insightsDismissed = true;
+        refreshInsights();
+    }
+
+    private void refreshRemindersBanner() {
+        if (remindersBanner == null) {
+            return;
+        }
+        if (remindersDismissed) {
+            remindersBanner.setVisible(false);
+            remindersBanner.setManaged(false);
+            return;
+        }
+
+        LocalDate today = LocalDate.now();
+        LocalDate tomorrow = today.plusDays(1);
+        ZoneId zone = ZoneId.systemDefault();
+
+        reminderDepensesToday = allDepenses.stream()
+                .filter(d -> d.getDate() != null)
+                .filter(d -> Instant.ofEpochMilli(d.getDate().getTime()).atZone(zone).toLocalDate().equals(today))
+                .toList();
+
+        reminderDepensesTomorrow = allDepenses.stream()
+                .filter(d -> d.getDate() != null)
+                .filter(d -> Instant.ofEpochMilli(d.getDate().getTime()).atZone(zone).toLocalDate().equals(tomorrow))
+                .toList();
+
+        int todayCount = reminderDepensesToday.size();
+        int tomorrowCount = reminderDepensesTomorrow.size();
+        boolean hasAny = todayCount > 0 || tomorrowCount > 0;
+
+        remindersBanner.setVisible(hasAny);
+        remindersBanner.setManaged(hasAny);
+        if (!hasAny) {
+            return;
+        }
+
+        if (remindersKickerLabel != null) {
+            remindersKickerLabel.setText(todayCount > 0 ? "ALERTE 24H" : "RAPPEL 48H");
+        }
+
+        Depense primary = todayCount > 0 ? reminderDepensesToday.get(0) : reminderDepensesTomorrow.get(0);
+        LocalDate primaryDate = todayCount > 0 ? today : tomorrow;
+        String primaryTitle = primary.getTitre() == null || primary.getTitre().isBlank() ? "Depense" : primary.getTitre();
+
+        if (remindersTitleLabel != null) {
+            remindersTitleLabel.setText("Depense imminente: action conseillee.");
+        }
+        if (remindersDetailLabel != null) {
+            remindersDetailLabel.setText("Rappel: " + primaryTitle + " est prevu le " + primaryDate + ".");
+        }
+        if (remindersMetaLabel != null) {
+            int remaining = Math.max(0, (todayCount + tomorrowCount) - 1);
+            remindersMetaLabel.setText("+" + remaining + " autre(s) rappel(s) en attente.  Urgent 24H: " + todayCount + " | Rappels 48H: " + tomorrowCount);
+        }
+    }
+
+    @FXML
+    public void markAllRemindersRead() {
+        remindersDismissed = true;
+        refreshRemindersBanner();
+    }
+
+    @FXML
+    public void viewRemindersList() {
+        int total = reminderDepensesToday.size() + reminderDepensesTomorrow.size();
+        if (total == 0) {
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        if (!reminderDepensesToday.isEmpty()) {
+            sb.append("Aujourd'hui:\n");
+            for (Depense d : reminderDepensesToday) {
+                sb.append("- ").append(d.getTitre() == null ? "(sans titre)" : d.getTitre())
+                        .append(" : ").append(String.format(java.util.Locale.US, "%.2f", d.getMontant()))
+                        .append(" DT\n");
+            }
+            sb.append("\n");
+        }
+        if (!reminderDepensesTomorrow.isEmpty()) {
+            sb.append("Demain:\n");
+            for (Depense d : reminderDepensesTomorrow) {
+                sb.append("- ").append(d.getTitre() == null ? "(sans titre)" : d.getTitre())
+                        .append(" : ").append(String.format(java.util.Locale.US, "%.2f", d.getMontant()))
+                        .append(" DT\n");
+            }
+        }
+
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+        alert.setTitle("Rappels");
+        alert.setHeaderText("Depenses a venir");
+        alert.setContentText(sb.toString());
+        alert.showAndWait();
     }
 
     private void applyFilters() {

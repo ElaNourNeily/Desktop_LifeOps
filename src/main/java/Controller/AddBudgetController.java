@@ -1,4 +1,4 @@
-package controller;
+package Controller;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -58,8 +58,9 @@ public class AddBudgetController {
 
     private double parseDouble(String value, String fieldName) {
         try {
-            return Double.parseDouble(requiredText(value, fieldName));
-        } catch (NumberFormatException e) {
+            String raw = requiredText(value, fieldName);
+            return utils.CurrencyUtils.parseAndConvert(raw, 0.0);
+        } catch (Exception e) {
             throw new IllegalArgumentException("Valeur invalide pour " + fieldName + ".");
         }
     }

@@ -12,12 +12,25 @@ public class Depense {
     private String typePaiement;
     private int utilisateurId;
     private int budgetId;
+    private boolean isImportant;
+    private String phoneNumber;
+    private boolean smsSent;
 
     public Depense() {
     }
 
     public Depense(String titre, double montant, String categorie, Date date,
                    String typePaiement, int utilisateurId, int budgetId) {
+        this(titre, montant, categorie, date, typePaiement, utilisateurId, budgetId, false, null, false);
+    }
+
+    public Depense(String titre, double montant, String categorie, Date date,
+                   String typePaiement, int utilisateurId, int budgetId, boolean isImportant, String phoneNumber) {
+        this(titre, montant, categorie, date, typePaiement, utilisateurId, budgetId, isImportant, phoneNumber, false);
+    }
+
+    public Depense(String titre, double montant, String categorie, Date date,
+                   String typePaiement, int utilisateurId, int budgetId, boolean isImportant, String phoneNumber, boolean smsSent) {
         this.titre = titre;
         this.montant = montant;
         this.categorie = categorie;
@@ -25,10 +38,23 @@ public class Depense {
         this.typePaiement = typePaiement;
         this.utilisateurId = utilisateurId;
         this.budgetId = budgetId;
+        this.isImportant = isImportant;
+        this.phoneNumber = phoneNumber;
+        this.smsSent = smsSent;
     }
 
     public Depense(int id, String titre, double montant, String categorie, Date date,
                    String typePaiement, int utilisateurId, int budgetId) {
+        this(id, titre, montant, categorie, date, typePaiement, utilisateurId, budgetId, false, null, false);
+    }
+
+    public Depense(int id, String titre, double montant, String categorie, Date date,
+                   String typePaiement, int utilisateurId, int budgetId, boolean isImportant, String phoneNumber) {
+        this(id, titre, montant, categorie, date, typePaiement, utilisateurId, budgetId, isImportant, phoneNumber, false);
+    }
+
+    public Depense(int id, String titre, double montant, String categorie, Date date,
+                   String typePaiement, int utilisateurId, int budgetId, boolean isImportant, String phoneNumber, boolean smsSent) {
         this.id = id;
         this.titre = titre;
         this.montant = montant;
@@ -37,6 +63,9 @@ public class Depense {
         this.typePaiement = typePaiement;
         this.utilisateurId = utilisateurId;
         this.budgetId = budgetId;
+        this.isImportant = isImportant;
+        this.phoneNumber = phoneNumber;
+        this.smsSent = smsSent;
     }
 
     public int getId() {
@@ -103,6 +132,30 @@ public class Depense {
         this.budgetId = budgetId;
     }
 
+    public boolean isImportant() {
+        return isImportant;
+    }
+
+    public void setImportant(boolean important) {
+        isImportant = important;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public boolean isSmsSent() {
+        return smsSent;
+    }
+
+    public void setSmsSent(boolean smsSent) {
+        this.smsSent = smsSent;
+    }
+
     @Override
     public String toString() {
         return "Depense{" +
@@ -114,6 +167,9 @@ public class Depense {
                 ", typePaiement='" + typePaiement + '\'' +
                 ", utilisateurId=" + utilisateurId +
                 ", budgetId=" + budgetId +
+                ", isImportant=" + isImportant +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", smsSent=" + smsSent +
                 '}';
     }
 }
