@@ -470,16 +470,24 @@ public class PlanningDashboardController {
 
     private int findOrCreatePlanningId(LocalDate date) {
         try {
-            List<Planning> plannings = planningService.recupererParSemaine(currentUserId, Date.valueOf(date));
-            for (Planning p : plannings) {
-                if (p.getDate().toLocalDate().equals(date)) return p.getId();
-            }
+            // 1. Try to find existing planning for this date
+            Planning existing = planningService.recupererParDate(date, currentUserId);
+            if (existing != null) return existing.getId();
             
+            // 2. If not found, create it
             Planning p = new Planning(Date.valueOf(date), true, Time.valueOf("08:00:00"), Time.valueOf("20:00:00"), currentUserId);
             planningService.ajouter(p);
-            System.out.println("[DASHBOARD] Created placeholder planning for " + date);
+            System.out.println("[DASHBOARD] Created placeholder planning for " + date + " with ID: " + p.getId());
             return p.getId();
         } catch (SQLException e) {
+            // 3. Fallback: If insertion failed (e.g. race condition/duplicate), try one last time to fetch it
+            try {
+                Planning p = planningService.recupererParDate(date, currentUserId);
+                if (p != null) return p.getId();
+            } catch (SQLException e2) {
+                e2.printStackTrace();
+            }
+            System.err.println("[DASHBOARD] Critical error finding/creating planning: " + e.getMessage());
             e.printStackTrace();
             return -1;
         }

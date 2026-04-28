@@ -46,10 +46,14 @@ public PersonneService(){
 
     @Override
     public List<Personne> recuperer() throws SQLException {
+        List<Personne> personnes = new ArrayList<>();
+        if (connection == null) {
+            System.err.println("Database connection is null. Cannot retrieve personnes.");
+            return personnes;
+        }
         String sql = "select * from personne ";
         Statement statement = connection.createStatement();
         ResultSet rs = statement.executeQuery(sql);
-        List<Personne> personnes = new ArrayList<>();
         while (rs.next()) {
             Personne p = new Personne();
             p.setId(rs.getInt("id"));

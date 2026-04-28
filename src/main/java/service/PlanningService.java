@@ -28,7 +28,11 @@ public class PlanningService implements IService<Planning> {
 
         ResultSet rs = ps.getGeneratedKeys();
         if (rs.next()) {
-            planning.setId(rs.getInt(1));
+            int generatedId = rs.getInt(1);
+            planning.setId(generatedId);
+            System.out.println("[DEBUG] Planning inserted. Generated ID: " + generatedId);
+        } else {
+            System.err.println("[DEBUG] Planning inserted but NO ID WAS RETURNED!");
         }
     }
 
@@ -66,6 +70,10 @@ public class PlanningService implements IService<Planning> {
     @Override
     public List<Planning> recuperer() throws SQLException {
         List<Planning> plannings = new ArrayList<>();
+        if (connection == null) {
+            System.err.println("Database connection is null. Cannot retrieve plannings.");
+            return plannings;
+        }
         String sql = "SELECT * FROM planning";
         Statement s = connection.createStatement();
         ResultSet rs = s.executeQuery(sql);

@@ -12,7 +12,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import model.Activite;
 import model.Planning;
+
 import service.ActiviteService;
 import service.PlanningService;
 
@@ -102,80 +104,98 @@ public class PlanningManagementController {
     }
 
     private void addPlanningItem(Planning p) {
-        HBox item = new HBox(20); // More spacing
-        item.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-        item.setStyle("-fx-padding: 18 30; " +
-                     "-fx-background-color: rgba(255,255,255,0.01); " +
-                     "-fx-border-color: transparent transparent rgba(255,255,255,0.03) transparent; " +
-                     "-fx-background-radius: 12;");
+        VBox card = new VBox(15);
+        card.getStyleClass().add("finance-card");
         
-        // Date Column
-        VBox colDate = new VBox(2);
-        colDate.setPrefWidth(160);
-        Label lblDate = new Label(p.getDate().toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-        lblDate.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;");
-        Label lblDay = new Label(p.getDate().toLocalDate().format(DateTimeFormatter.ofPattern("EEEE", Locale.FRENCH)).toUpperCase());
-        lblDay.setStyle("-fx-text-fill: #71717a; -fx-font-size: 10; -fx-font-weight: bold; -fx-letter-spacing: 1;");
-        colDate.getChildren().addAll(lblDate, lblDay);
-
-        // Time Range Column
-        HBox colTime = new HBox(12);
-        colTime.setPrefWidth(220);
-        colTime.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-        Label lblIcon = new Label("🕒");
-        lblIcon.setStyle("-fx-text-fill: #8b5cf6; -fx-font-size: 14;");
-        Label lblRange = new Label(p.getHeureDebutJournee().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " — " + p.getHeureFinJournee().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
-        lblRange.setStyle("-fx-text-fill: rgba(255,255,255,0.9); -fx-font-weight: bold; -fx-font-size: 13;");
-        colTime.getChildren().addAll(lblIcon, lblRange);
-
-        // Status Tag
-        HBox colStatus = new HBox(8);
-        colStatus.setPrefWidth(130);
-        colStatus.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-        boolean isDispo = p.isDisponibilite();
-        String statusColor = isDispo ? "#10b981" : "#f43f5e";
-        String statusBg = isDispo ? "rgba(16, 185, 129, 0.08)" : "rgba(244, 63, 94, 0.08)";
-        colStatus.setStyle("-fx-background-color: " + statusBg + "; -fx-background-radius: 20; -fx-padding: 6 15;");
+        // Header Row: Date Title + Plafond-style Badge + Action Buttons
+        HBox header = new HBox(15);
+        header.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
         
-        Label dot = new Label("•"); dot.setStyle("-fx-text-fill: " + statusColor + "; -fx-font-size: 16;");
-        Label lblStatus = new Label(isDispo ? "DISPONIBLE" : "OCCUPÉ"); 
-        lblStatus.setStyle("-fx-text-fill: " + statusColor + "; -fx-font-weight: bold; -fx-font-size: 10;");
-        colStatus.getChildren().addAll(dot, lblStatus);
-
-        Region spacer = new Region(); HBox.setHgrow(spacer, Priority.ALWAYS);
+        Label lblTitle = new Label(p.getDate().toLocalDate().format(DateTimeFormatter.ofPattern("MM-yyyy")));
+        lblTitle.setStyle("-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #1e293b;");
         
-        // ACTION BUTTONS
-        HBox actionBox = new HBox(15);
-        actionBox.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
-
-        Button btnCalendar = new Button("📅");
-        btnCalendar.getStyleClass().add("btn-ghost");
-        btnCalendar.setStyle("-fx-font-size: 14;");
-        btnCalendar.setOnAction(e -> {
-            if (DashboardController.getInstance() != null) {
-                DashboardController.getInstance().jumpToCalendar(p.getDate().toLocalDate());
-            }
-        });
-
-        Button btnEdit = new Button("✎");
-        btnEdit.getStyleClass().add("btn-ghost");
-        btnEdit.setStyle("-fx-font-size: 16;");
+        Region spacer1 = new Region(); HBox.setHgrow(spacer1, Priority.ALWAYS);
+        
+        Label lblBadge = new Label("Dispo: " + (p.isDisponibilite() ? "OUI" : "NON"));
+        lblBadge.getStyleClass().add("badge-purple");
+        
+        Button btnEdit = new Button("Modifier");
+        btnEdit.getStyleClass().add("btn-modifier");
         btnEdit.setOnAction(e -> openForm(p));
-
-        Button btnDelete = new Button("🗑");
-        btnDelete.getStyleClass().add("btn-delete-ghost");
-        btnDelete.setStyle("-fx-font-size: 16;");
+        
+        Button btnDelete = new Button("Supprimer");
+        btnDelete.getStyleClass().add("btn-supprimer");
         btnDelete.setOnAction(e -> {
             try {
                 service.supprimer(p.getId());
                 refreshAll();
             } catch (SQLException ex) { ex.printStackTrace(); }
         });
+        
+        header.getChildren().addAll(lblTitle, spacer1, lblBadge, btnEdit, btnDelete);
+        
+        // Info Boxes Row: START, END, DAY
+        HBox infoBoxes = new HBox(15);
+        infoBoxes.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        
+        VBox boxStart = createInfoBox("DEBUT", p.getHeureDebutJournee().toString().substring(0, 5));
+        VBox boxEnd = createInfoBox("FIN", p.getHeureFinJournee().toString().substring(0, 5));
+        VBox boxDay = createInfoBox("JOUR", p.getDate().toLocalDate().format(DateTimeFormatter.ofPattern("EEEE", Locale.FRENCH)).toUpperCase());
+        
+        infoBoxes.getChildren().addAll(boxStart, boxEnd, boxDay);
+        
+        // Activities Section
+        VBox activitiesList = new VBox(5);
+        Label lblSubtitle = new Label("Activités rattachées");
+        lblSubtitle.setStyle("-fx-font-size: 10; -fx-font-weight: bold; -fx-text-fill: #64748b; -fx-padding: 10 0 5 0;");
+        activitiesList.getChildren().add(lblSubtitle);
+        
+        try {
+            List<Activite> activities = activiteService.recupererParPlanning(p.getId());
+            if (activities.isEmpty()) {
+                Label lblNone = new Label("Aucune activité pour ce planning.");
+                lblNone.setStyle("-fx-font-size: 11; -fx-text-fill: #94a3b8; -fx-italic: true;");
+                activitiesList.getChildren().add(lblNone);
+            } else {
+                for (Activite a : activities) {
+                    HBox actItem = new HBox(10);
+                    actItem.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+                    actItem.setStyle("-fx-padding: 5 0; -fx-border-color: transparent transparent #f1f5f9 transparent;");
+                    
+                    Label dot = new Label("•");
+                    dot.setStyle("-fx-text-fill: " + (a.getCouleur() != null ? a.getCouleur() : "#8b5cf6") + ";");
+                    
+                    Label actTitle = new Label(a.getTitre());
+                    actTitle.setStyle("-fx-font-size: 12; -fx-text-fill: #475569;");
+                    
+                    Region s = new Region(); HBox.setHgrow(s, Priority.ALWAYS);
+                    
+                    Label actTime = new Label(a.getHeureDebutEstimee().toString().substring(0, 5) + " DT"); // "DT" to mimic screenshot style
+                    actTime.setStyle("-fx-font-size: 11; -fx-font-weight: bold; -fx-text-fill: #6366f1;");
+                    
+                    actItem.getChildren().addAll(dot, actTitle, s, actTime);
+                    activitiesList.getChildren().add(actItem);
+                }
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        
+        card.getChildren().addAll(header, infoBoxes, activitiesList);
+        vboxPlanningList.getChildren().add(card);
+    }
 
-        actionBox.getChildren().addAll(btnCalendar, btnEdit, btnDelete);
-
-        item.getChildren().addAll(colDate, colTime, colStatus, spacer, actionBox);
-        vboxPlanningList.getChildren().add(item);
+    private VBox createInfoBox(String label, String value) {
+        VBox box = new VBox(2);
+        box.getStyleClass().add("value-box");
+        box.setMinWidth(100);
+        
+        Label lbl = new Label(label);
+        lbl.getStyleClass().add("value-label");
+        
+        Label val = new Label(value);
+        val.getStyleClass().add("value-amount");
+        
+        box.getChildren().addAll(lbl, val);
+        return box;
     }
 
     private void refreshStatistics() {

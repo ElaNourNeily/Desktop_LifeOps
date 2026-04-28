@@ -70,6 +70,7 @@ public class ActiviteFormController {
             selectedColor = a.getCouleur();
             updateColorSelectionUI(selectedColor);
             
+            this.currentPlanningId = a.getPlanningId();
             btnDelete.setVisible(true);
         }
     }
@@ -81,6 +82,10 @@ public class ActiviteFormController {
 
     @FXML
     private void handleSave() {
+        if (currentPlanningId <= 0 && currentActivite == null) {
+            showAlert("Erreur", "Impossible d'associer l'activité : ID de planning invalide.");
+            return;
+        }
         if (validate()) {
             try {
                 boolean isNew = (currentActivite == null);

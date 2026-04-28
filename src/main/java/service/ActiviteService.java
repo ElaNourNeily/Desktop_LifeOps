@@ -17,6 +17,7 @@ public class ActiviteService implements IService<Activite> {
 
     @Override
     public void ajouter(Activite activite) throws SQLException {
+        System.out.println("[DEBUG] Inserting Activity. Planning ID: " + activite.getPlanningId());
         String sql = "INSERT INTO activite (titre, duree, priorite, etat, heure_debut_estimee, heure_fin_estimee, niveau_urgence, categorie, couleur, suggested_by_ai, planning_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.setString(1, activite.getTitre());
@@ -68,6 +69,10 @@ public class ActiviteService implements IService<Activite> {
     @Override
     public List<Activite> recuperer() throws SQLException {
         List<Activite> activites = new ArrayList<>();
+        if (connection == null) {
+            System.err.println("Database connection is null. Cannot retrieve activities.");
+            return activites;
+        }
         String sql = "SELECT * FROM activite";
         Statement s = connection.createStatement();
         ResultSet rs = s.executeQuery(sql);
