@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="700.0" prefWidth="980.0" styleClass="root-pane" stylesheets="@../styleRead.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddDepenseController">
+   <children>
+      <VBox prefHeight="700.0" prefWidth="980.0" styleClass="main-content">
+         <children>
+            <VBox spacing="18.0">
+               <padding><Insets bottom="30.0" left="40.0" right="40.0" top="40.0" /></padding>
+               <children>
+                  <Label styleClass="page-title" text="Ajouter Depense" />
+                  <Label fx:id="currentUserLabel" styleClass="page-subtitle" text="Utilisateur courant" />
+                  <VBox spacing="18.0" styleClass="finance-form-panel">
+                     <padding><Insets bottom="24.0" left="24.0" right="24.0" top="24.0" /></padding>
+                     <children>
+                        <VBox spacing="8.0">
+                           <children>
+                              <Label styleClass="field-label" text="Titre" />
+                              <TextField fx:id="titreField" promptText="Courses du mois" styleClass="form-field" />
+                           </children>
+                        </VBox>
+                        <HBox spacing="12.0">
+                           <children>
+                              <VBox spacing="8.0">
+                                 <children>
+                                    <Label styleClass="field-label" text="Montant" />
+                                    <TextField fx:id="montantField" promptText="220" styleClass="form-field" />
+                                 </children>
+                              </VBox>
+                              <VBox spacing="8.0">
+                                 <children>
+                                    <Label styleClass="field-label" text="Categorie" />
+                                    <ComboBox fx:id="categorieComboBox" prefWidth="220.0" promptText="Choisir categorie" styleClass="form-choice" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox spacing="12.0">
+                           <children>
+                              <VBox spacing="8.0">
+                                 <children>
+                                    <Label styleClass="field-label" text="Date" />
+                                    <DatePicker fx:id="datePicker" styleClass="form-datepicker" />
+                                 </children>
+                              </VBox>
+                              <VBox spacing="8.0">
+                                 <children>
+                                    <Label styleClass="field-label" text="Type paiement" />
+                                    <ComboBox fx:id="typePaiementComboBox" prefWidth="200.0" promptText="Choisir type" styleClass="form-choice" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <VBox spacing="8.0">
+                           <children>
+                              <Label styleClass="field-label" text="Budget" />
+                              <ComboBox fx:id="budgetComboBox" prefWidth="250.0" styleClass="form-choice" />
+                           </children>
+                        </VBox>
+                        <Label fx:id="messageLabel" styleClass="page-subtitle" text="" />
+                        <HBox spacing="12.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#saveDepense" styleClass="submit-button" text="Ajouter Depense" />
+                              <Button fx:id="scanReceiptButton" mnemonicParsing="false" onAction="#scanReceipt" styleClass="action-button" text="Scanner Receipt" />
+                              <Button mnemonicParsing="false" onAction="#cancel" styleClass="action-button" text="Retour" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

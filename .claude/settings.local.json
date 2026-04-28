@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tesseract --version)",
+      "Bash(brew install *)",
+      "Bash(/opt/homebrew/bin/brew install *)",
+      "Bash(/usr/local/bin/brew install *)",
+      "Bash(curl -sI https://github.com)",
+      "Bash(xcode-select -p)"
+    ]
+  }
+}
