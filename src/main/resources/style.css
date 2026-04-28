@@ -1,0 +1,247 @@
+/* ── Variables de couleur purple ───────────────────────────────────
+   Primaire  : #8b5cf6  (violet moyen)
+   Hover     : #7c3aed  (violet foncé)
+   Accent    : #a78bfa  (violet clair)
+   Fond app  : #121417
+   Carte     : #1c1e22
+   Bordure   : #2a2d32
+──────────────────────────────────────────────────────────────────── */
+
+.root {
+    -fx-background-color: #121417;
+    -fx-font-family: "Segoe UI", "Inter", sans-serif;
+}
+
+/* ── Typographie ─────────────────────────────────────────────────── */
+
+.title-label {
+    -fx-text-fill: white;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.subtitle-label {
+    -fx-text-fill: #8a8d91;
+    -fx-font-size: 14px;
+}
+
+.section-title {
+    -fx-text-fill: #8a8d91;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+/* ── Bouton principal ────────────────────────────────────────────── */
+
+.btn-primary {
+    -fx-background-color: #8b5cf6;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20px;
+    -fx-padding: 8px 18px;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #7c3aed;
+}
+
+/* ── Champ de recherche ──────────────────────────────────────────── */
+
+.search-field {
+    -fx-background-color: #2a2d32;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #6a6d71;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 15px;
+    -fx-border-color: #3a3d42;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+}
+
+.search-field:focused {
+    -fx-border-color: #8b5cf6;
+    -fx-border-width: 1.5px;
+}
+
+/* ── Boutons de filtre catégorie ─────────────────────────────────── */
+
+.filter-btn {
+    -fx-background-color: #2a2d32;
+    -fx-text-fill: #8a8d91;
+    -fx-background-radius: 15px;
+    -fx-padding: 5px 14px;
+    -fx-cursor: hand;
+}
+
+.filter-btn:hover {
+    -fx-background-color: #3a3d42;
+    -fx-text-fill: white;
+}
+
+.filter-btn-active {
+    -fx-background-color: #8b5cf6;
+    -fx-text-fill: white;
+    -fx-background-radius: 15px;
+    -fx-padding: 5px 14px;
+    -fx-font-weight: bold;
+}
+
+/* ── Carte objectif ──────────────────────────────────────────────── */
+
+.card {
+    -fx-background-color: #1c1e22;
+    -fx-background-radius: 12px;
+    -fx-border-color: #2a2d32;
+    -fx-border-radius: 12px;
+    -fx-border-width: 1px;
+}
+
+.card:hover {
+    -fx-border-color: #8b5cf6;
+}
+
+.card-title {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+/* ── Navbar menu items ───────────────────────────────────────────── */
+
+.menu-item {
+    -fx-background-color: transparent;
+    -fx-background-radius: 8px;
+}
+
+.menu-item:hover {
+    -fx-background-color: #1c1e22;
+}
+
+.menu-item-active {
+    -fx-background-color: #2d1f4e;
+    -fx-background-radius: 8px;
+    -fx-border-color: #8b5cf6;
+    -fx-border-width: 0 0 0 3px;
+}
+
+/* ── Champs de formulaire ────────────────────────────────────────── */
+
+.form-field {
+    -fx-background-color: #2a2d32;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #6a6d71;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 14px;
+    -fx-border-color: #3a3d42;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-font-size: 13px;
+}
+
+.form-field:focused {
+    -fx-border-color: #8b5cf6;
+    -fx-border-width: 1.5px;
+}
+
+.combo-form {
+    -fx-background-color: #2a2d32;
+    -fx-border-color: #3a3d42;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.combo-form .list-cell {
+    -fx-background-color: #2a2d32;
+    -fx-text-fill: white;
+}
+
+.combo-form .combo-box-popup .list-view {
+    -fx-background-color: #2a2d32;
+    -fx-border-color: #8b5cf6;
+}
+
+.date-form {
+    -fx-background-color: #2a2d32;
+    -fx-border-color: #3a3d42;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.form-label {
+    -fx-text-fill: #c0c3c8;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.stat-card {
+    -fx-background-color: #1c1e22;
+    -fx-background-radius: 12px;
+    -fx-border-color: #2a2d32;
+    -fx-border-radius: 12px;
+    -fx-border-width: 1px;
+    -fx-padding: 20 25;
+    -fx-pref-width: 260px;
+    -fx-pref-height: 110px;
+    -fx-alignment: center;
+}
+
+.chart-card {
+    -fx-background-color: #1c1e22;
+    -fx-background-radius: 12px;
+    -fx-border-color: #2a2d32;
+    -fx-border-radius: 12px;
+    -fx-border-width: 1px;
+    -fx-padding: 18 20;
+    -fx-spacing: 10;
+}
+
+/* Fond transparent pour les graphiques */
+.chart {
+    -fx-background-color: transparent;
+}
+
+.chart-plot-background {
+    -fx-background-color: #16181b;
+    -fx-background-radius: 6px;
+}
+
+.chart-legend {
+    -fx-background-color: transparent;
+}
+
+.axis-label, .axis {
+    -fx-text-fill: #8a8d91;
+    -fx-tick-label-fill: #8a8d91;
+}
+
+.chart-pie-label {
+    -fx-fill: white;
+    -fx-font-size: 11px;
+}
+
+.chart-pie-label-line {
+    -fx-stroke: #5a5d61;
+}
+
+.default-color0.chart-bar {
+    -fx-bar-fill: #8b5cf6;
+}
+
+.default-color1.chart-bar {
+    -fx-bar-fill: #a78bfa;
+}
+
+.default-color2.chart-bar {
+    -fx-bar-fill: #6ea8fe;
+}
+
+.default-color3.chart-bar {
+    -fx-bar-fill: #00d285;
+}
+
+.default-color4.chart-bar {
+    -fx-bar-fill: #ffb703;
+}

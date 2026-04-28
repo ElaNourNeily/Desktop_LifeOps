@@ -13,7 +13,8 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.shape.SVGPath?>
 
-<StackPane prefHeight="850.0" prefWidth="500.0" styleClass="root-pane" stylesheets="@login.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SignIn">
+<StackPane prefHeight="850.0" prefWidth="500.0" styleClass="root-pane" stylesheets="@login.css"
+           xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.SignIn">
 
     <VBox alignment="CENTER" maxWidth="450" spacing="20" styleClass="main-container">
         
@@ -28,7 +29,6 @@
             <Label styleClass="subtitle-label" text="Rejoignez LifeOps et prenez le contrôle" />
         </VBox>
 
-        <!-- Form Fields -->
         <VBox spacing="15">
             
             <HBox spacing="15">
@@ -99,7 +99,7 @@
         <!-- Just copying from the previous form -->
         <HBox alignment="CENTER" spacing="15">
             <!-- Google -->
-            <Button maxWidth="Infinity" styleClass="social-btn" HBox.hgrow="ALWAYS">
+            <Button maxWidth="Infinity" onAction="#createwithgoogle" styleClass="social-btn" HBox.hgrow="ALWAYS">
                 <graphic>
                     <Group>
                         <SVGPath content="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -125,7 +125,7 @@
 
         <HBox alignment="CENTER" spacing="5">
             <Label styleClass="sub-text" text="Déjà un compte ?" />
-            <Label styleClass="link-text" text="Se connecter" />
+            <Label onMouseClicked="#navtolog" styleClass="link-text" text="Se connecter"/>
         </HBox>
 
     </VBox>

@@ -1,4 +1,4 @@
-package service;
+package Service;
 
 import model.User;
 import utils.MyDB;
@@ -15,7 +15,7 @@ public class Userservice implements CRUD<User>{
     }
     @Override
     public void create(User user) throws SQLException {
-        final String sql = "insert into utilisateur (nom , prenom , age , email , mot_de_passe , created_at , is_verified )"+ "values( '"+user.getNom()+"','"+ user.getPrenom()+"',"+user.getAge()+" ,'"+user.getEmail()+"','"+user.getMot_de_passe()+"','"+user.getCreated_at()+"',"+user.isIs_verified()+")";
+        final String sql = "insert into utilisateur (nom , prenom , age , email , mot_de_passe , created_at , is_verified ,role )" + "values( '" + user.getNom() + "','" + user.getPrenom() + "'," + user.getAge() + " ,'" + user.getEmail() + "','" + user.getMot_de_passe() + "','" + user.getCreated_at() + "'," + user.isIs_verified() + ",'" + user.getRole() + "')";
         Statement statement = connection.createStatement();
         statement.executeUpdate(sql);
     }
@@ -82,10 +82,21 @@ public class Userservice implements CRUD<User>{
     @Override
     public boolean recherche(User user) throws SQLException {
        User result = this.findbyMail(user.getEmail());
-        if (result.getMot_de_passe().equals(user.getMot_de_passe())) {
+        if (result != null && result.getMot_de_passe().equals(user.getMot_de_passe())) {
             return true;
         }
-        else return false;
+        return false;
+    }
+
+    /**
+     * Updates only the password for the given user (by id).
+     */
+    public void updatePassword(User user) throws SQLException {
+        String sql = "UPDATE utilisateur SET mot_de_passe = ? WHERE id = ?";
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setString(1, user.getMot_de_passe());
+        ps.setInt(2, user.getId());
+        ps.executeUpdate();
     }
 
 }

@@ -1,7 +1,7 @@
 package test;
 
 import model.User;
-import service.Userservice;
+import Service.Userservice;
 import utils.MyDB;
 
 import java.sql.Connection;

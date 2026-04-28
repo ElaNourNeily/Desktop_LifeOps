@@ -7,15 +7,21 @@
       <option name="ignoredModules">
         <list>
           <option value="LifeOps" />
+          <option value="LifeOps" />
+          <option value="LifeOps" />
         </list>
       </option>
       <option name="ignoredPackages">
         <list>
           <option value="mysql:mysql-connector-java:8.0.28" />
+          <option value="com.google.guava:guava:31.1-jre" />
+          <option value="commons-codec:commons-codec:1.11" />
         </list>
       </option>
       <option name="ignoredReasons">
         <list>
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
           <option value="Not exploitable" />
         </list>
       </option>

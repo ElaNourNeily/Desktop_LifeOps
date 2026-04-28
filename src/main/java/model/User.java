@@ -7,7 +7,7 @@ public class User {
     private String nom;
     private String prenom;
     private String email;
-    private String mot_de_passe;
+    private String mot_de_passe = " ";
     private String photo;
     private String role = "ROLE_USER";
     private LocalDateTime banUntil;
