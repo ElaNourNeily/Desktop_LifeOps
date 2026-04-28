@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import model.Budget;
 import model.Depense;
 import service.BudgetService;
+import service.CategorizationService;
 import service.DepenseService;
 import service.ReceiptData;
 import service.ReceiptOcrService;
@@ -68,12 +69,14 @@ public class AddDepenseController {
     private final BudgetService budgetService = new BudgetService();
     private final ReceiptOcrService receiptOcrService = new ReceiptOcrService();
     private final ReceiptParser receiptParser = new ReceiptParser();
+    private final CategorizationService categorizationService = new CategorizationService();
     private volatile boolean scanInProgress = false;
 
     @FXML
     public void initialize() {
         currentUserLabel.setText("Utilisateur courant : #" + CURRENT_UTILISATEUR_ID);
         categorieComboBox.setItems(FXCollections.observableArrayList(DEPENSE_CATEGORIES));
+        categorieComboBox.setPromptText("Sélectionnez ou laissez vide pour auto-détection");
         typePaiementComboBox.setItems(FXCollections.observableArrayList("Card", "Cash"));
         budgetComboBox.setCellFactory(param -> new BudgetListCell());
         budgetComboBox.setButtonCell(new BudgetListCell());
@@ -105,10 +108,20 @@ public class AddDepenseController {
                 throw new IllegalArgumentException("Selectionnez une date.");
             }
 
+            String titre = requiredText(titreField.getText(), "titre");
+            String categorie = categorieComboBox.getValue();
+
+            // Auto-categorize if no category selected
+            if (categorie == null || categorie.isBlank()) {
+                CategorizationService.CategorizationResult result = categorizationService.categorizeExpense(titre);
+                categorie = result.getCategoryName();
+                messageLabel.setText("Catégorie auto-détectée: " + categorie + " (confiance: " + result.getConfidence() + "%)");
+            }
+
             Depense depense = new Depense(
-                    requiredText(titreField.getText(), "titre"),
+                    titre,
                     parseDouble(montantField.getText(), "montant"),
-                    requiredSelection(categorieComboBox.getValue(), "categorie"),
+                    categorie,
                     Date.valueOf(selectedDate),
                     requiredSelection(typePaiementComboBox.getValue(), "type de paiement"),
                     CURRENT_UTILISATEUR_ID,
