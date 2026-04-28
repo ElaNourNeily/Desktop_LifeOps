@@ -18,6 +18,12 @@ public class Tache {
     private int utilisateurId;   // Creator
     private Integer assignedUserId; // NEW: The user responsible for the task
 
+    // Toggl Track integration (real time tracking)
+    private Long togglEntryId;
+    private Date startTime;
+    private Date endTime;
+    private Integer realTimeSpentSeconds;
+
     public Tache() {}
 
     // Getters & Setters
@@ -56,4 +62,16 @@ public class Tache {
 
     public Integer getAssignedUserId() { return assignedUserId; }
     public void setAssignedUserId(Integer assignedUserId) { this.assignedUserId = assignedUserId; }
+
+    public Long getTogglEntryId() { return togglEntryId; }
+    public void setTogglEntryId(Long togglEntryId) { this.togglEntryId = togglEntryId; }
+
+    public Date getStartTime() { return startTime; }
+    public void setStartTime(Date startTime) { this.startTime = startTime; }
+
+    public Date getEndTime() { return endTime; }
+    public void setEndTime(Date endTime) { this.endTime = endTime; }
+
+    public Integer getRealTimeSpentSeconds() { return realTimeSpentSeconds; }
+    public void setRealTimeSpentSeconds(Integer realTimeSpentSeconds) { this.realTimeSpentSeconds = realTimeSpentSeconds; }
 }

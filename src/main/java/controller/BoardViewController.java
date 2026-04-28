@@ -10,13 +10,23 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import model.task.Tache;
 import model.task.TaskSpace;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.pusher.client.channel.Channel;
 import service.TaskService;
 import service.TaskSpaceService;
 import service.TaskSpaceUserService;
+import service.TimeTrackingService;
+import service.PusherService;
+import service.TaskPriorityService;
 import utils.Session;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BoardViewController {
 
@@ -35,6 +45,18 @@ public class BoardViewController {
     private final TaskService taskService = new TaskService();
     private final TaskSpaceService spaceService = new TaskSpaceService();
     private final TaskSpaceUserService spaceUserService = new TaskSpaceUserService();
+    private final TimeTrackingService timeTrackingService = new TimeTrackingService();
+    private final TaskPriorityService taskPriorityService = new TaskPriorityService();
+
+    // Realtime
+    private final PusherService pusherService = new PusherService();
+    private final Gson gson = new Gson();
+    private final Type mapType = new TypeToken<Map<String, Object>>() {}.getType();
+    private Channel boardChannel;
+    private final Map<Integer, Parent> taskCardById = new HashMap<>();
+    private final Map<Integer, Integer> taskRank = new HashMap<>();
+    private final Map<Integer, Double> taskScore = new HashMap<>();
+    private final Map<Integer, Boolean> taskRecommended = new HashMap<>();
 
     @FXML
     public void initialize() {
@@ -59,6 +81,8 @@ public class BoardViewController {
         lblBoardType.setText(space.getCategory().toUpperCase() + " (" + (currentUserRole != null ? currentUserRole : "VIEWER") + ")");
         lblBoardSubtitle.setText("Sprint de " + space.getDuration() + " jours");
         loadTasks();
+
+        setupRealtimeIfTeam();
     }
 
     public void loadTasks() {
@@ -66,20 +90,57 @@ public class BoardViewController {
         colInProgress.getChildren().clear();
         colReview.getChildren().clear();
         colDone.getChildren().clear();
+        taskCardById.clear();
+        taskRank.clear();
+        taskScore.clear();
+        taskRecommended.clear();
 
         List<Tache> tasks = taskService.getTasksByBoard(currentBoard.getId());
-        for (Tache task : tasks) {
-            addTaskToColumn(task);
+        List<TaskPriorityService.Recommendation> recommendations = taskPriorityService.getRecommendedTasks(tasks);
+        for (int i = 0; i < recommendations.size(); i++) {
+            TaskPriorityService.Recommendation rec = recommendations.get(i);
+            int id = rec.getTask().getId();
+            taskRank.put(id, i + 1);
+            taskScore.put(id, rec.getScore());
+            taskRecommended.put(id, i < 3);
         }
+
+        List<Tache> todo = tasks.stream()
+                .filter(t -> t.getStatut() == StatutTache.A_FAIRE)
+                .sorted(Comparator.comparingDouble(this::scoreOf).reversed())
+                .toList();
+        List<Tache> inProgress = tasks.stream()
+                .filter(t -> t.getStatut() == StatutTache.EN_COURS)
+                .sorted(Comparator.comparingDouble(this::scoreOf).reversed())
+                .toList();
+        List<Tache> review = tasks.stream()
+                .filter(t -> t.getStatut() == StatutTache.EN_REVISION)
+                .sorted(Comparator.comparingDouble(this::scoreOf).reversed())
+                .toList();
+        List<Tache> done = tasks.stream()
+                .filter(t -> t.getStatut() == StatutTache.TERMINE)
+                .sorted(Comparator.comparingDouble(this::scoreOf).reversed())
+                .toList();
+
+        todo.forEach(this::addTaskToColumn);
+        inProgress.forEach(this::addTaskToColumn);
+        review.forEach(this::addTaskToColumn);
+        done.forEach(this::addTaskToColumn);
     }
 
-    private void addTaskToColumn(Tache task) {
+    private Parent addTaskToColumn(Tache task) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Task/task_card.fxml"));
             Parent card = loader.load();
             
             TaskCardController controller = loader.getController();
-            controller.setData(task, this);
+            controller.setData(
+                    task,
+                    this,
+                    taskRank.getOrDefault(task.getId(), -1),
+                    scoreOf(task),
+                    taskRecommended.getOrDefault(task.getId(), false)
+            );
 
             if (canManageTask(task)) {
                 card.setOnDragDetected(event -> {
@@ -97,9 +158,16 @@ public class BoardViewController {
                 case EN_REVISION -> colReview.getChildren().add(card);
                 case TERMINE -> colDone.getChildren().add(card);
             }
+            taskCardById.put(task.getId(), card);
+            return card;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    private double scoreOf(Tache task) {
+        return taskScore.getOrDefault(task.getId(), taskPriorityService.calculateScore(task));
     }
 
     private void setupDragAndDrop() {
@@ -146,11 +214,87 @@ public class BoardViewController {
         List<Tache> tasks = taskService.getTasksByBoard(currentBoard.getId());
         for (Tache t : tasks) {
             if (t.getId() == taskId) {
+                StatutTache oldStatus = t.getStatut();
                 t.setStatut(newStatus);
-                taskService.update(t);
+
+                // Automatic real-time tracking integration
+                if (newStatus == StatutTache.EN_COURS) {
+                    timeTrackingService.startTimer(t);
+                } else if (newStatus == StatutTache.TERMINE) {
+                    timeTrackingService.stopTimer(t);
+                } else {
+                    taskService.update(t);
+                }
+
+                // realtime: task-moved
+                if (pusherService.isEnabled() && oldStatus != newStatus) {
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("boardId", currentBoard.getId());
+                    data.put("taskId", t.getId());
+                    data.put("userId", Session.isLoggedIn() ? Session.getCurrentUser().getId() : null);
+                    data.put("from", oldStatus != null ? oldStatus.getValeur() : null);
+                    data.put("to", newStatus.getValeur());
+                    pusherService.triggerEvent(pusherService.channelForBoard(currentBoard.getId()), "task-moved", data);
+                }
+
                 loadTasks();
                 break;
             }
+        }
+    }
+
+    private void setupRealtimeIfTeam() {
+        if (currentBoard == null || !currentBoard.isTeam()) return;
+        if (!Session.isLoggedIn()) return;
+
+        // Validate membership before subscribing
+        boolean isMember = spaceUserService.getUserRoleInBoard(Session.getCurrentUser().getId(), currentBoard.getId()) != null
+                || Session.getCurrentUser().getId() == currentBoard.getLeaderId();
+        if (!isMember) return;
+
+        if (!pusherService.isEnabled()) return;
+
+        String channelName = pusherService.channelForBoard(currentBoard.getId());
+
+        // Cleanup previous
+        if (boardChannel != null) {
+            try { pusherService.unsubscribe(channelName); } catch (Exception ignored) {}
+            boardChannel = null;
+        }
+
+        pusherService.connectIfNeeded(new com.pusher.client.connection.ConnectionEventListener() {
+            @Override
+            public void onConnectionStateChange(com.pusher.client.connection.ConnectionStateChange change) {
+                // no-op
+            }
+
+            @Override
+            public void onError(String message, String code, Exception e) {
+                // no-op (fallback: user can still manually refresh / actions still work)
+            }
+        });
+        boardChannel = pusherService.subscribe(channelName, (event) -> {
+            Map<String, Object> payload = gson.fromJson(event.getData(), mapType);
+            if (payload == null) return;
+
+            // ignore self events to prevent duplicates
+            Object uid = payload.get("userId");
+            if (uid != null && Session.isLoggedIn()) {
+                try {
+                    long sender = ((Number) uid).longValue();
+                    if (sender == Session.getCurrentUser().getId()) return;
+                } catch (Exception ignored) {}
+            }
+
+            String ev = event.getEventName();
+            javafx.application.Platform.runLater(() -> applyRealtimeEvent(ev, payload));
+        }, "task-created", "task-updated", "task-deleted", "task-moved", "member-invited", "board-updated");
+    }
+
+    private void applyRealtimeEvent(String ev, Map<String, Object> payload) {
+        switch (ev) {
+            case "task-created", "task-updated", "task-deleted", "task-moved", "board-updated" -> loadTasks();
+            case "member-invited" -> { }
         }
     }
 
@@ -216,6 +360,9 @@ public class BoardViewController {
 
     @FXML
     private void handleBack(ActionEvent event) {
+        if (currentBoard != null && pusherService.isEnabled()) {
+            try { pusherService.unsubscribe(pusherService.channelForBoard(currentBoard.getId())); } catch (Exception ignored) {}
+        }
         MainLayoutController.getInstance().loadPage("board_hub.fxml");
     }
 }

@@ -99,35 +99,135 @@
 /* ── Task Card Styles ─────────────────────────────────── */
 .task-card {
     -fx-background-color: #22252a;
-    -fx-background-radius: 8px;
+    -fx-background-radius: 10px;
     -fx-border-color: #2d3137;
     -fx-border-width: 1px;
-    -fx-border-radius: 8px;
-    -fx-padding: 12px;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px;
     -fx-cursor: hand;
 }
 .task-card:hover {
     -fx-border-color: #8b5cf6;
 }
 
+.rank-badge {
+    -fx-background-color: rgba(124, 77, 255, 0.22);
+    -fx-text-fill: #c4b5fd;
+    -fx-font-size: 9px;
+    -fx-font-weight: 700;
+    -fx-min-width: 18px;
+    -fx-min-height: 18px;
+    -fx-alignment: center;
+    -fx-background-radius: 50%;
+}
+
 .task-title {
     -fx-text-fill: white;
-    -fx-font-size: 13px;
+    -fx-font-size: 14px;
     -fx-font-weight: 500;
 }
 
-.priority-indicator {
-    -fx-pref-width: 4px;
-    -fx-background-radius: 2px;
+.task-desc {
+    -fx-text-fill: #7f8794;
+    -fx-font-size: 11px;
 }
 
-.priority-high { -fx-background-color: #ef4444; }
-.priority-medium { -fx-background-color: #f59e0b; }
-.priority-low { -fx-background-color: #10b981; }
+.task-divider {
+    -fx-background-color: #2d3137;
+    -fx-pref-height: 1px;
+    -fx-min-height: 1px;
+    -fx-max-height: 1px;
+}
 
 .task-info-tag {
     -fx-text-fill: #8a8d91;
+    -fx-font-size: 10px;
+}
+
+.task-date-overdue {
+    -fx-text-fill: #f87171;
     -fx-font-size: 11px;
+    -fx-font-weight: 600;
+}
+
+.task-deadline-overdue {
+    -fx-text-fill: #f87171;
+    -fx-font-size: 10px;
+    -fx-font-weight: 700;
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.priority-pill {
+    -fx-font-size: 9px;
+    -fx-font-weight: 700;
+    -fx-padding: 2px 9px;
+    -fx-background-radius: 999px;
+}
+
+.priority-urgente-pill {
+    -fx-background-color: rgba(239, 68, 68, 0.18);
+    -fx-text-fill: #f87171;
+}
+
+.priority-haute-pill {
+    -fx-background-color: rgba(245, 158, 11, 0.18);
+    -fx-text-fill: #f59e0b;
+}
+
+.priority-moyenne-pill {
+    -fx-background-color: rgba(234, 179, 8, 0.18);
+    -fx-text-fill: #facc15;
+}
+
+.priority-basse-pill {
+    -fx-background-color: rgba(148, 163, 184, 0.18);
+    -fx-text-fill: #cbd5e1;
+}
+
+.intelligence-dot {
+    -fx-min-width: 4px;
+    -fx-min-height: 4px;
+    -fx-pref-width: 4px;
+    -fx-pref-height: 4px;
+    -fx-max-width: 4px;
+    -fx-max-height: 4px;
+    -fx-background-radius: 50%;
+    -fx-background-color: #3b3f49;
+}
+
+.intelligence-dot-filled {
+    -fx-background-color: #7c4dff;
+}
+
+/* ── Time Tracking Badge (reference-matching pill) ─────────────────── */
+.tracking-badge {
+    -fx-background-color: rgba(28, 30, 34, 0.78); /* translucent, same surface hue */
+    -fx-background-radius: 999px;
+    -fx-border-color: rgba(139, 92, 246, 0.22);
+    -fx-border-width: 1px;
+    -fx-border-radius: 999px;
+    -fx-padding: 3px 8px 3px 7px; /* compact but breathable */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 10, 0.22, 0, 4);
+}
+
+.tracking-dot {
+    -fx-min-width: 8px;
+    -fx-min-height: 8px;
+    -fx-pref-width: 8px;
+    -fx-pref-height: 8px;
+    -fx-max-width: 8px;
+    -fx-max-height: 8px;
+    -fx-background-radius: 50%;
+    -fx-background-color: #7c4dff; /* accent per reference */
+    -fx-effect: dropshadow(gaussian, rgba(124, 77, 255, 0.65), 10, 0.35, 0, 0);
+    -fx-opacity: 0.9;
+}
+
+.tracking-time {
+    -fx-text-fill: rgba(255, 255, 255, 0.82);
+    -fx-font-size: 11px;
+    -fx-font-weight: 600;
 }
 
 /* ── Details Panel ────────────────────────────────────── */
@@ -198,4 +298,82 @@
 .field-error {
     -fx-border-color: #ef4444 !important;
     -fx-border-width: 1.5px !important;
+}
+
+/* Smart suggestions */
+.suggestion-card {
+    -fx-background-color: #1f2227;
+    -fx-background-radius: 10px;
+    -fx-border-color: #2d3137;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px;
+    -fx-spacing: 6px;
+}
+
+.suggestion-title {
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.suggestion-reason {
+    -fx-text-fill: #8a8d91;
+    -fx-font-size: 11px;
+}
+
+.suggestion-badge {
+    -fx-font-size: 10px;
+    -fx-font-weight: 700;
+    -fx-padding: 2px 8px;
+    -fx-background-radius: 999px;
+}
+
+.badge-critical {
+    -fx-background-color: rgba(239, 68, 68, 0.15);
+    -fx-text-fill: #f87171;
+}
+
+.badge-important {
+    -fx-background-color: rgba(245, 158, 11, 0.15);
+    -fx-text-fill: #f59e0b;
+}
+
+.badge-normal {
+    -fx-background-color: rgba(59, 130, 246, 0.15);
+    -fx-text-fill: #60a5fa;
+}
+
+.badge-low {
+    -fx-background-color: rgba(148, 163, 184, 0.15);
+    -fx-text-fill: #94a3b8;
+}
+
+.btn-suggestion-accept {
+    -fx-background-color: #8b5cf6;
+    -fx-text-fill: white;
+    -fx-font-size: 10px;
+    -fx-font-weight: 700;
+    -fx-background-radius: 8px;
+    -fx-padding: 4px 8px;
+    -fx-cursor: hand;
+}
+
+.btn-suggestion-ignore {
+    -fx-background-color: transparent;
+    -fx-text-fill: #8a8d91;
+    -fx-border-color: #2d3137;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-font-size: 10px;
+    -fx-font-weight: 700;
+    -fx-padding: 4px 8px;
+    -fx-cursor: hand;
+}
+
+.task-card-recommended {
+    -fx-border-color: #7C4DFF;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(124,77,255,0.4), 12, 0.3, 0, 0);
 }

@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import model.task.Tache;
 import service.TaskService;
+import service.TimeTrackingService;
 
 public class TaskDetailsController {
 
@@ -26,6 +27,7 @@ public class TaskDetailsController {
     private Tache currentTask;
     private BoardViewController boardController;
     private final TaskService taskService = new TaskService();
+    private final TimeTrackingService timeTrackingService = new TimeTrackingService();
 
     @FXML
     public void initialize() {
@@ -65,8 +67,10 @@ public class TaskDetailsController {
         currentTask.setTitre(txtTaskTitle.getText());
         currentTask.setDescription(txtDescription.getText());
         
+        StatutTache oldStatus = currentTask.getStatut();
         StatutTache status = comboStatus.getValue();
-        currentTask.setStatut(status != null ? status : StatutTache.A_FAIRE);
+        StatutTache newStatus = status != null ? status : StatutTache.A_FAIRE;
+        currentTask.setStatut(newStatus);
         
         PrioriteTache priority = comboPriority.getValue();
         currentTask.setPriorite(priority != null ? priority : PrioriteTache.MOYENNE);
@@ -77,7 +81,18 @@ public class TaskDetailsController {
         if (currentTask.getId() == 0) {
             taskService.add(currentTask);
         } else {
-            taskService.update(currentTask);
+            // Automatic real-time tracking integration on status transition
+            if (oldStatus != newStatus) {
+                if (newStatus == StatutTache.EN_COURS) {
+                    timeTrackingService.startTimer(currentTask);
+                } else if (newStatus == StatutTache.TERMINE) {
+                    timeTrackingService.stopTimer(currentTask);
+                } else {
+                    taskService.update(currentTask);
+                }
+            } else {
+                taskService.update(currentTask);
+            }
         }
         
         boardController.loadTasks(); // Refresh board

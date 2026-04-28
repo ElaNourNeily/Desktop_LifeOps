@@ -15,6 +15,9 @@ import javafx.stage.Stage;
 import model.User;
 import service.UserService;
 import service.TaskSpaceUserService;
+import service.PusherService;
+import java.util.HashMap;
+import java.util.Map;
 
 import java.util.List;
 
@@ -27,6 +30,7 @@ public class InviteMemberController {
     private int taskSpaceId;
     private final UserService userService = new UserService();
     private final TaskSpaceUserService spaceUserService = new TaskSpaceUserService();
+    private final PusherService pusherService = new PusherService();
 
     public void setTaskSpaceId(int id) {
         this.taskSpaceId = id;
@@ -103,6 +107,16 @@ public class InviteMemberController {
     private void handleInvite(User user, Button inviteBtn) {
         spaceUserService.addMember(taskSpaceId, user.getId(), "MEMBER");
         showStatus(user.getFullName() + " ajouté avec succès !", "#10b981");
+
+        // realtime: member-invited
+        if (pusherService.isEnabled()) {
+            Map<String, Object> data = new HashMap<>();
+            data.put("boardId", taskSpaceId);
+            data.put("userId", utils.Session.isLoggedIn() ? utils.Session.getCurrentUser().getId() : null);
+            data.put("invitedUserId", user.getId());
+            data.put("role", "MEMBER");
+            pusherService.triggerEvent(pusherService.channelForBoard(taskSpaceId), "member-invited", data);
+        }
         
         // Update button visually
         inviteBtn.setText("Membre");

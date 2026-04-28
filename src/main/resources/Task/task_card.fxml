@@ -10,26 +10,40 @@
    <children>
       <HBox alignment="CENTER_LEFT" spacing="8.0">
          <children>
-            <Region fx:id="priorityIndicator" prefHeight="15.0" prefWidth="4.0" styleClass="priority-indicator, priority-high" />
-            <Label fx:id="lblTitle" styleClass="task-title" text="Design System Update" wrapText="true" />
+            <Label fx:id="lblPriorityBadge" styleClass="priority-pill priority-moyenne-pill" text="Moyenne" />
+            <Region HBox.hgrow="ALWAYS" />
+            <HBox fx:id="scoreDots" alignment="CENTER_RIGHT" spacing="3.0">
+               <children>
+                  <Region fx:id="dot1" styleClass="intelligence-dot" />
+                  <Region fx:id="dot2" styleClass="intelligence-dot" />
+                  <Region fx:id="dot3" styleClass="intelligence-dot" />
+                  <Region fx:id="dot4" styleClass="intelligence-dot" />
+               </children>
+            </HBox>
+            <Label fx:id="lblRankBadge" styleClass="rank-badge" text="#1" visible="false" managed="false" />
          </children>
       </HBox>
+      <Label fx:id="lblTitle" styleClass="task-title" text="Design System Update" wrapText="true" />
+      <Label fx:id="lblDescription" styleClass="task-desc" text="description" wrapText="true" />
+      <Region prefHeight="1.0" styleClass="task-divider" />
       <HBox alignment="CENTER_LEFT" spacing="12.0">
          <children>
             <HBox alignment="CENTER_LEFT" spacing="4.0">
                <children>
                   <Label styleClass="task-info-tag" text="⏳" />
-                  <Label fx:id="lblEstimatedTime" styleClass="task-info-tag" text="4h" />
+                  <Label fx:id="lblEstimatedTime" styleClass="task-info-tag" text="2026-04-27" />
+                  <Label fx:id="lblDeadlineAlert" styleClass="task-deadline-overdue" text="Retard" visible="false" managed="false" />
                </children>
             </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="4.0">
-               <children>
-                  <Label styleClass="task-info-tag" text="📊" />
-                  <Label fx:id="lblDifficulty" styleClass="task-info-tag" text="Medium" />
-               </children>
-            </HBox>
+
             <Region HBox.hgrow="ALWAYS" />
-            <Label fx:id="lblUserAvatar" style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-font-size: 10px; -fx-font-weight: bold; -fx-background-radius: 50%; -fx-min-width: 20; -fx-min-height: 20; -fx-alignment: center;" text="JD" visible="false" />
+            <!-- Tracking pill badge (renders only when tracking; no layout shift) -->
+            <HBox fx:id="trackingBadge" alignment="CENTER_LEFT" spacing="6.0" styleClass="tracking-badge" visible="false" managed="false">
+               <children>
+                  <Region fx:id="trackingDot" styleClass="tracking-dot" />
+                  <Label fx:id="lblTrackingTime" styleClass="tracking-time" text="00:00" />
+               </children>
+            </HBox>
          </children>
       </HBox>
    </children>
