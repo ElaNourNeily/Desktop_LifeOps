@@ -129,6 +129,59 @@ public class ObjectifService implements CRUD<Objectif> {
         return objectifs;
     }
 
+    /**
+     * Recalcule automatiquement la progression d'un objectif
+     * en fonction du ratio de plans d'action terminés.
+     *
+     * Règles :
+     *  - Aucun plan          → progression inchangée
+     *  - Tous terminés       → 100% + statut "Complété"
+     *  - Partiellement       → (nb terminés / total) * 100, arrondi
+     *  - Aucun terminé       → 0%
+     */
+    public void recalculerProgression(int objectifId) throws SQLException {
+        // Compter le total et les terminés en une seule requête
+        String sql = """
+            SELECT
+                COUNT(*) AS total,
+                SUM(CASE WHEN LOWER(statut) IN ('terminé','termine','terminé','completed') THEN 1 ELSE 0 END) AS termines
+            FROM plan_action
+            WHERE objectif_id = ?
+            """;
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, objectifId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int total    = rs.getInt("total");
+                int termines = rs.getInt("termines");
+
+                if (total == 0) return; // pas de plans → on ne touche pas à la progression manuelle
+
+                int nouvelleProgression = (int) Math.round((double) termines / total * 100);
+
+                // Mettre à jour progression (et statut si 100%)
+                String nouveauStatut = nouvelleProgression == 100 ? "Complété" : null;
+
+                String updateSql = nouveauStatut != null
+                    ? "UPDATE objectif SET progression = ?, statut = ? WHERE id = ?"
+                    : "UPDATE objectif SET progression = ? WHERE id = ?";
+
+                try (PreparedStatement upd = connection.prepareStatement(updateSql)) {
+                    upd.setInt(1, nouvelleProgression);
+                    if (nouveauStatut != null) {
+                        upd.setString(2, nouveauStatut);
+                        upd.setInt(3, objectifId);
+                    } else {
+                        upd.setInt(2, objectifId);
+                    }
+                    upd.executeUpdate();
+                    System.out.println("Progression recalculée : " + nouvelleProgression + "% (objectif #" + objectifId + ")");
+                }
+            }
+        }
+    }
+
     // Méthode utilitaire : mapper un ResultSet vers un Objectif
     private Objectif mapResultSet(ResultSet rs) throws SQLException {
         Objectif o = new Objectif(

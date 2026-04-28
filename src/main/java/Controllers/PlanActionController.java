@@ -2,7 +2,9 @@ package Controllers;
 
 import Model.Objectif;
 import Model.PlanAction;
+import Service.GeminiService;
 import Service.PlanActionService;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,6 +32,7 @@ public class PlanActionController {
     @FXML private DatePicker dateFin;
     @FXML private Button btnAnnuler;
     @FXML private Button btnSauvegarder;
+    @FXML private Button btnSuggestions;
 
     @FXML private Label errTitre;
     @FXML private Label errDateDebut;
@@ -39,6 +42,7 @@ public class PlanActionController {
     private static final String STYLE_VALIDE = "-fx-border-color: #00d285; -fx-border-width: 1.5; -fx-border-radius: 6;";
 
     private final PlanActionService planActionService = new PlanActionService();
+    private final GeminiService geminiService = new GeminiService();
     private Objectif objectifCourant;
     private PlanAction planEnEdition = null;
 
@@ -74,6 +78,177 @@ public class PlanActionController {
         labelTitreObjectif.setText("Objectif : " + objectif.getTitre());
         chargerPlans();
     }
+
+    // ── Suggestions IA ───────────────────────────────────────────────────
+
+    @FXML
+    void handleSuggestionsIA(ActionEvent event) {
+        // Désactiver le bouton pendant le chargement
+        btnSuggestions.setDisable(true);
+        btnSuggestions.setText("⏳ Génération en cours...");
+
+        // Appel en arrière-plan pour ne pas bloquer l'UI
+        Thread thread = new Thread(() -> {
+            try {
+                List<PlanAction> suggestions = geminiService.suggererPlans(
+                    objectifCourant.getTitre(),
+                    objectifCourant.getCategorie()
+                );
+
+                // Retour sur le thread JavaFX
+                Platform.runLater(() -> {
+                    btnSuggestions.setDisable(false);
+                    btnSuggestions.setText("✨ Suggestions IA");
+                    if (suggestions.isEmpty()) {
+                        afficherErreurIA("Aucune suggestion reçue. Vérifiez votre clé API.");
+                    } else {
+                        afficherDialogSuggestions(suggestions);
+                    }
+                });
+
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    btnSuggestions.setDisable(false);
+                    btnSuggestions.setText("✨ Suggestions IA");
+                    afficherErreurIA("Erreur : " + e.getMessage());
+                });
+            }
+        });
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    /**
+     * Affiche une dialog avec les suggestions Gemini.
+     * L'utilisateur peut cocher celles qu'il veut ajouter directement.
+     */
+    private void afficherDialogSuggestions(List<PlanAction> suggestions) {
+        Dialog<List<PlanAction>> dialog = new Dialog<>();
+        dialog.setTitle("✨ Suggestions IA — Gemini");
+        dialog.setHeaderText("Sélectionnez les plans d'action à ajouter :");
+        dialog.getDialogPane().setPrefWidth(560);
+        dialog.getDialogPane().setStyle("-fx-background-color: #1c1e22;");
+
+        // Boutons
+        ButtonType btnAjouter = new ButtonType("➕ Ajouter la sélection", ButtonBar.ButtonData.OK_DONE);
+        ButtonType btnFermer  = new ButtonType("Fermer", ButtonBar.ButtonData.CANCEL_CLOSE);
+        dialog.getDialogPane().getButtonTypes().addAll(btnAjouter, btnFermer);
+
+        // Contenu : liste de CheckBox pour chaque suggestion
+        VBox contenu = new VBox(12);
+        contenu.setPadding(new Insets(15));
+        contenu.setStyle("-fx-background-color: #1c1e22;");
+
+        List<CheckBox> checkBoxes = new ArrayList<>();
+
+        for (PlanAction plan : suggestions) {
+            CheckBox cb = new CheckBox();
+            cb.setSelected(true); // coché par défaut
+            cb.setUserData(plan);
+
+            VBox infoBox = new VBox(4);
+
+            HBox titreBox = new HBox(8);
+            titreBox.setAlignment(Pos.CENTER_LEFT);
+
+            Label titreLbl = new Label(plan.getTitre());
+            titreLbl.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px;");
+
+            Label prioriteLbl = new Label(plan.getPriorite());
+            prioriteLbl.setStyle(
+                "-fx-background-color: " + getCouleurPriorite(plan.getPriorite()) +
+                "; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 1 7; -fx-font-size: 11px; -fx-font-weight: bold;"
+            );
+
+            titreBox.getChildren().addAll(titreLbl, prioriteLbl);
+
+            Label descLbl = new Label(plan.getDescription());
+            descLbl.setStyle("-fx-text-fill: #8a8d91; -fx-font-size: 12px;");
+            descLbl.setWrapText(true);
+
+            infoBox.getChildren().addAll(titreBox, descLbl);
+
+            HBox ligne = new HBox(12);
+            ligne.setAlignment(Pos.CENTER_LEFT);
+            ligne.setPadding(new Insets(10));
+            ligne.setStyle(
+                "-fx-background-color: #2a2d32; -fx-background-radius: 8; -fx-cursor: hand;"
+            );
+            ligne.getChildren().addAll(cb, infoBox);
+            HBox.setHgrow(infoBox, Priority.ALWAYS);
+
+            // Clic sur toute la ligne pour cocher/décocher
+            ligne.setOnMouseClicked(e -> cb.setSelected(!cb.isSelected()));
+
+            checkBoxes.add(cb);
+            contenu.getChildren().add(ligne);
+        }
+
+        ScrollPane scroll = new ScrollPane(contenu);
+        scroll.setFitToWidth(true);
+        scroll.setStyle("-fx-background: #1c1e22; -fx-background-color: transparent;");
+        scroll.setPrefHeight(380);
+
+        dialog.getDialogPane().setContent(scroll);
+
+        // Résultat : retourner les plans cochés
+        dialog.setResultConverter(buttonType -> {
+            if (buttonType == btnAjouter) {
+                List<PlanAction> selectionnes = new ArrayList<>();
+                for (CheckBox cb : checkBoxes) {
+                    if (cb.isSelected()) {
+                        selectionnes.add((PlanAction) cb.getUserData());
+                    }
+                }
+                return selectionnes;
+            }
+            return null;
+        });
+
+        dialog.showAndWait().ifPresent(plansSelectionnes -> {
+            if (!plansSelectionnes.isEmpty()) {
+                ajouterPlansSelectionnes(plansSelectionnes);
+            }
+        });
+    }
+
+    /**
+     * Sauvegarde en base les plans sélectionnés dans la dialog.
+     */
+    private void ajouterPlansSelectionnes(List<PlanAction> plans) {
+        int ajoutés = 0;
+        for (PlanAction plan : plans) {
+            plan.setObjectif_id(objectifCourant.getId());
+            plan.setDate_debut(LocalDate.now());
+            plan.setDate_fin(LocalDate.now().plusWeeks(2));
+            plan.setStatut("À faire");
+            try {
+                planActionService.create(plan);
+                ajoutés++;
+            } catch (SQLException e) {
+                System.err.println("Erreur ajout plan suggéré : " + e.getMessage());
+            }
+        }
+
+        chargerPlans(); // Rafraîchir la liste
+
+        // Confirmation
+        Alert info = new Alert(Alert.AlertType.INFORMATION);
+        info.setTitle("Plans ajoutés");
+        info.setHeaderText(null);
+        info.setContentText(ajoutés + " plan(s) d'action ajouté(s) avec succès !");
+        info.showAndWait();
+    }
+
+    private void afficherErreurIA(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur Gemini IA");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    // ── Chargement & affichage des plans ─────────────────────────────────
 
     private void chargerPlans() {
         plansContainer.getChildren().clear();
@@ -237,6 +412,8 @@ public class PlanActionController {
         reinitialiserStyles();
     }
 
+    // ── Validation ────────────────────────────────────────────────────────
+
     private void validerDates() {
         LocalDate debut = dateDebut.getValue();
         LocalDate fin   = dateFin.getValue();
@@ -292,6 +469,8 @@ public class PlanActionController {
         if (errDateDebut != null) errDateDebut.setVisible(false);
         if (errDateFin != null)   errDateFin.setVisible(false);
     }
+
+    // ── Helpers visuels ───────────────────────────────────────────────────
 
     private VBox creerMiniInfo(String label, String valeur) {
         VBox vbox = new VBox(2);

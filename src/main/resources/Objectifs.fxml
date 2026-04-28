@@ -17,28 +17,37 @@
     </padding>
 
     <top>
-        <VBox spacing="16">
-            <!-- TITRE ET BOUTON -->
-            <HBox alignment="CENTER_LEFT">
-                <VBox>
+        <VBox spacing="20">
+            <!-- BANNIÈRE NOTIFICATIONS (cachée par défaut) -->
+            <VBox fx:id="banniereContainer" spacing="6" visible="false" managed="false" />
+
+            <!-- TITRE ET BOUTONS -->
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <VBox spacing="4">
                     <Label styleClass="title-label" text="Mes Objectifs" />
                     <Label styleClass="subtitle-label" text="Définissez, suivez et atteignez vos objectifs personnels" />
                 </VBox>
                 <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="btnExportVisionBoard" onAction="#handleExportVisionBoard"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #a78bfa; -fx-font-weight: bold; -fx-font-size: 13px;
+                               -fx-background-radius: 25; -fx-padding: 10 20; -fx-cursor: hand;
+                               -fx-border-color: rgba(139,92,246,0.3); -fx-border-radius: 25; -fx-border-width: 1;"
+                        text="📸 Vision Board" />
                 <Button fx:id="btnNouvelObjectif" onAction="#handleNouvelObjectif" styleClass="btn-primary" text="+ Nouvel objectif" />
             </HBox>
 
             <!-- RECHERCHE + TRI -->
-            <HBox alignment="CENTER_LEFT" spacing="10">
+            <HBox alignment="CENTER_LEFT" spacing="12">
                 <TextField fx:id="txtRecherche" promptText="🔍 Rechercher un objectif..."
                            styleClass="search-field" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
-                <Label style="-fx-text-fill: #8a8d91; -fx-font-size: 13px;" text="Trier par :" />
-                <ComboBox fx:id="comboTri" prefWidth="190"
-                          style="-fx-background-color: #1c1e22; -fx-text-fill: white;" />
+                <Label style="-fx-text-fill: #5a5d61; -fx-font-size: 13px;" text="Trier par :" />
+                <ComboBox fx:id="comboTri" prefWidth="200"
+                          style="-fx-background-color: #1c1e22; -fx-text-fill: white; -fx-background-radius: 10; -fx-border-color: #2a2d32; -fx-border-radius: 10;" />
             </HBox>
 
             <!-- FILTRES CATÉGORIE -->
-            <HBox alignment="CENTER_LEFT" spacing="8">
+            <HBox alignment="CENTER_LEFT" spacing="10">
                 <Button fx:id="btnTous"      onAction="#handleFiltrer" styleClass="filter-btn-active" text="Tous" />
                 <Button fx:id="btnPersonnel" onAction="#handleFiltrer" styleClass="filter-btn"        text="Personnel" />
                 <Button fx:id="btnSante"     onAction="#handleFiltrer" styleClass="filter-btn"        text="Santé" />
@@ -50,14 +59,16 @@
             <Label fx:id="labelCount" styleClass="section-title" text="EN COURS (0)" />
 
             <BorderPane.margin>
-                <Insets bottom="10.0" />
+                <Insets bottom="12.0" />
             </BorderPane.margin>
         </VBox>
     </top>
 
     <center>
         <ScrollPane fitToWidth="true" style="-fx-background: #121417; -fx-background-color: transparent;">
-            <VBox fx:id="objectifsContainer" spacing="15" />
+            <VBox fx:id="objectifsContainer" spacing="20">
+                <padding><Insets top="8" bottom="16" /></padding>
+            </VBox>
         </ScrollPane>
     </center>
 </BorderPane>

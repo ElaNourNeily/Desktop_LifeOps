@@ -46,6 +46,15 @@
 
             <Separator style="-fx-background-color: #2a2d32;" />
 
+            <!-- BOUTON SUGGESTIONS IA -->
+            <HBox alignment="CENTER_RIGHT">
+                <Button fx:id="btnSuggestions" onAction="#handleSuggestionsIA"
+                        text="✨ Suggestions IA"
+                        style="-fx-background-color: linear-gradient(to right, #7c3aed, #a78bfa);
+                               -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px;
+                               -fx-background-radius: 20; -fx-padding: 8 20; -fx-cursor: hand;" />
+            </HBox>
+
             <!-- FORMULAIRE AJOUT / MODIFICATION -->
             <Label fx:id="labelFormTitre" style="-fx-text-fill: #a78bfa; -fx-font-weight: bold; -fx-font-size: 14px;" text="➕ Nouveau plan d'action" />
 

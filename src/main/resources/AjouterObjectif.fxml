@@ -10,81 +10,95 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
 
-<VBox prefHeight="580.0" prefWidth="440.0" spacing="13.0"
+<VBox prefHeight="620.0" prefWidth="480.0" spacing="0"
       style="-fx-background-color: #121417;"
       stylesheets="@style.css"
       xmlns="http://javafx.com/javafx/19"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="Controllers.AjouterObjectifController">
-    <padding>
-        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
-    </padding>
 
-    <Label styleClass="title-label" text="Créer un Objectif" />
-
-    <!-- Titre -->
-    <VBox spacing="4.0">
-        <Label styleClass="form-label" text="Titre *" />
-        <TextField fx:id="txtTitre" promptText="Ex: Apprendre JavaFX"
-                   styleClass="form-field" maxWidth="Infinity" />
-        <Label fx:id="errTitre" style="-fx-text-fill: #ff477e; -fx-font-size: 11px;" text="" visible="false" />
+    <!-- HEADER -->
+    <VBox style="-fx-background-color: linear-gradient(to bottom, #1a0533, #121417); -fx-padding: 30 30 25 30;">
+        <Label styleClass="title-label" text="✨ Créer un Objectif" />
+        <Label style="-fx-text-fill: #8a8d91; -fx-font-size: 13px; -fx-padding: 4 0 0 0;"
+               text="Définissez votre prochain objectif et atteignez-le." />
     </VBox>
 
-    <!-- Catégorie -->
-    <VBox spacing="4.0">
-        <Label styleClass="form-label" text="Catégorie *" />
-        <ComboBox fx:id="comboCategorie" maxWidth="Infinity"
-                  promptText="Choisir une catégorie..."
-                  styleClass="combo-form" />
-        <Label fx:id="errCategorie" style="-fx-text-fill: #ff477e; -fx-font-size: 11px;" text="" visible="false" />
-    </VBox>
+    <!-- BODY -->
+    <VBox spacing="18" style="-fx-padding: 24 30 30 30;">
 
-    <!-- Description -->
-    <VBox spacing="4.0">
-        <Label styleClass="form-label" text="Description (Optionnelle)" />
-        <TextArea fx:id="txtDescription" prefRowCount="3"
-                  promptText="Décrivez votre objectif..."
-                  style="-fx-control-inner-background: #2a2d32; -fx-text-fill: white;
-                         -fx-prompt-text-fill: #6a6d71; -fx-border-color: #3a3d42;
-                         -fx-border-width: 1; -fx-border-radius: 8; -fx-background-radius: 8;
-                         -fx-font-size: 13px;" />
-    </VBox>
-
-    <!-- Dates -->
-    <HBox spacing="15.0">
-        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
-            <Label styleClass="form-label" text="Date de début *" />
-            <DatePicker fx:id="dateDebut" maxWidth="Infinity" styleClass="date-form" />
-            <Label fx:id="errDateDebut" style="-fx-text-fill: #ff477e; -fx-font-size: 11px;" text="" visible="false" />
+        <!-- Titre -->
+        <VBox spacing="6">
+            <Label styleClass="form-label" text="TITRE *" />
+            <TextField fx:id="txtTitre" promptText="Ex : Apprendre JavaFX en 30 jours"
+                       styleClass="form-field" maxWidth="Infinity" />
+            <Label fx:id="errTitre" style="-fx-text-fill: #ff477e; -fx-font-size: 11px;" text="" visible="false" />
         </VBox>
-        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
-            <Label styleClass="form-label" text="Date de fin *" />
-            <DatePicker fx:id="dateFin" maxWidth="Infinity" styleClass="date-form" />
-            <Label fx:id="errDateFin" style="-fx-text-fill: #ff477e; -fx-font-size: 11px;" text="" visible="false" />
+
+        <!-- Catégorie -->
+        <VBox spacing="6">
+            <Label styleClass="form-label" text="CATÉGORIE *" />
+            <ComboBox fx:id="comboCategorie" maxWidth="Infinity"
+                      promptText="Choisir une catégorie..."
+                      styleClass="combo-form" />
+            <Label fx:id="errCategorie" style="-fx-text-fill: #ff477e; -fx-font-size: 11px;" text="" visible="false" />
         </VBox>
-    </HBox>
 
-    <!-- Statut -->
-    <VBox spacing="4.0">
-        <Label styleClass="form-label" text="Statut" />
-        <ComboBox fx:id="comboStatut" maxWidth="Infinity"
-                  promptText="Choisir un statut..."
-                  styleClass="combo-form" />
+        <!-- Description -->
+        <VBox spacing="6">
+            <Label styleClass="form-label" text="DESCRIPTION" />
+            <TextArea fx:id="txtDescription" prefRowCount="3"
+                      promptText="Décrivez votre objectif en quelques mots..."
+                      style="-fx-control-inner-background: #1c1e22; -fx-text-fill: white;
+                             -fx-prompt-text-fill: #6a6d71; -fx-border-color: #2a2d32;
+                             -fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10;
+                             -fx-font-size: 13px;" />
+        </VBox>
+
+        <!-- Dates -->
+        <HBox spacing="16">
+            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                <Label styleClass="form-label" text="DATE DE DÉBUT *" />
+                <DatePicker fx:id="dateDebut" maxWidth="Infinity" styleClass="date-form" />
+                <Label fx:id="errDateDebut" style="-fx-text-fill: #ff477e; -fx-font-size: 11px;" text="" visible="false" />
+            </VBox>
+            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                <Label styleClass="form-label" text="DATE DE FIN *" />
+                <DatePicker fx:id="dateFin" maxWidth="Infinity" styleClass="date-form" />
+                <Label fx:id="errDateFin" style="-fx-text-fill: #ff477e; -fx-font-size: 11px;" text="" visible="false" />
+            </VBox>
+        </HBox>
+
+        <!-- Statut -->
+        <VBox spacing="6">
+            <Label styleClass="form-label" text="STATUT" />
+            <ComboBox fx:id="comboStatut" maxWidth="Infinity"
+                      promptText="Choisir un statut..."
+                      styleClass="combo-form" />
+        </VBox>
+
+        <!-- Progression -->
+        <VBox spacing="8">
+            <HBox alignment="CENTER_LEFT">
+                <Label styleClass="form-label" text="PROGRESSION" />
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="labelProgression"
+                       style="-fx-text-fill: #a78bfa; -fx-font-weight: bold; -fx-font-size: 15px;" text="0%" />
+            </HBox>
+            <Slider fx:id="sliderProgression" max="100.0" min="0.0"
+                    showTickLabels="false" showTickMarks="false"
+                    majorTickUnit="25.0" blockIncrement="5.0"
+                    style="-fx-accent: #8b5cf6;" />
+        </VBox>
+
+        <!-- Bouton Enregistrer -->
+        <Button fx:id="btnEnregistrer" maxWidth="Infinity"
+                onAction="#handleEnregistrer"
+                styleClass="btn-primary"
+                text="✓  Enregistrer l'objectif"
+                style="-fx-font-size: 14px; -fx-padding: 14 0;" />
+
     </VBox>
-
-    <!-- Progression -->
-    <VBox spacing="4.0">
-        <Label styleClass="form-label" text="Progression (%)" />
-        <Slider fx:id="sliderProgression" max="100.0" min="0.0"
-                showTickLabels="true" showTickMarks="true"
-                majorTickUnit="25.0" blockIncrement="5.0" />
-        <Label fx:id="labelProgression"
-               style="-fx-text-fill: #a78bfa; -fx-font-weight: bold;" text="0%" />
-    </VBox>
-
-    <Button fx:id="btnEnregistrer" maxWidth="Infinity"
-            onAction="#handleEnregistrer"
-            styleClass="btn-primary" text="Enregistrer" />
-
 </VBox>

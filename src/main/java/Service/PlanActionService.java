@@ -10,9 +10,11 @@ import java.util.List;
 public class PlanActionService implements CRUD<PlanAction> {
 
     private final Connection connection;
+    private final ObjectifService objectifService;
 
     public PlanActionService() {
         this.connection = MyDatabase.getInstance().getConnection();
+        this.objectifService = new ObjectifService();
     }
 
     // CREATE
@@ -35,6 +37,8 @@ public class PlanActionService implements CRUD<PlanAction> {
             }
             System.out.println("Plan d'action créé, ID = " + plan.getId());
         }
+        // Recalcul automatique de la progression
+        objectifService.recalculerProgression(plan.getObjectif_id());
     }
 
     // UPDATE
@@ -52,17 +56,22 @@ public class PlanActionService implements CRUD<PlanAction> {
             ps.executeUpdate();
             System.out.println("Plan d'action mis à jour.");
         }
+        // Recalcul automatique de la progression
+        objectifService.recalculerProgression(plan.getObjectif_id());
     }
 
     // DELETE
     @Override
     public void delete(PlanAction plan) throws SQLException {
+        int objectifId = plan.getObjectif_id(); // sauvegarder avant suppression
         String sql = "DELETE FROM plan_action WHERE id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, plan.getId());
             ps.executeUpdate();
             System.out.println("Plan d'action supprimé.");
         }
+        // Recalcul automatique de la progression
+        objectifService.recalculerProgression(objectifId);
     }
 
     // FIND BY ID

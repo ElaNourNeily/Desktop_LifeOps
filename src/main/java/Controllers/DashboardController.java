@@ -1,198 +1,263 @@
 package Controllers;
 
-import Service.DashboardService;
-import javafx.collections.FXCollections;
+import Service.PatternAnalysisService;
+import Service.PatternAnalysisService.*;
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.chart.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.Map;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
 
-    // ── KPI cards ────────────────────────────────────────────────────
-    @FXML private VBox cardTotal;
-    @FXML private VBox cardEnCours;
-    @FXML private VBox cardTermines;
-    @FXML private VBox cardEnRetard;
-    @FXML private VBox cardPlans;
-    @FXML private VBox cardProgression;
+    @FXML private HBox  scoreContainer;
+    @FXML private VBox  patternsContainer;
+    @FXML private VBox  recommandationsContainer;
+    @FXML private VBox  emptyContainer;
+    @FXML private Button btnActualiser;
 
-    // ── Charts ───────────────────────────────────────────────────────
-    @FXML private PieChart pieCategorie;
-    @FXML private PieChart pieStatut;
-    @FXML private BarChart<String, Number> barProgression;
-    @FXML private BarChart<String, Number> barPlans;
-
-    private final DashboardService service = new DashboardService();
+    private final PatternAnalysisService analysisService = new PatternAnalysisService();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        chargerKPI();
-        chargerPieCategorie();
-        chargerPieStatut();
-        chargerBarProgression();
-        chargerBarPlans();
+        chargerAnalyse();
     }
 
-    // ── KPI ──────────────────────────────────────────────────────────
-
-    private void chargerKPI() {
-        remplirCarte(cardTotal,       "📋 Total objectifs",       String.valueOf(service.totalObjectifs()),       "#8b5cf6");
-        remplirCarte(cardEnCours,     "🔄 En cours",              String.valueOf(service.objectifsEnCours()),     "#6ea8fe");
-        remplirCarte(cardTermines,    "✅ Complétés",             String.valueOf(service.objectifsTermines()),    "#00d285");
-        remplirCarte(cardEnRetard,    "⚠ En retard",             String.valueOf(service.objectifsEnRetard()),    "#ff477e");
-        remplirCarte(cardPlans,       "📌 Plans d'action",        String.valueOf(service.totalPlansAction()),     "#ffb703");
-        remplirCarte(cardProgression, "📈 Progression moyenne",
-                String.format("%.0f%%", service.progressionMoyenne()), "#a78bfa");
+    @FXML
+    void handleActualiser(ActionEvent event) {
+        // Animation de rotation sur le bouton
+        scoreContainer.setOpacity(0);
+        patternsContainer.setOpacity(0);
+        recommandationsContainer.setOpacity(0);
+        chargerAnalyse();
     }
 
-    private void remplirCarte(VBox card, String titre, String valeur, String couleur) {
-        card.getChildren().clear();
+    private void chargerAnalyse() {
+        ScoreAnalyse score     = analysisService.calculerScore();
+        List<Pattern> patterns = analysisService.analyserPatterns();
+        List<Recommandation> recs = analysisService.genererRecommandations(patterns, score);
+
+        afficherScore(score);
+        afficherPatterns(patterns);
+        afficherRecommandations(recs);
+
+        boolean vide = patterns.isEmpty();
+        emptyContainer.setVisible(vide);
+        emptyContainer.setManaged(vide);
+    }
+
+    // ── Score global ──────────────────────────────────────────────────
+
+    private void afficherScore(ScoreAnalyse score) {
+        scoreContainer.getChildren().clear();
+        scoreContainer.setSpacing(16);
+
+        scoreContainer.getChildren().addAll(
+            creerCarteScore("🏆", String.valueOf(score.scoreReussite) + "%",
+                "Taux de réussite", couleurScore(score.scoreReussite)),
+            creerCarteScore("📋", String.valueOf(score.totalObjectifs),
+                "Total objectifs", "#8b5cf6"),
+            creerCarteScore("✅", String.valueOf(score.completes),
+                "Complétés", "#10b981"),
+            creerCarteScore("🔄", String.valueOf(score.enCours),
+                "En cours", "#3b82f6"),
+            creerCarteScore("❌", String.valueOf(score.abandonnes),
+                "Abandonnés", "#ef4444")
+        );
+
+        animer(scoreContainer, 0);
+    }
+
+    private VBox creerCarteScore(String emoji, String valeur, String label, String couleur) {
+        VBox card = new VBox(6);
         card.setAlignment(Pos.CENTER);
-        card.setSpacing(8);
+        card.setPadding(new Insets(20, 24, 20, 24));
         card.setStyle(
-            "-fx-background-color: #1c1e22;" +
+            "-fx-background-color: #111318;" +
             "-fx-background-radius: 12;" +
             "-fx-border-color: " + couleur + ";" +
             "-fx-border-radius: 12;" +
             "-fx-border-width: 1.5;" +
-            "-fx-padding: 20 25;"
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2);"
         );
-        card.setPrefWidth(260);
-        card.setPrefHeight(110);
+        HBox.setHgrow(card, Priority.ALWAYS);
 
-        Label lblValeur = new Label(valeur);
-        lblValeur.setStyle("-fx-text-fill: " + couleur + "; -fx-font-size: 32px; -fx-font-weight: bold;");
+        Label emojiLbl = new Label(emoji);
+        emojiLbl.setStyle("-fx-font-size: 22px;");
 
-        Label lblTitre = new Label(titre);
-        lblTitre.setStyle("-fx-text-fill: #8a8d91; -fx-font-size: 13px;");
+        Label valeurLbl = new Label(valeur);
+        valeurLbl.setStyle("-fx-text-fill: " + couleur + "; -fx-font-size: 28px; -fx-font-weight: bold;");
 
-        card.getChildren().addAll(lblValeur, lblTitre);
+        Label labelLbl = new Label(label);
+        labelLbl.setStyle("-fx-text-fill: #6b7280; -fx-font-size: 12px;");
+
+        card.getChildren().addAll(emojiLbl, valeurLbl, labelLbl);
+        return card;
     }
 
-    // ── Pie : catégories ─────────────────────────────────────────────
+    // ── Patterns ──────────────────────────────────────────────────────
 
-    private void chargerPieCategorie() {
-        pieCategorie.getData().clear();
-        pieCategorie.setLegendVisible(true);
-        pieCategorie.setLabelsVisible(true);
-        styleChart(pieCategorie);
+    private void afficherPatterns(List<Pattern> patterns) {
+        patternsContainer.getChildren().clear();
 
-        Map<String, Integer> data = service.objectifsParCategorie();
-        if (data.isEmpty()) {
-            pieCategorie.setData(FXCollections.observableArrayList(
-                new PieChart.Data("Aucune donnée", 1)
-            ));
-            return;
+        if (patterns.isEmpty()) return;
+
+        Label titre = new Label("🔍  Patterns détectés (" + patterns.size() + ")");
+        titre.setStyle("-fx-text-fill: #f1f2f4; -fx-font-size: 16px; -fx-font-weight: bold;");
+        VBox.setMargin(titre, new Insets(0, 0, 4, 0));
+        patternsContainer.getChildren().add(titre);
+
+        for (int i = 0; i < patterns.size(); i++) {
+            VBox card = creerCartePattern(patterns.get(i));
+            card.setOpacity(0);
+            card.setTranslateY(15);
+            patternsContainer.getChildren().add(card);
+            animer(card, i * 80);
         }
-        data.forEach((cat, nb) ->
-            pieCategorie.getData().add(new PieChart.Data(cat + " (" + nb + ")", nb))
-        );
-        appliquerCouleursPie(pieCategorie, new String[]{
-            "#8b5cf6","#a78bfa","#6ea8fe","#00d285","#ffb703","#ff477e","#f472b6"
-        });
     }
 
-    // ── Pie : statuts ─────────────────────────────────────────────────
+    private VBox creerCartePattern(Pattern pattern) {
+        String couleur = switch (pattern.severite) {
+            case "haute"   -> "#ef4444";
+            case "moyenne" -> "#f59e0b";
+            default        -> "#6b7280";
+        };
+        String bgColor     = switch (pattern.severite) {
+            case "haute"   -> "rgba(239,68,68,0.06)";
+            case "moyenne" -> "rgba(245,158,11,0.06)";
+            default        -> "rgba(107,114,128,0.06)";
+        };
+        String borderColor = switch (pattern.severite) {
+            case "haute"   -> "rgba(239,68,68,0.25)";
+            case "moyenne" -> "rgba(245,158,11,0.25)";
+            default        -> "rgba(107,114,128,0.2)";
+        };
 
-    private void chargerPieStatut() {
-        pieStatut.getData().clear();
-        pieStatut.setLegendVisible(true);
-        pieStatut.setLabelsVisible(true);
-        styleChart(pieStatut);
+        VBox card = new VBox(10);
+        card.setPadding(new Insets(18, 20, 18, 20));
+        card.setStyle(
+            "-fx-background-color: " + bgColor + ";" +
+            "-fx-border-color: " + borderColor + ";" +
+            "-fx-border-width: 1;" +
+            "-fx-border-radius: 12;" +
+            "-fx-background-radius: 12;"
+        );
 
-        Map<String, Integer> data = service.objectifsParStatut();
-        if (data.isEmpty()) {
-            pieStatut.setData(FXCollections.observableArrayList(
-                new PieChart.Data("Aucune donnée", 1)
-            ));
-            return;
+        // Header
+        HBox header = new HBox(12);
+        header.setAlignment(Pos.CENTER_LEFT);
+
+        Label emojiLbl = new Label(pattern.emoji);
+        emojiLbl.setStyle("-fx-font-size: 22px;");
+
+        VBox textes = new VBox(3);
+        Label titreLbl = new Label(pattern.titre);
+        titreLbl.setStyle("-fx-text-fill: #f1f2f4; -fx-font-size: 14px; -fx-font-weight: bold;");
+
+        Label severiteLbl = new Label(pattern.severite.toUpperCase());
+        severiteLbl.setStyle(
+            "-fx-background-color: " + bgColor + ";" +
+            "-fx-text-fill: " + couleur + ";" +
+            "-fx-font-size: 10px; -fx-font-weight: bold;" +
+            "-fx-background-radius: 4; -fx-padding: 2 7;" +
+            "-fx-border-color: " + borderColor + "; -fx-border-width: 1; -fx-border-radius: 4;"
+        );
+
+        textes.getChildren().addAll(titreLbl, severiteLbl);
+        HBox.setHgrow(textes, Priority.ALWAYS);
+
+        // Badge nb objectifs
+        Label nbLbl = new Label(pattern.nbObjectifs + " objectif" + (pattern.nbObjectifs > 1 ? "s" : ""));
+        nbLbl.setStyle("-fx-text-fill: #6b7280; -fx-font-size: 12px;");
+
+        header.getChildren().addAll(emojiLbl, textes, nbLbl);
+
+        // Description
+        Label descLbl = new Label(pattern.description);
+        descLbl.setStyle("-fx-text-fill: #9ca3af; -fx-font-size: 13px;");
+        descLbl.setWrapText(true);
+
+        card.getChildren().addAll(header, descLbl);
+        return card;
+    }
+
+    // ── Recommandations ───────────────────────────────────────────────
+
+    private void afficherRecommandations(List<Recommandation> recs) {
+        recommandationsContainer.getChildren().clear();
+
+        Label titre = new Label("💡  Recommandations");
+        titre.setStyle("-fx-text-fill: #f1f2f4; -fx-font-size: 16px; -fx-font-weight: bold;");
+        VBox.setMargin(titre, new Insets(8, 0, 4, 0));
+        recommandationsContainer.getChildren().add(titre);
+
+        for (int i = 0; i < recs.size(); i++) {
+            VBox card = creerCarteRecommandation(recs.get(i));
+            card.setOpacity(0);
+            card.setTranslateY(15);
+            recommandationsContainer.getChildren().add(card);
+            animer(card, i * 80);
         }
-        data.forEach((statut, nb) ->
-            pieStatut.getData().add(new PieChart.Data(statut + " (" + nb + ")", nb))
-        );
-        appliquerCouleursPie(pieStatut, new String[]{
-            "#6ea8fe","#00d285","#ff477e","#ffb703","#a78bfa","#f472b6","#8b5cf6"
-        });
     }
 
-    // ── Bar : progression par catégorie ──────────────────────────────
-
-    private void chargerBarProgression() {
-        barProgression.getData().clear();
-        styleBarChart(barProgression);
-        barProgression.setLegendVisible(false);
-
-        Map<String, Double> data = service.progressionParCategorie();
-        if (data.isEmpty()) return;
-
-        XYChart.Series<String, Number> serie = new XYChart.Series<>();
-        serie.setName("Progression (%)");
-        data.forEach((cat, moy) ->
-            serie.getData().add(new XYChart.Data<>(cat, Math.round(moy)))
+    private VBox creerCarteRecommandation(Recommandation rec) {
+        VBox card = new VBox(8);
+        card.setPadding(new Insets(16, 20, 16, 20));
+        card.setStyle(
+            "-fx-background-color: rgba(139,92,246,0.05);" +
+            "-fx-border-color: rgba(139,92,246,0.2);" +
+            "-fx-border-width: 1;" +
+            "-fx-border-radius: 12;" +
+            "-fx-background-radius: 12;"
         );
-        barProgression.getData().add(serie);
 
-        // Colorer les barres en purple
-        barProgression.setStyle(
-            "CHART_COLOR_1: #8b5cf6;"
-        );
+        HBox header = new HBox(12);
+        header.setAlignment(Pos.CENTER_LEFT);
+
+        Label emojiLbl = new Label(rec.emoji);
+        emojiLbl.setStyle("-fx-font-size: 20px;");
+
+        Label titreLbl = new Label(rec.titre);
+        titreLbl.setStyle("-fx-text-fill: #a78bfa; -fx-font-size: 14px; -fx-font-weight: bold;");
+
+        header.getChildren().addAll(emojiLbl, titreLbl);
+
+        Label conseilLbl = new Label(rec.conseil);
+        conseilLbl.setStyle("-fx-text-fill: #9ca3af; -fx-font-size: 13px;");
+        conseilLbl.setWrapText(true);
+
+        card.getChildren().addAll(header, conseilLbl);
+        return card;
     }
 
-    // ── Bar : plans d'action par statut ──────────────────────────────
+    // ── Helpers ───────────────────────────────────────────────────────
 
-    private void chargerBarPlans() {
-        barPlans.getData().clear();
-        styleBarChart(barPlans);
-        barPlans.setLegendVisible(false);
-
-        Map<String, Integer> data = service.plansParStatut();
-        if (data.isEmpty()) return;
-
-        XYChart.Series<String, Number> serie = new XYChart.Series<>();
-        serie.setName("Plans");
-        data.forEach((statut, nb) ->
-            serie.getData().add(new XYChart.Data<>(statut, nb))
-        );
-        barPlans.getData().add(serie);
-
-        barPlans.setStyle(
-            "CHART_COLOR_1: #a78bfa;"
-        );
+    private String couleurScore(int score) {
+        if (score >= 70) return "#10b981";
+        if (score >= 40) return "#f59e0b";
+        return "#ef4444";
     }
 
-    // ── Helpers de style ─────────────────────────────────────────────
+    private void animer(javafx.scene.Node node, int delayMs) {
+        FadeTransition ft = new FadeTransition(Duration.millis(400), node);
+        ft.setToValue(1.0);
+        ft.setDelay(Duration.millis(delayMs));
 
-    private void styleChart(PieChart chart) {
-        chart.setStyle(
-            "-fx-background-color: transparent;" +
-            "-fx-pie-label-visible: true;"
-        );
-    }
+        TranslateTransition tt = new TranslateTransition(Duration.millis(400), node);
+        tt.setToY(0);
+        tt.setDelay(Duration.millis(delayMs));
 
-    private void styleBarChart(BarChart<?, ?> chart) {
-        chart.setStyle("-fx-background-color: transparent;");
-        chart.lookup(".chart-plot-background")  ;
-        chart.setHorizontalGridLinesVisible(false);
-        chart.setVerticalGridLinesVisible(false);
-    }
-
-    private void appliquerCouleursPie(PieChart chart, String[] couleurs) {
-        // Les couleurs sont appliquées via CSS inline sur chaque slice après rendu
-        javafx.application.Platform.runLater(() -> {
-            int i = 0;
-            for (PieChart.Data d : chart.getData()) {
-                if (d.getNode() != null && i < couleurs.length) {
-                    d.getNode().setStyle("-fx-pie-color: " + couleurs[i % couleurs.length] + ";");
-                }
-                i++;
-            }
-        });
+        new ParallelTransition(ft, tt).play();
     }
 }
