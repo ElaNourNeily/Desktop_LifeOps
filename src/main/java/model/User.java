@@ -14,10 +14,11 @@ public class User {
     private int age;
     private LocalDateTime created_at = LocalDateTime.now();
     private int is_verified ;
+    private String telephone;
 
     public User (){}
 
-    public User(int id, String nom, String prenom, String email, String mot_de_passe, String photo, String role, LocalDateTime banUntil, int age) {
+    public User(int id, String nom, String prenom, String email, String mot_de_passe, String telephone, String photo, String role, LocalDateTime banUntil, int age) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
@@ -29,6 +30,15 @@ public class User {
         this.age = age;
         this.created_at = LocalDateTime.now();
         is_verified = 1;
+        this.telephone = telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public String getTelephone() {
+        return telephone;
     }
 
     public User(String nom, String prenom, String email, int age) {

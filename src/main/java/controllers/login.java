@@ -34,6 +34,9 @@ import java.util.Objects;
 public class login {
 
     @FXML
+    private Label error;
+
+    @FXML
     private TextField email;
 
     @FXML
@@ -68,12 +71,14 @@ public class login {
                 }
 
                 navigateToMainLayout(event);
+            } else if (!userservice.recherche(testingUser)) {
+                error.setVisible(true);
+                error.setText("Aucun mot de passe ou email n’est fourni!!");
+
             } else {
+                error.setText("Email ou mot de passe incorrect!");
+                error.setVisible(true);
                 System.out.println("Login unsuccessful — invalid email or password");
-                if (errorLabel != null) {
-                    errorLabel.setText("Email ou mot de passe incorrect");
-                    errorLabel.setVisible(true);
-                }
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -198,7 +203,7 @@ public class login {
             user.setEmail(userEmail);
             user.setPrenom(parts[0]);
             user.setNom(parts.length > 1 ? parts[1] : "");
-            user.setMot_de_passe("GOOGLE_USER"); // placeholder
+            user.setMot_de_passe("GOOGLE_USER");
             user.setAge(0);
 
             // Check if user already exists

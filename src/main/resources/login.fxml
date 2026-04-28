@@ -28,7 +28,16 @@
         <VBox spacing="15">
             
             <VBox spacing="8">
-                <Label styleClass="field-label" text="Email" />
+                <HBox>
+                    <children>
+                        <Label styleClass="field-label" text="Email"/>
+                        <Label fx:id="error" text="invalid email or password" textFill="RED" visible="false">
+                            <HBox.margin>
+                                <Insets left="20.0"/>
+                            </HBox.margin>
+                        </Label>
+                    </children>
+                </HBox>
                 <TextField fx:id="email" promptText="nom@exemple.com" styleClass="input-field" />
             </VBox>
 

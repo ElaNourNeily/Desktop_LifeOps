@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import model.User;
+import utils.RememberMe;
 import utils.Session;
 
 import java.io.IOException;
@@ -98,6 +99,7 @@ public class MainLayoutController {
     void handleLogout(MouseEvent event) {
         Session.getInstance().logout();
         try {
+            RememberMe.clear();
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/login.fxml")));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));

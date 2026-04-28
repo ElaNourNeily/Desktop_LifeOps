@@ -31,7 +31,8 @@ import java.util.Objects;
 import utils.Session;
 
 public class SignIn {
-
+    @FXML
+    private Label nomerror;
     @FXML
     private TextField prenom;
 
@@ -51,6 +52,14 @@ public class SignIn {
 
     @FXML
     private PasswordField password;
+    @FXML
+    private Label ageerror;
+    @FXML
+    private Label invalidmail;
+    @FXML
+    private Label pwdinvalid;
+    @FXML
+    private Label phoneerror;
 
     private Userservice userservice = new Userservice();
 
@@ -59,39 +68,64 @@ public class SignIn {
         int x = 0;
         try {
             User newUser = new User();
+            if ((!telephone.getText().matches("^[0-9]+$")) || (Integer.parseInt(telephone.getText()) < 8)) {
+                phoneerror.setVisible(true);
+            } else {
+                phoneerror.setVisible(false);
+                newUser.setTelephone(telephone.getText());
+            }
             if (prenom.getText().matches("^[a-zA-Z].*")){
+                p.setVisible(false);
+
                 newUser.setPrenom(prenom.getText());
                 x+=1;
                 newUser.setNom(nom.getText());
-
             }else {
                 p.setVisible(true);
             }
             if (nom.getText().matches("^[a-zA-Z].*")){
+                nomerror.setVisible(false);
                 newUser.setNom(nom.getText());
                 x+=1;
 
-            }
-
-            
-            if (!age.getText().isEmpty()) {
-                newUser.setAge(Integer.parseInt(age.getText()));
-                x+=1;
-
-            }
-            if (email.getText().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-                newUser.setEmail(email.getText());
-                x+=1;
 
             } else {
-                System.out.println("Invalid email format");
+                nomerror.setText("Format incorrect");
+                nomerror.setVisible(true);
+            }
+
+
+            if ((age.getText().isEmpty()) || Integer.parseInt(age.getText()) > 70 || Integer.parseInt(age.getText()) < 0) {
+                ageerror.setVisible(true);
+
+            } else {
+                ageerror.setVisible(false);
+                newUser.setAge(Integer.parseInt(age.getText()));
+                x+=1;
+            }
+            if (email.getText().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+                if (userservice.findbyMail(email.getText()) != null) {
+                    invalidmail.setText("Email already exists");
+                    invalidmail.setVisible(true);
+                } else {
+
+                    invalidmail.setVisible(false);
+                newUser.setEmail(email.getText());
+                    x += 1;
+                }
+
+
+            } else {
+                invalidmail.setText("Invalid email");
+                invalidmail.setVisible(true);
             }
             if(password.getText().length()>5){
+                pwdinvalid.setVisible(false);
                 newUser.setMot_de_passe(password.getText());
                 x+=1;
 
 
-            }else System.out.println("Invalid password format");
+            } else pwdinvalid.setVisible(true);
             if (x==5){
                 userservice.create(newUser);
                 System.out.println("Sign in successful!");
