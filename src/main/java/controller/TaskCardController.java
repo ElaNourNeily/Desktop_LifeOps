@@ -238,7 +238,10 @@ public class TaskCardController {
     }
 
     @FXML
-    private void handleCardClick() {
-        boardController.showTaskDetails(task);
+    private void handleCardClick(javafx.scene.input.MouseEvent event) {
+        boardController.setSelectedTask(task);
+        if (event.getClickCount() == 2) {
+            boardController.showTaskDetails(task);
+        }
     }
 }

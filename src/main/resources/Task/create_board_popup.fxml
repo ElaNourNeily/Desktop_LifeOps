@@ -24,7 +24,7 @@
             <!-- Name -->
             <VBox spacing="8.0">
                <children>
-                  <Label styleClass="form-label" text="Nom du tableau *" />
+                  <Label styleClass="panel-section-title" text="Nom du tableau *" />
                   <TextField fx:id="txtName" promptText="ex: Projet Marketing 2024" styleClass="form-field" />
                </children>
             </VBox>
@@ -34,15 +34,15 @@
                   <!-- Mode (Solo / Equipe) -->
                   <VBox spacing="8.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="form-label" text="Mode *" />
-                        <ComboBox fx:id="comboMode" maxWidth="1.7976931348623157E308" promptText="Choisir mode" styleClass="form-field" />
+                        <Label styleClass="panel-section-title" text="Mode *" />
+                        <ComboBox fx:id="comboMode" maxWidth="1.7976931348623157E308" promptText="Choisir mode" styleClass="combo-form" />
                      </children>
                   </VBox>
                   <!-- Category -->
                   <VBox spacing="8.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="form-label" text="Catégorie *" />
-                        <ComboBox fx:id="comboCategory" maxWidth="1.7976931348623157E308" promptText="Choisir catégorie" styleClass="form-field" />
+                        <Label styleClass="panel-section-title" text="Catégorie *" />
+                        <ComboBox fx:id="comboCategory" maxWidth="1.7976931348623157E308" promptText="Choisir catégorie" styleClass="combo-form" />
                      </children>
                   </VBox>
                </children>
@@ -50,15 +50,15 @@
 
             <VBox spacing="8.0">
                <children>
-                  <Label styleClass="form-label" text="Description" />
-                  <TextArea fx:id="txtDescription" prefHeight="70.0" promptText="Décrivez l'objectif de ce board..." styleClass="form-field" wrapText="true" />
+                  <Label styleClass="panel-section-title" text="Description" />
+                  <TextArea fx:id="txtDescription" prefHeight="70.0" promptText="Décrivez l'objectif de ce board..." wrapText="true" />
                </children>
             </VBox>
 
             <!-- Duration -->
             <VBox spacing="8.0">
                <children>
-                  <Label styleClass="form-label" text="Durée du Sprint (Jours) *" />
+                  <Label styleClass="panel-section-title" text="Durée du Sprint (Jours) *" />
                   <TextField fx:id="txtSprintDuration" promptText="ex: 14" styleClass="form-field" />
                </children>
             </VBox>

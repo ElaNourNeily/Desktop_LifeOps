@@ -82,6 +82,20 @@ public class UserService {
         return null;
     }
 
+    public User getById(int id) {
+        String sql = "SELECT * FROM utilisateur WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return mapResultSetToUser(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public java.util.List<User> getAllUsers() {
         java.util.List<User> users = new java.util.ArrayList<>();
         String sql = "SELECT * FROM utilisateur";

@@ -175,8 +175,22 @@ public class BoardHubController {
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initStyle(StageStyle.UNDECORATED);
-            stage.setScene(new Scene(root));
+            stage.initStyle(StageStyle.TRANSPARENT);
+            
+            final double[] xOffset = {0};
+            final double[] yOffset = {0};
+            root.setOnMousePressed(e -> {
+                xOffset[0] = e.getSceneX();
+                yOffset[0] = e.getSceneY();
+            });
+            root.setOnMouseDragged(e -> {
+                stage.setX(e.getScreenX() - xOffset[0]);
+                stage.setY(e.getScreenY() - yOffset[0]);
+            });
+
+            Scene scene = new Scene(root);
+            scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+            stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

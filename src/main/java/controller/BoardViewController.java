@@ -39,6 +39,8 @@ public class BoardViewController {
     @FXML private VBox colDone;
     @FXML private Button btnInvite;
     @FXML private Button btnDeleteBoard;
+    @FXML private Button btnAISuggest;
+    private Tache selectedTask;
 
     private TaskSpace currentBoard;
     private String currentUserRole;
@@ -76,6 +78,9 @@ public class BoardViewController {
         boolean isLeader = "LEADER".equals(currentUserRole);
         btnInvite.setVisible(isLeader);
         btnDeleteBoard.setVisible(isLeader);
+        if (btnAISuggest != null) {
+            btnAISuggest.setVisible(isLeader && space.isTeam());
+        }
 
         lblBoardTitle.setText(space.getNom());
         lblBoardType.setText(space.getCategory().toUpperCase() + " (" + (currentUserRole != null ? currentUserRole : "VIEWER") + ")");
@@ -308,7 +313,25 @@ public class BoardViewController {
             controller.setBoardContext(currentBoard, currentUserRole);
             controller.fillForm(task);
 
-            MainLayoutController.getInstance().showPopup(root);
+            javafx.stage.Stage stage = new javafx.stage.Stage();
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            stage.initStyle(javafx.stage.StageStyle.TRANSPARENT);
+            
+            final double[] xOffset = {0};
+            final double[] yOffset = {0};
+            root.setOnMousePressed(e -> {
+                xOffset[0] = e.getSceneX();
+                yOffset[0] = e.getSceneY();
+            });
+            root.setOnMouseDragged(e -> {
+                stage.setX(e.getScreenX() - xOffset[0]);
+                stage.setY(e.getScreenY() - yOffset[0]);
+            });
+
+            javafx.scene.Scene scene = new javafx.scene.Scene(root);
+            scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+            stage.setScene(scene);
+            stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -323,7 +346,25 @@ public class BoardViewController {
             TaskFormPopupController controller = loader.getController();
             controller.setContext(currentBoard.getId(), Session.getCurrentUser().getId(), this);
             controller.setBoardContext(currentBoard, currentUserRole);
-            MainLayoutController.getInstance().showPopup(root);
+            javafx.stage.Stage stage = new javafx.stage.Stage();
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            stage.initStyle(javafx.stage.StageStyle.TRANSPARENT);
+            
+            final double[] xOffset = {0};
+            final double[] yOffset = {0};
+            root.setOnMousePressed(e -> {
+                xOffset[0] = e.getSceneX();
+                yOffset[0] = e.getSceneY();
+            });
+            root.setOnMouseDragged(e -> {
+                stage.setX(e.getScreenX() - xOffset[0]);
+                stage.setY(e.getScreenY() - yOffset[0]);
+            });
+
+            javafx.scene.Scene scene = new javafx.scene.Scene(root);
+            scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+            stage.setScene(scene);
+            stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -338,8 +379,10 @@ public class BoardViewController {
             controller.setTaskSpaceId(currentBoard.getId());
             javafx.stage.Stage stage = new javafx.stage.Stage();
             stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
-            stage.initStyle(javafx.stage.StageStyle.UNDECORATED); // Optional, for clean UI
-            stage.setScene(new javafx.scene.Scene(root));
+            stage.initStyle(javafx.stage.StageStyle.TRANSPARENT); // Optional, for clean UI
+            javafx.scene.Scene scene = new javafx.scene.Scene(root);
+            scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+            stage.setScene(scene);
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
@@ -364,5 +407,60 @@ public class BoardViewController {
             try { pusherService.unsubscribe(pusherService.channelForBoard(currentBoard.getId())); } catch (Exception ignored) {}
         }
         MainLayoutController.getInstance().loadPage("board_hub.fxml");
+    }
+
+    public void setSelectedTask(Tache task) {
+        this.selectedTask = task;
+    }
+
+    @FXML
+    private void handleAISuggestAssignment(ActionEvent event) {
+        if (selectedTask == null) {
+            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.WARNING, "Veuillez d'abord sélectionner une tâche (clic simple sur la carte).");
+            alert.show();
+            return;
+        }
+        
+        List<model.User> users = spaceUserService.getMembersByBoard(currentBoard.getId());
+        // For a TEAM board, we should include the leader as well in case they are not in the members table
+        if (users.stream().noneMatch(u -> u.getId() == currentBoard.getLeaderId())) {
+            model.User leader = new service.UserService().getById(currentBoard.getLeaderId());
+            if (leader != null) users.add(leader);
+        }
+
+        service.AIService aiService = new service.AIService();
+        List<model.task.Recommendation> recommendations = aiService.getRecommendations(selectedTask, users);
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Task/ai_assignment_popup.fxml"));
+            Parent root = loader.load();
+            AIAssignmentPopupController controller = loader.getController();
+            controller.initData(selectedTask, recommendations, () -> {
+                loadTasks(); // refresh UI after assignment
+            });
+            
+            javafx.stage.Stage stage = new javafx.stage.Stage();
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            stage.initStyle(javafx.stage.StageStyle.TRANSPARENT);
+            
+            // Allow dragging the undecorated popup if needed
+            final double[] xOffset = {0};
+            final double[] yOffset = {0};
+            root.setOnMousePressed(e -> {
+                xOffset[0] = e.getSceneX();
+                yOffset[0] = e.getSceneY();
+            });
+            root.setOnMouseDragged(e -> {
+                stage.setX(e.getScreenX() - xOffset[0]);
+                stage.setY(e.getScreenY() - yOffset[0]);
+            });
+
+            javafx.scene.Scene scene = new javafx.scene.Scene(root);
+            scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+            stage.setScene(scene);
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -39,6 +39,7 @@
                               <Button fx:id="btnInvite" onAction="#handleInviteMember" mnemonicParsing="false" style="-fx-background-color: #2a2d32; -fx-text-fill: #3b82f6; -fx-background-radius: 50%; -fx-min-width: 28; -fx-min-height: 28; -fx-padding: 0; -fx-border-color: #121417; -fx-border-width: 2; -fx-border-radius: 50%;" text="+" />
                            </children>
                         </HBox>
+                        <Button fx:id="btnAISuggest" onAction="#handleAISuggestAssignment" mnemonicParsing="false" style="-fx-background-color: #8b5cf6; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6;" text="🤖 AI Suggest Assignment" />
                         <Button fx:id="btnDeleteBoard" onAction="#handleDeleteBoard" mnemonicParsing="false" style="-fx-background-color: #ef4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6;" text="Supprimer le Board" />
                         <Button mnemonicParsing="false" styleClass="btn-primary" text="Convertir en Équipe" visible="false" />
                      </children>

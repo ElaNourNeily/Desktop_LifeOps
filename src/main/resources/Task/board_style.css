@@ -239,7 +239,7 @@
 }
 
 .panel-section-title {
-    -fx-text-fill: #8a8d91;
+    -fx-text-fill: #c0c3c8;
     -fx-font-size: 11px;
     -fx-font-weight: bold;
     -fx-text-transform: uppercase;
@@ -282,6 +282,10 @@
     -fx-border-width: 1px;
     -fx-border-radius: 8px;
 }
+.form-field .text {
+    -fx-fill: white;
+    -fx-font-weight: 500;
+}
 .form-field:focused {
     -fx-border-color: #8b5cf6;
 }
@@ -293,6 +297,10 @@
     -fx-border-color: #2a2d32;
     -fx-border-width: 1px;
     -fx-border-radius: 8px;
+}
+.combo-form .list-cell {
+    -fx-text-fill: white;
+    -fx-font-weight: 500;
 }
 
 .field-error {
@@ -376,4 +384,52 @@
     -fx-border-width: 2;
     -fx-border-radius: 10;
     -fx-effect: dropshadow(gaussian, rgba(124,77,255,0.4), 12, 0.3, 0, 0);
+}
+
+/* ── Form Inputs Internals Fix ───────────────────────── */
+
+/* Dropdown list popup */
+.combo-box-popup .list-view {
+    -fx-background-color: #1c1e22;
+    -fx-border-color: #2a2d32;
+    -fx-border-width: 1px;
+    -fx-background-radius: 8px;
+}
+
+.combo-box-popup .list-cell {
+    -fx-text-fill: white;
+    -fx-padding: 8px 12px;
+    -fx-background-color: #1c1e22;
+}
+
+.combo-box-popup .list-cell:filled:hover {
+    -fx-background-color: #8b5cf6;
+    -fx-text-fill: white;
+}
+
+.combo-box-popup .list-cell:filled:selected {
+    -fx-background-color: #7c3aed;
+    -fx-text-fill: white;
+}
+
+/* TextArea */
+.text-area {
+    -fx-background-color: #1c1e22;
+    -fx-text-fill: white;
+    -fx-border-color: #2a2d32;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+.text-area .text {
+    -fx-fill: white;
+    -fx-font-weight: 500;
+}
+
+.text-area .content {
+    -fx-background-color: transparent;
+}
+
+.text-area:focused {
+    -fx-border-color: #8b5cf6;
 }

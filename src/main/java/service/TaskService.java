@@ -195,4 +195,9 @@ public class TaskService implements CRUD<Tache> {
         if (extra != null) data.putAll(extra);
         pusherService.triggerEvent(channel, event, data);
     }
+
+    public void assignTaskToUser(Tache task, model.User user) {
+        task.setAssignedUserId(user.getId());
+        update(task);
+    }
 }

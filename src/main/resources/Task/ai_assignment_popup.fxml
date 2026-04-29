@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefWidth="500.0" spacing="20.0" style="-fx-background-color: #1a1d21; -fx-background-radius: 12; -fx-border-color: #2a2d32; -fx-border-radius: 12; -fx-border-width: 1;" stylesheets="@board_style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AIAssignmentPopupController">
+   <children>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Label style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" text="Suggestions d'Affectation IA" />
+         </children>
+      </HBox>
+      
+      <Label style="-fx-text-fill: #8a8d91; -fx-font-size: 13px;" text="Top recommandations pour cette tâche :" />
+      
+      <VBox fx:id="recommendationsContainer" spacing="10.0" />
+      
+      <HBox alignment="CENTER_RIGHT" spacing="12.0" style="-fx-padding: 10 0 0 0;">
+         <children>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="ignoreButton" mnemonicParsing="false" onAction="#handleIgnore" style="-fx-background-color: transparent; -fx-text-fill: #8a8d91;" text="Annuler" />
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+   </padding>
+</VBox>
