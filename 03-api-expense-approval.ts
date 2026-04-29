@@ -8,6 +8,7 @@ import {
   Expense,
   Budget,
   ExpenseApprovalEngine,
+  ExpenseCategorizationEngine,
 } from './01-budget-domain-model';
 
 const router = Router();
@@ -18,6 +19,7 @@ const expenses: Map<string, Expense> = new Map();
 const approvals: Map<string, ApprovalRecord> = new Map();
 
 const approvalEngine = new ExpenseApprovalEngine();
+const categorizationEngine = new ExpenseCategorizationEngine();
 
 interface ApprovalRecord {
   expenseId: string;
@@ -44,12 +46,34 @@ router.post('/api/v1/expenses', (req: Request, res: Response) => {
     return res.status(404).json({ error: 'Budget not found' });
   }
 
+  // Auto-categorize if categoryId not provided
+  let finalCategoryId = categoryId;
+  let categorizationResult = null;
+
+  if (!categoryId) {
+    categorizationResult = categorizationEngine.categorizeExpense(description);
+    finalCategoryId = categorizationResult.categoryId;
+
+    // Check if category exists in budget, if not, add it
+    const existingCategory = budget.categories.find(c => c.categoryId === finalCategoryId);
+    if (!existingCategory) {
+      budget.categories.push({
+        categoryId: finalCategoryId,
+        name: categorizationResult.categoryName,
+        limit: 0, // Default limit
+        spent: 0,
+        percentage: 0,
+        priority: 'medium',
+      });
+    }
+  }
+
   // Create expense
   const expense: Expense = {
     id: `exp_${Date.now()}`,
     description,
     amount,
-    categoryId,
+    categoryId: finalCategoryId,
     budgetId,
     date: new Date(date),
     tags: tags || [],
@@ -91,6 +115,13 @@ router.post('/api/v1/expenses', (req: Request, res: Response) => {
     },
     alert,
     autoApproved: expense.status === 'approved',
+    ...(categorizationResult && {
+      autoCategorization: {
+        categoryName: categorizationResult.categoryName,
+        confidence: categorizationResult.confidence,
+        matchedKeywords: categorizationResult.matchedKeywords,
+      }
+    }),
   });
 });
 
@@ -364,6 +395,45 @@ router.get('/api/v1/expenses/statistics', (req: Request, res: Response) => {
     byStatus,
     byCategory,
   });
+});
+
+/**
+ * POST /api/v1/categorization/rules
+ * Add custom categorization rule
+ */
+router.post('/api/v1/categorization/rules', (req: Request, res: Response) => {
+  const { categoryName, keywords } = req.body;
+
+  if (!categoryName || !Array.isArray(keywords)) {
+    return res.status(400).json({ error: 'categoryName and keywords array required' });
+  }
+
+  categorizationEngine.addCategoryRule(categoryName, keywords);
+  res.json({ message: `Added rule for category: ${categoryName}`, keywords });
+});
+
+/**
+ * GET /api/v1/categorization/categories
+ * Get all available categories
+ */
+router.get('/api/v1/categorization/categories', (req: Request, res: Response) => {
+  const categories = categorizationEngine.getAvailableCategories();
+  res.json({ categories });
+});
+
+/**
+ * POST /api/v1/categorization/preview
+ * Preview categorization for a description
+ */
+router.post('/api/v1/categorization/preview', (req: Request, res: Response) => {
+  const { description } = req.body;
+
+  if (!description) {
+    return res.status(400).json({ error: 'description required' });
+  }
+
+  const result = categorizationEngine.categorizeExpense(description);
+  res.json(result);
 });
 
 export default router;

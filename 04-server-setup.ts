@@ -6,7 +6,7 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import budgetRouter from './02-api-budget';
 import expenseRouter from './03-api-expense-approval';
-import { BudgetForecastingEngine, ExpenseApprovalEngine } from './01-budget-domain-model';
+import { BudgetForecastingEngine, ExpenseApprovalEngine, ExpenseCategorizationEngine } from './01-budget-domain-model';
 
 // ============================================
 // MIDDLEWARE & CONFIGURATION
@@ -16,11 +16,13 @@ class APIServer {
   app: Express;
   forecastEngine: BudgetForecastingEngine;
   approvalEngine: ExpenseApprovalEngine;
+  categorizationEngine: ExpenseCategorizationEngine;
 
   constructor() {
     this.app = express();
     this.forecastEngine = new BudgetForecastingEngine();
     this.approvalEngine = new ExpenseApprovalEngine();
+    this.categorizationEngine = new ExpenseCategorizationEngine();
 
     this.setupMiddleware();
     this.setupRoutes();
@@ -106,6 +108,7 @@ class APIServer {
       console.log('  - GET  /api/v1/budgets/:budgetId/forecast');
       console.log('  - GET  /api/v1/budgets/:budgetId/anomalies');
       console.log('  - POST /api/v1/budgets/:budgetId/optimize');
+      console.log('  - POST /api/v1/budgets/check-alerts/:budgetId');
       console.log('  - POST /api/v1/expenses');
       console.log('  - GET  /api/v1/expenses/:expenseId/approval-status');
       console.log('  - POST /api/v1/expenses/:expenseId/approve');
@@ -113,6 +116,14 @@ class APIServer {
       console.log('  - GET  /api/v1/expenses/pending-approvals');
       console.log('  - POST /api/v1/expenses/bulk-review');
       console.log('  - GET  /api/v1/expenses/statistics');
+      console.log('  - POST /api/v1/categorization/rules');
+      console.log('  - GET  /api/v1/categorization/categories');
+      console.log('  - POST /api/v1/categorization/preview');
+      console.log('  - GET  /api/v1/alerts/:userId');
+      console.log('  - POST /api/v1/alerts/:alertId/read');
+      console.log('  - GET  /api/v1/reminders/:userId');
+      console.log('  - POST /api/v1/reminders');
+      console.log('  - POST /api/v1/alerts/check/:userId');
     });
   }
 }

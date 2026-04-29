@@ -325,6 +325,75 @@ class ExpenseApprovalEngine {
   }
 }
 
+// ============================================
+// ADVANCED BUSINESS LOGIC - MÉTIER 3
+// ============================================
+
+/**
+ * MÉTIER AVANCÉE 3: Smart Expense Categorization
+ * Automatic expense classification using keyword matching and rules
+ */
+
+class ExpenseCategorizationEngine {
+  private categoryRules: Map<string, string[]> = new Map([
+    ['Alimentation', ['mcdonald', 'burger', 'pizza', 'restaurant', 'cafe', 'coffee', 'lunch', 'dinner', 'food', 'meal']],
+    ['Transport', ['uber', 'taxi', 'bus', 'train', 'flight', 'gas', 'fuel', 'parking', 'transport']],
+    ['Shopping', ['shopping', 'achat', 'store', 'magasin']],
+    ['Sante', ['medecin', 'doctor', 'pharmacie', 'pharmacy', 'sante', 'health']],
+    ['Loisirs', ['cinema', 'movie', 'theater', 'concert', 'loisir', 'leisure']],
+    ['Abonnements', ['abonnement', 'subscription', 'netflix', 'spotify', 'prime']],
+    ['Bills', ['facture', 'bill', 'electricite', 'electricity', 'eau', 'water']],
+    ['Rent', ['loyer', 'rent', 'location']],
+    ['Education', ['ecole', 'school', 'universite', 'university', 'cours', 'course', 'education']],
+    ['Autre', []] // Default category
+  ]);
+
+  // Auto-categorize expense based on description
+  categorizeExpense(description: string): {
+    categoryId: string;
+    categoryName: string;
+    confidence: number;
+    matchedKeywords: string[];
+  } {
+    const lowerDesc = description.toLowerCase();
+    let bestMatch = 'Other';
+    let maxMatches = 0;
+    let matchedKeywords: string[] = [];
+
+    for (const [category, keywords] of this.categoryRules) {
+      const matches = keywords.filter(keyword => lowerDesc.includes(keyword));
+      if (matches.length > maxMatches) {
+        maxMatches = matches.length;
+        bestMatch = category;
+        matchedKeywords = matches;
+      }
+    }
+
+    // Generate categoryId from category name
+    const categoryId = `cat_${bestMatch.toLowerCase().replace(/\s+/g, '_')}`;
+
+    // Confidence based on number of matches and description length
+    const confidence = Math.min(100, (maxMatches * 20) + (matchedKeywords.length > 0 ? 30 : 0));
+
+    return {
+      categoryId,
+      categoryName: bestMatch,
+      confidence,
+      matchedKeywords
+    };
+  }
+
+  // Add custom categorization rule
+  addCategoryRule(categoryName: string, keywords: string[]): void {
+    this.categoryRules.set(categoryName, keywords);
+  }
+
+  // Get all available categories
+  getAvailableCategories(): string[] {
+    return Array.from(this.categoryRules.keys());
+  }
+}
+
 export {
   Budget,
   BudgetCategory,
@@ -333,4 +402,5 @@ export {
   RecurringConfig,
   BudgetForecastingEngine,
   ExpenseApprovalEngine,
+  ExpenseCategorizationEngine,
 };

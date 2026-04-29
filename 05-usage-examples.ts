@@ -76,11 +76,11 @@ const normalExpenseExample = {
     endpoint: '/api/v1/expenses',
     body: {
       budgetId: 'budget_1682514000',
-      description: 'Flight NYC to SF for client meeting',
-      amount: 450,
-      categoryId: 'cat_travel',
+      description: 'McDonald\'s lunch',
+      amount: 15.99,
+      // categoryId not provided - will be auto-categorized
       date: '2026-02-15',
-      tags: ['client-meeting', 'nyc-sf', 'billable'],
+      tags: ['lunch', 'fast-food'],
       receipt: 'https://receipts.example.com/exp_123.pdf',
     },
   },
@@ -88,13 +88,13 @@ const normalExpenseExample = {
   response: {
     expense: {
       id: 'exp_1682514100',
-      description: 'Flight NYC to SF for client meeting',
-      amount: 450,
-      categoryId: 'cat_travel',
+      description: 'McDonald\'s lunch',
+      amount: 15.99,
+      categoryId: 'cat_food', // Auto-categorized
       budgetId: 'budget_1682514000',
       date: '2026-02-15T00:00:00.000Z',
       status: 'approved',
-      tags: ['client-meeting', 'nyc-sf', 'billable'],
+      tags: ['lunch', 'fast-food'],
     },
     approval: {
       approvalPath: 'auto',
@@ -105,10 +105,65 @@ const normalExpenseExample = {
     alert: {
       alertLevel: 'info',
       title: 'Expense Logged',
-      message: 'Flight NYC to SF for client meeting - 450',
+      message: 'McDonald\'s lunch - 15.99',
       suggestedAction: 'No action needed',
     },
     autoApproved: true,
+    autoCategorization: {
+      categoryName: 'Food',
+      confidence: 50,
+      matchedKeywords: ['mcdonald'],
+    },
+  },
+};
+
+// ============================================
+// EXAMPLE 2.5: Submitting Expense with Auto-Categorization (Transport)
+// ============================================
+
+const transportExpenseExample = {
+  request: {
+    method: 'POST',
+    endpoint: '/api/v1/expenses',
+    body: {
+      budgetId: 'budget_1682514000',
+      description: 'Uber ride to airport',
+      amount: 25.50,
+      // categoryId not provided - will be auto-categorized
+      date: '2026-02-16',
+      tags: ['transport', 'airport'],
+    },
+  },
+
+  response: {
+    expense: {
+      id: 'exp_1682514150',
+      description: 'Uber ride to airport',
+      amount: 25.50,
+      categoryId: 'cat_transport', // Auto-categorized
+      budgetId: 'budget_1682514000',
+      date: '2026-02-16T00:00:00.000Z',
+      status: 'approved',
+      tags: ['transport', 'airport'],
+    },
+    approval: {
+      approvalPath: 'auto',
+      requiredApprovals: 0,
+      reasoning: ['Low risk, auto-approved'],
+      riskScore: 10,
+    },
+    alert: {
+      alertLevel: 'info',
+      title: 'Expense Logged',
+      message: 'Uber ride to airport - 25.50',
+      suggestedAction: 'No action needed',
+    },
+    autoApproved: true,
+    autoCategorization: {
+      categoryName: 'Transport',
+      confidence: 50,
+      matchedKeywords: ['uber'],
+    },
   },
 };
 
@@ -472,9 +527,142 @@ const statisticsExample = {
   },
 };
 
+// ============================================
+// EXAMPLE 11: Get User Alerts
+// ============================================
+
+const getAlertsExample = {
+  request: {
+    method: 'GET',
+    endpoint: '/api/v1/alerts/1',
+  },
+
+  response: {
+    alerts: [
+      {
+        id: 1,
+        type: 'budget_threshold',
+        title: 'Seuil de budget dépassé',
+        message: 'Vous avez utilisé 85% de votre budget Mars 2026 ⚠️',
+        severity: 'warning',
+        userId: 1,
+        budgetId: 1,
+        expenseId: null,
+        dateCreated: '2026-04-28T10:00:00.000Z',
+        isRead: false,
+        dueDate: null,
+      },
+      {
+        id: 2,
+        type: 'reminder',
+        title: 'Rappel: Facture STEG',
+        message: 'Facture STEG aujourd\'hui - Montant: 45.50 DT',
+        severity: 'info',
+        userId: 1,
+        budgetId: null,
+        expenseId: null,
+        dateCreated: '2026-04-28T09:00:00.000Z',
+        isRead: false,
+        dueDate: '2026-04-28T00:00:00.000Z',
+      },
+    ],
+    total: 2,
+    unread: 2,
+  },
+};
+
+// ============================================
+// EXAMPLE 12: Create Reminder
+// ============================================
+
+const createReminderExample = {
+  request: {
+    method: 'POST',
+    endpoint: '/api/v1/reminders',
+    body: {
+      title: 'Facture STEG',
+      description: 'Paiement mensuel électricité',
+      dueDate: '2026-05-01',
+      frequency: 'monthly',
+      category: 'facture',
+      amount: 45.50,
+      userId: 1,
+    },
+  },
+
+  response: {
+    id: 1682678400000,
+    title: 'Facture STEG',
+    description: 'Paiement mensuel électricité',
+    dueDate: '2026-05-01T00:00:00.000Z',
+    frequency: 'monthly',
+    category: 'facture',
+    amount: 45.50,
+    userId: 1,
+    isActive: true,
+    dateCreated: '2026-04-28T12:00:00.000Z',
+    lastNotified: null,
+  },
+};
+
+// ============================================
+// EXAMPLE 13: Check Alerts
+// ============================================
+
+const checkAlertsExample = {
+  request: {
+    method: 'POST',
+    endpoint: '/api/v1/alerts/check/1',
+  },
+
+  response: {
+    message: 'Alert checks completed',
+    newAlertsGenerated: 1,
+    alerts: [
+      {
+        id: 1682678500000,
+        type: 'budget_threshold',
+        title: 'Seuil de budget dépassé',
+        message: 'Vous avez utilisé 85% de votre budget Mars 2026 ⚠️',
+        severity: 'warning',
+        userId: 1,
+        budgetId: 1,
+        expenseId: null,
+        dateCreated: '2026-04-28T12:05:00.000Z',
+        isRead: false,
+        dueDate: null,
+      },
+    ],
+  },
+};
+
+// ============================================
+// EXAMPLE 14: Check Budget Alerts
+// ============================================
+
+const checkBudgetAlertsExample = {
+  request: {
+    method: 'POST',
+    endpoint: '/api/v1/budgets/check-alerts/budget_123',
+    body: {
+      totalSpent: 850,
+      budgetLimit: 1000
+    },
+  },
+
+  response: {
+    alertTriggered: true,
+    severity: 'warning',
+    message: 'Vous avez utilisé 85.0% de votre budget ⚠️',
+    utilizationPercentage: '85.0',
+    recommendation: 'Surveillez vos dépenses de près'
+  },
+};
+
 export {
   budgetExample,
   normalExpenseExample,
+  transportExpenseExample,
   highRiskExpenseExample,
   forecastExample,
   anomaliesExample,
@@ -483,4 +671,8 @@ export {
   approveExpenseExample,
   bulkReviewExample,
   statisticsExample,
+  getAlertsExample,
+  createReminderExample,
+  checkAlertsExample,
+  checkBudgetAlertsExample,
 };
