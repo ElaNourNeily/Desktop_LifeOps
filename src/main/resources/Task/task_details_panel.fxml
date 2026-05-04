@@ -11,118 +11,168 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="detailsPanelRoot" prefWidth="450.0" spacing="25.0" styleClass="details-panel" stylesheets="@board_style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TaskDetailsController">
-   <children>
-      <!-- Header Actions -->
-      <HBox alignment="CENTER_LEFT" spacing="15.0">
-         <children>
-            <Button fx:id="btnDelete" onAction="#handleDelete" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: #ef4444; -fx-padding: 0;" text="Supprimer" />
-            <Region HBox.hgrow="ALWAYS" />
-            <Button fx:id="btnClose" onAction="#handleClose" mnemonicParsing="false" style="-fx-background-color: #2a2d32; -fx-text-fill: #c0c3c8; -fx-background-radius: 8;" text="Fermer ✕" />
-         </children>
-      </HBox>
+<VBox fx:id="detailsPanelRoot" prefWidth="420.0" spacing="0"
+      styleClass="details-panel"
+      stylesheets="@board_style.css"
+      xmlns="http://javafx.com/javafx/19"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controller.TaskDetailsController">
 
-      <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;" VBox.vgrow="ALWAYS">
-         <content>
-            <VBox spacing="25.0">
-               <children>
-                  <!-- Title & Status -->
-                  <VBox spacing="10.0">
-                     <children>
-                        <TextField fx:id="txtTaskTitle" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 0;" text="Design System Update" />
-                        <HBox alignment="CENTER_LEFT" spacing="15.0">
-                           <children>
-                              <ComboBox fx:id="comboStatus" prefWidth="150.0" promptText="Statut" styleClass="combo-form" />
-                              <Label fx:id="lblCreatedAt" styleClass="subtitle-label" text="Créé le 12 Mars 2024" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
+    <children>
 
-                  <!-- Description -->
-                  <VBox spacing="8.0">
-                     <children>
-                        <Label styleClass="panel-section-title" text="Description" />
-                        <TextArea fx:id="txtDescription" prefHeight="100.0" promptText="Ajouter une description..." styleClass="form-field" wrapText="true" />
-                     </children>
-                  </VBox>
+        <!-- ── Panel Header ──────────────────────────────── -->
+        <VBox style="-fx-padding: 0 0 16 0; -fx-border-color: #2a2d32; -fx-border-width: 0 0 1 0;">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="12.0">
+                    <children>
+                        <Label style="-fx-text-fill: #a78bfa; -fx-font-size: 11px; -fx-font-weight: bold;"
+                               text="DÉTAILS DE LA TÂCHE" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btnDelete" onAction="#handleDelete"
+                                mnemonicParsing="false"
+                                style="-fx-background-color: transparent; -fx-text-fill: #f87171; -fx-cursor: hand; -fx-padding: 5 10; -fx-border-color: rgba(239,68,68,0.3); -fx-border-width: 1; -fx-border-radius: 8; -fx-background-radius: 8;"
+                                text="Supprimer" />
+                        <Button fx:id="btnClose" onAction="#handleClose"
+                                mnemonicParsing="false"
+                                style="-fx-background-color: #1c1e22; -fx-text-fill: #c0c3c8; -fx-background-radius: 8; -fx-cursor: hand; -fx-padding: 5 12; -fx-border-color: #2a2d32; -fx-border-width: 1;"
+                                text="✕" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
 
-                  <!-- Info Grid -->
-                  <HBox spacing="30.0">
-                     <children>
-                        <VBox spacing="15.0" HBox.hgrow="ALWAYS">
-                           <children>
-                              <VBox spacing="5.0">
-                                 <children>
-                                    <Label styleClass="panel-section-title" text="Priorité" />
-                                    <ComboBox fx:id="comboPriority" maxWidth="Infinity" styleClass="combo-form" />
-                                 </children>
-                              </VBox>
-                              <VBox spacing="5.0">
-                                 <children>
-                                    <Label styleClass="panel-section-title" text="Difficulté" />
-                                    <ComboBox fx:id="comboDifficulty" maxWidth="Infinity" styleClass="combo-form" />
-                                 </children>
-                              </VBox>
-                           </children>
+        <!-- Spacer -->
+        <Region prefHeight="16.0" />
+
+        <!-- ── Scrollable Content ────────────────────────── -->
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                    style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;">
+            <content>
+                <VBox spacing="22.0">
+                    <children>
+
+                        <!-- Title & Status -->
+                        <VBox spacing="10.0">
+                            <children>
+                                <TextField fx:id="txtTaskTitle"
+                                           style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold; -fx-padding: 0; -fx-border-color: transparent;"
+                                           text="Titre de la tâche" />
+                                <HBox alignment="CENTER_LEFT" spacing="12.0">
+                                    <children>
+                                        <ComboBox fx:id="comboStatus" prefWidth="160.0"
+                                                  promptText="Statut" styleClass="combo-form" />
+                                        <Label fx:id="lblCreatedAt" styleClass="subtitle-label"
+                                               text="Créé le —" />
+                                    </children>
+                                </HBox>
+                            </children>
                         </VBox>
-                        <VBox spacing="15.0" HBox.hgrow="ALWAYS">
-                           <children>
-                              <VBox spacing="5.0">
-                                 <children>
-                                    <Label styleClass="panel-section-title" text="Temps Estimé" />
-                                    <TextField fx:id="txtEstimatedTime" promptText="ex: 4h" styleClass="form-field" />
-                                 </children>
-                              </VBox>
-                              <VBox spacing="5.0">
-                                 <children>
-                                    <Label styleClass="panel-section-title" text="Temps Passé" />
-                                    <TextField fx:id="txtRealTime" promptText="ex: 2h" styleClass="form-field" />
-                                 </children>
-                              </VBox>
-                           </children>
+
+                        <!-- Description -->
+                        <VBox spacing="8.0">
+                            <children>
+                                <Label styleClass="panel-section-title" text="DESCRIPTION" />
+                                <TextArea fx:id="txtDescription" prefHeight="90.0"
+                                          promptText="Ajouter une description..."
+                                          styleClass="form-field" wrapText="true" />
+                            </children>
                         </VBox>
-                     </children>
-                  </HBox>
 
-                  <!-- Team Mode Elements -->
-                  <VBox fx:id="teamControls" spacing="15.0">
-                     <children>
-                        <Label styleClass="panel-section-title" text="Assigné à" />
-                        <HBox alignment="CENTER_LEFT" spacing="12.0">
-                           <children>
-                              <Label style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-background-radius: 50%; -fx-min-width: 32; -fx-min-height: 32; -fx-alignment: center;" text="JD" />
-                              <Label styleClass="task-title" text="John Doe" />
-                              <Region HBox.hgrow="ALWAYS" />
-                              <Button mnemonicParsing="false" styleClass="filter-btn" text="Modifier" />
-                           </children>
+                        <!-- Info Grid: Priority / Difficulty / Times -->
+                        <HBox spacing="20.0">
+                            <children>
+                                <VBox spacing="14.0" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <VBox spacing="6.0">
+                                            <children>
+                                                <Label styleClass="panel-section-title" text="PRIORITÉ" />
+                                                <ComboBox fx:id="comboPriority" maxWidth="Infinity"
+                                                          styleClass="combo-form" />
+                                            </children>
+                                        </VBox>
+                                        <VBox spacing="6.0">
+                                            <children>
+                                                <Label styleClass="panel-section-title" text="DIFFICULTÉ" />
+                                                <ComboBox fx:id="comboDifficulty" maxWidth="Infinity"
+                                                          styleClass="combo-form" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </VBox>
+                                <VBox spacing="14.0" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <VBox spacing="6.0">
+                                            <children>
+                                                <Label styleClass="panel-section-title" text="TEMPS ESTIMÉ" />
+                                                <TextField fx:id="txtEstimatedTime"
+                                                           promptText="ex: 4h"
+                                                           styleClass="form-field" />
+                                            </children>
+                                        </VBox>
+                                        <VBox spacing="6.0">
+                                            <children>
+                                                <Label styleClass="panel-section-title" text="TEMPS PASSÉ" />
+                                                <TextField fx:id="txtRealTime"
+                                                           promptText="ex: 2h"
+                                                           styleClass="form-field" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </VBox>
+                            </children>
                         </HBox>
-                     </children>
-                  </VBox>
 
-                  <!-- Comments -->
-                  <VBox spacing="12.0">
-                     <children>
-                        <Label styleClass="panel-section-title" text="Commentaires" />
-                        <HBox alignment="TOP_LEFT" spacing="10.0">
-                           <children>
-                              <Label style="-fx-background-color: #8b5cf6; -fx-text-fill: white; -fx-background-radius: 50%; -fx-min-width: 24; -fx-min-height: 24; -fx-alignment: center; -fx-font-size: 10px;" text="ME" />
-                              <VBox spacing="5.0" styleClass="comment-box" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Label style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 12px;" text="Moi" />
-                                    <Label style="-fx-text-fill: #c0c3c8; -fx-font-size: 12px;" text="J'ai terminé la partie styling, je passe aux animations." wrapText="true" />
-                                    <Label style="-fx-text-fill: #6a6d71; -fx-font-size: 10px;" text="Il y a 5 min" />
-                                 </children>
-                              </VBox>
-                           </children>
-                        </HBox>
-                        <TextArea prefHeight="60.0" promptText="Écrire un commentaire..." styleClass="form-field" />
-                        <Button alignment="CENTER_RIGHT" mnemonicParsing="false" styleClass="btn-primary" text="Envoyer" />
-                     </children>
-                  </VBox>
-               </children>
-            </VBox>
-         </content>
-      </ScrollPane>
-   </children>
+                        <!-- Assignee (team mode) -->
+                        <VBox fx:id="teamControls" spacing="10.0">
+                            <children>
+                                <Label styleClass="panel-section-title" text="ASSIGNÉ À" />
+                                <HBox alignment="CENTER_LEFT" spacing="12.0"
+                                      style="-fx-background-color: #1c1e22; -fx-background-radius: 10; -fx-border-color: #2a2d32; -fx-border-width: 1; -fx-border-radius: 10; -fx-padding: 10 14;">
+                                    <children>
+                                        <Label style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-background-radius: 50%; -fx-min-width: 32; -fx-min-height: 32; -fx-alignment: center; -fx-font-weight: bold;" text="JD" />
+                                        <Label styleClass="task-title" text="John Doe" />
+                                        <Region HBox.hgrow="ALWAYS" />
+                                        <Button mnemonicParsing="false"
+                                                styleClass="action-button"
+                                                text="Modifier" />
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+
+                        <!-- Comments -->
+                        <VBox spacing="12.0">
+                            <children>
+                                <Label styleClass="panel-section-title" text="COMMENTAIRES" />
+                                <HBox alignment="TOP_LEFT" spacing="10.0">
+                                    <children>
+                                        <Label style="-fx-background-color: #8b5cf6; -fx-text-fill: white; -fx-background-radius: 50%; -fx-min-width: 28; -fx-min-height: 28; -fx-alignment: center; -fx-font-size: 10px; -fx-font-weight: bold;" text="ME" />
+                                        <VBox spacing="4.0" styleClass="comment-box" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 12px;" text="Moi" />
+                                                <Label style="-fx-text-fill: #c0c3c8; -fx-font-size: 12px;" text="J'ai terminé la partie styling, je passe aux animations." wrapText="true" />
+                                                <Label style="-fx-text-fill: #6a6d71; -fx-font-size: 10px;" text="Il y a 5 min" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+                                <TextArea prefHeight="60.0"
+                                          promptText="Écrire un commentaire..."
+                                          styleClass="form-field" />
+                                <Button mnemonicParsing="false"
+                                        styleClass="btn-primary"
+                                        text="Envoyer" />
+                            </children>
+                        </VBox>
+
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
+
+    </children>
+
+    <padding>
+        <Insets bottom="25.0" left="22.0" right="22.0" top="22.0" />
+    </padding>
 </VBox>

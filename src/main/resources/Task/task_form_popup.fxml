@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -10,81 +11,120 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefWidth="450.0" spacing="20.0" style="-fx-background-color: #1a1d21; -fx-background-radius: 12; -fx-border-color: #2a2d32; -fx-border-radius: 12; -fx-border-width: 1;" stylesheets="@board_style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TaskFormPopupController">
-   <children>
-      <HBox alignment="CENTER_LEFT">
-         <children>
-            <Label fx:id="lblFormTitle" style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" text="Nouvelle Tâche" />
-         </children>
-      </HBox>
+<VBox prefWidth="480.0" spacing="20.0"
+      styleClass="popup-card"
+      stylesheets="@board_style.css"
+      xmlns="http://javafx.com/javafx/19"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controller.TaskFormPopupController">
 
-      <Label fx:id="lblError" style="-fx-text-fill: #ef4444; -fx-font-size: 11px;" visible="false" />
-      
-      <VBox spacing="5.0">
-         <children>
-            <Label styleClass="panel-section-title" text="Titre de la tâche *" />
-            <TextField fx:id="txtTitle" promptText="Entrez le titre..." styleClass="form-field" />
-         </children>
-      </VBox>
-      
-      <VBox spacing="5.0">
-         <children>
-            <Label styleClass="panel-section-title" text="Description" />
-            <TextArea fx:id="txtDescription" prefHeight="80.0" promptText="Ajouter des détails..." styleClass="form-field" wrapText="true" />
-         </children>
-      </VBox>
-      
-      <HBox spacing="15.0">
-         <children>
-            <VBox spacing="5.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <Label styleClass="panel-section-title" text="Priorité *" />
-                  <ComboBox fx:id="comboPriority" maxWidth="Infinity" styleClass="combo-form" />
-               </children>
-            </VBox>
-            <VBox spacing="5.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <Label styleClass="panel-section-title" text="Difficulté *" />
-                  <ComboBox fx:id="comboDifficulty" maxWidth="Infinity" styleClass="combo-form" />
-               </children>
-            </VBox>
-         </children>
-      </HBox>
+    <padding>
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+    </padding>
 
-      <HBox spacing="15.0">
-         <children>
-            <VBox spacing="5.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <Label styleClass="panel-section-title" text="Statut *" />
-                  <ComboBox fx:id="comboStatus" maxWidth="Infinity" styleClass="combo-form" />
-               </children>
-            </VBox>
-            <VBox spacing="5.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <Label styleClass="panel-section-title" text="Échéance *" />
-                  <javafx.scene.control.DatePicker fx:id="dateDeadline" maxWidth="Infinity" styleClass="form-field" />
-               </children>
-            </VBox>
-         </children>
-      </HBox>
+    <children>
 
-      <VBox spacing="5.0">
-         <children>
-            <Label styleClass="panel-section-title" text="Assigné à" />
-            <ComboBox fx:id="comboAssignee" maxWidth="Infinity" promptText="Choisir un membre..." styleClass="combo-form" />
-         </children>
-      </VBox>
-      
-      <HBox alignment="CENTER_RIGHT" spacing="12.0" style="-fx-padding: 10 0 0 0;">
-         <children>
-            <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#handleDelete" style="-fx-background-color: transparent; -fx-text-fill: #ef4444;" text="Supprimer" visible="false" />
-            <Region HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" onAction="#handleClose" style="-fx-background-color: transparent; -fx-text-fill: #8a8d91;" text="Annuler" />
-            <Button fx:id="btnSubmit" mnemonicParsing="false" onAction="#handleSubmit" styleClass="btn-primary" text="Créer la tâche" />
-         </children>
-      </HBox>
-   </children>
-   <padding>
-      <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
-   </padding>
+        <!-- Header -->
+        <VBox spacing="4.0">
+            <children>
+                <Label fx:id="lblFormTitle" styleClass="popup-title" text="Nouvelle Tâche" />
+                <Label styleClass="popup-subtitle"
+                       text="Remplissez les informations pour créer ou modifier la tâche." />
+            </children>
+        </VBox>
+
+        <!-- Error message -->
+        <Label fx:id="lblError"
+               style="-fx-text-fill: #f87171; -fx-font-size: 11px; -fx-background-color: rgba(239,68,68,0.1); -fx-background-radius: 6; -fx-padding: 6 10;"
+               visible="false" wrapText="true" />
+
+        <!-- Title -->
+        <VBox spacing="6.0">
+            <children>
+                <Label styleClass="panel-section-title" text="TITRE DE LA TÂCHE *" />
+                <TextField fx:id="txtTitle" promptText="Entrez le titre de la tâche..."
+                           styleClass="form-field" />
+            </children>
+        </VBox>
+
+        <!-- Description -->
+        <VBox spacing="6.0">
+            <children>
+                <Label styleClass="panel-section-title" text="DESCRIPTION" />
+                <TextArea fx:id="txtDescription" prefHeight="80.0"
+                          promptText="Décrivez la tâche en détail..."
+                          styleClass="form-field" wrapText="true" />
+            </children>
+        </VBox>
+
+        <!-- Priority + Difficulty -->
+        <HBox spacing="16.0">
+            <children>
+                <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label styleClass="panel-section-title" text="PRIORITÉ *" />
+                        <ComboBox fx:id="comboPriority" maxWidth="Infinity"
+                                  styleClass="combo-form" />
+                    </children>
+                </VBox>
+                <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label styleClass="panel-section-title" text="DIFFICULTÉ *" />
+                        <ComboBox fx:id="comboDifficulty" maxWidth="Infinity"
+                                  styleClass="combo-form" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+        <!-- Status + Deadline -->
+        <HBox spacing="16.0">
+            <children>
+                <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label styleClass="panel-section-title" text="STATUT *" />
+                        <ComboBox fx:id="comboStatus" maxWidth="Infinity"
+                                  styleClass="combo-form" />
+                    </children>
+                </VBox>
+                <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label styleClass="panel-section-title" text="ÉCHÉANCE *" />
+                        <DatePicker fx:id="dateDeadline" maxWidth="Infinity"
+                                    styleClass="form-field" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+        <!-- Assignee -->
+        <VBox spacing="6.0">
+            <children>
+                <Label styleClass="panel-section-title" text="ASSIGNÉ À" />
+                <ComboBox fx:id="comboAssignee" maxWidth="Infinity"
+                          promptText="Choisir un membre de l'équipe..."
+                          styleClass="combo-form" />
+            </children>
+        </VBox>
+
+        <!-- Divider -->
+        <Region prefHeight="4.0" />
+
+        <!-- Actions -->
+        <HBox alignment="CENTER_RIGHT" spacing="12.0">
+            <children>
+                <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#handleDelete"
+                        style="-fx-background-color: transparent; -fx-text-fill: #f87171; -fx-cursor: hand; -fx-padding: 8 14;"
+                        text="Supprimer" visible="false" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button mnemonicParsing="false" onAction="#handleClose"
+                        style="-fx-background-color: transparent; -fx-text-fill: #8a8d91; -fx-cursor: hand; -fx-padding: 8 14; -fx-border-color: #2a2d32; -fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10;"
+                        text="Annuler" />
+                <Button fx:id="btnSubmit" mnemonicParsing="false" onAction="#handleSubmit"
+                        styleClass="btn-primary"
+                        text="Créer la tâche" />
+            </children>
+        </HBox>
+
+    </children>
 </VBox>
