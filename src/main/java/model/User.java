@@ -1,20 +1,21 @@
 package model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class User {
     private int id;
     private String nom;
     private String prenom;
     private String email;
-    private String motDePasse;
-    private String role; // System role (e.g., ROLE_USER, ROLE_ADMIN)
+    private String mot_de_passe = "";
     private String photo;
-    private Date createdAt;
+    private String role = "ROLE_USER";
+    private LocalDateTime banUntil;
     private int age;
-    private boolean isVerified;
+    private LocalDateTime created_at = LocalDateTime.now();
+    private int is_verified = 1;
     private String telephone;
-    private boolean hasSetPassword;
+    private boolean hasSetPassword = true;
 
     public User() {}
 
@@ -26,7 +27,6 @@ public class User {
         this.role = role;
     }
 
-    // Getters and Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -39,23 +39,26 @@ public class User {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
-    public String getMotDePasse() { return motDePasse; }
-    public void setMotDePasse(String motDePasse) { this.motDePasse = motDePasse; }
-
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
+    public String getMot_de_passe() { return mot_de_passe; }
+    public void setMot_de_passe(String mot_de_passe) { this.mot_de_passe = mot_de_passe; }
 
     public String getPhoto() { return photo; }
     public void setPhoto(String photo) { this.photo = photo; }
 
-    public Date getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
+
+    public LocalDateTime getBanUntil() { return banUntil; }
+    public void setBanUntil(LocalDateTime banUntil) { this.banUntil = banUntil; }
 
     public int getAge() { return age; }
     public void setAge(int age) { this.age = age; }
 
-    public boolean isVerified() { return isVerified; }
-    public void setVerified(boolean verified) { isVerified = verified; }
+    public LocalDateTime getCreated_at() { return created_at; }
+    public void setCreated_at(LocalDateTime created_at) { this.created_at = created_at; }
+
+    public int isIs_verified() { return is_verified; }
+    public void setIs_verified(int is_verified) { this.is_verified = is_verified; }
 
     public String getTelephone() { return telephone; }
     public void setTelephone(String telephone) { this.telephone = telephone; }
@@ -63,12 +66,10 @@ public class User {
     public boolean hasSetPassword() { return hasSetPassword; }
     public void setHasSetPassword(boolean hasSetPassword) { this.hasSetPassword = hasSetPassword; }
 
-    public String getFullName() {
-        return prenom + " " + nom;
-    }
+    public String getFullName() { return prenom + " " + nom; }
+
+    public boolean isAdmin() { return "ROLE_ADMIN".equalsIgnoreCase(role); }
 
     @Override
-    public String toString() {
-        return getFullName() + " (" + email + ")";
-    }
+    public String toString() { return getFullName() + " (" + email + ")"; }
 }

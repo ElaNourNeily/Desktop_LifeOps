@@ -1,4 +1,4 @@
-package controller;
+package controller.task;
 
 import enums.StatutTache;
 import javafx.event.ActionEvent;
@@ -13,11 +13,11 @@ import model.task.TaskSpace;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pusher.client.channel.Channel;
+import model.user.User;
 import service.TaskService;
 import service.TaskSpaceService;
 import service.TaskSpaceUserService;
 import service.TimeTrackingService;
-import service.PusherService;
 import service.TaskPriorityService;
 import utils.Session;
 
@@ -421,10 +421,10 @@ public class BoardViewController {
             return;
         }
         
-        List<model.User> users = spaceUserService.getMembersByBoard(currentBoard.getId());
+        List<User> users = spaceUserService.getMembersByBoard(currentBoard.getId());
         // For a TEAM board, we should include the leader as well in case they are not in the members table
         if (users.stream().noneMatch(u -> u.getId() == currentBoard.getLeaderId())) {
-            model.User leader = new service.UserService().getById(currentBoard.getLeaderId());
+            User leader = new service.UserService().getById(currentBoard.getLeaderId());
             if (leader != null) users.add(leader);
         }
 

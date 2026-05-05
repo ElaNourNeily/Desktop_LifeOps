@@ -1,4 +1,4 @@
-package controller;
+package controller.task;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -12,10 +12,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.User;
-import service.UserService;
-import service.TaskSpaceUserService;
-import service.PusherService;
+import model.user.User;
+import service.user.Userservice;
+import service.task.TaskSpaceUserService;
+import service.task.PusherService;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +28,7 @@ public class InviteMemberController {
     @FXML private Label lblStatus;
 
     private int taskSpaceId;
-    private final UserService userService = new UserService();
+    private final Userservice userService = new Userservice();
     private final TaskSpaceUserService spaceUserService = new TaskSpaceUserService();
     private final PusherService pusherService = new PusherService();
 
@@ -112,7 +112,7 @@ public class InviteMemberController {
         if (pusherService.isEnabled()) {
             Map<String, Object> data = new HashMap<>();
             data.put("boardId", taskSpaceId);
-            data.put("userId", utils.Session.isLoggedIn() ? utils.Session.getCurrentUser().getId() : null);
+            data.put("userId", utils.Session.getInstance().isLoggedIn() ? utils.Session.getInstance().getCurrentUser().getId() : null);
             data.put("invitedUserId", user.getId());
             data.put("role", "MEMBER");
             pusherService.triggerEvent(pusherService.channelForBoard(taskSpaceId), "member-invited", data);

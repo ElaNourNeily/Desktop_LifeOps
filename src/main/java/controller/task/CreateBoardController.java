@@ -1,4 +1,4 @@
-package controller;
+package controller.task;
 
 import enums.StatutTaskSpace;
 import javafx.collections.FXCollections;
@@ -10,7 +10,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.task.TaskSpace;
-import service.TaskSpaceService;
+import service.task.TaskSpaceService;
 import utils.Session;
 
 import java.util.Date;

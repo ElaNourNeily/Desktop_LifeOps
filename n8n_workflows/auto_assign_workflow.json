@@ -1,0 +1,129 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "auto-assign",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "name": "Webhook: Trigger Auto Assign",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        300
+      ],
+      "webhookId": "lifeops-auto-assign-webhook"
+    },
+    {
+      "parameters": {
+        "url": "http://fastapi-service:8000/predict",
+        "method": "POST",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "task",
+              "value": "={{ $json.task_data }}"
+            },
+            {
+              "name": "users",
+              "value": "={{ $json.available_users }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "FastAPI: Get AI Recommendations",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        400,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE taches SET assigned_user_id = $1 WHERE id = $2;",
+        "additionalFields": {
+          "queryParams": "={{ $json.recommendations[0].user_id }}, {{ $('Webhook: Trigger Auto Assign').item.json.task_id }}"
+        }
+      },
+      "name": "MySQL: Assign Top Recommended User",
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 1,
+      "position": [
+        700,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.pusherapp.com/apps/YOUR_APP_ID/events",
+        "method": "POST",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "name",
+              "value": "task-updated"
+            },
+            {
+              "name": "channel",
+              "value": "board-{{ $('Webhook: Trigger Auto Assign').item.json.board_id }}"
+            },
+            {
+              "name": "data",
+              "value": "{\"message\": \"Assigned automatically via n8n AI\"}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Pusher: Trigger Realtime Refresh",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        1000,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook: Trigger Auto Assign": {
+      "main": [
+        [
+          {
+            "node": "FastAPI: Get AI Recommendations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FastAPI: Get AI Recommendations": {
+      "main": [
+        [
+          {
+            "node": "MySQL: Assign Top Recommended User",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MySQL: Assign Top Recommended User": {
+      "main": [
+        [
+          {
+            "node": "Pusher: Trigger Realtime Refresh",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

@@ -1,4 +1,4 @@
-package service;
+package service.task;
 
 import com.google.gson.Gson;
 import com.pusher.client.Pusher;
