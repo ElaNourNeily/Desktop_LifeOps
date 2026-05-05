@@ -10,44 +10,35 @@ import service.user.UserService;
 import utils.RememberMe;
 import utils.Session;
 
-public class mainfx extends Application {
-
-    public static void main(String[] args) {
-        launch(args);
-    }
+public class MainFX extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        // Check if user has a saved "remember me" session
+        stage.setTitle("LifeOps");
+
+        // Check for a saved "remember me" session
         String savedEmail = RememberMe.load();
-
         if (savedEmail != null) {
-            // Try to auto-login with the saved email
-            UserService userservice = new UserService();
-            User user = userservice.findbyMail(savedEmail);
-
+            UserService userService = new UserService();
+            User user = userService.getUserByEmail(savedEmail);
             if (user != null) {
-                // User still exists in DB — auto-login
                 Session.getInstance().setCurrentUser(user);
-                System.out.println("Auto-login: Welcome back " + user.getPrenom() + " " + user.getNom());
-
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/user/MainLayout.fxml"));
                 Parent root = loader.load();
-                stage.setTitle("LifeOps");
                 stage.setScene(new Scene(root));
                 stage.show();
                 return;
-            } else {
-                // User was deleted from DB — clear stale token
-                RememberMe.clear();
             }
         }
 
-        // No saved session — show login screen
+        // No saved session → show login
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/user/login.fxml"));
         Parent root = loader.load();
-        stage.setTitle("LifeOps — Connexion");
         stage.setScene(new Scene(root));
         stage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }
