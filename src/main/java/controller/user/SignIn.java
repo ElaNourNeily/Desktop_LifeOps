@@ -1,4 +1,4 @@
-package Controllers;
+package controller.user;
 
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.auth.oauth2.Credential;
@@ -19,13 +19,12 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import model.User;
-import Service.Userservice;
+import model.user.User;
+import service.user.UserService;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Objects;
 
 import utils.Session;
@@ -61,7 +60,7 @@ public class SignIn {
     @FXML
     private Label phoneerror;
 
-    private Userservice userservice = new Userservice();
+    private UserService userservice = new UserService();
 
     @FXML
     void SignUp(ActionEvent event) {
@@ -183,7 +182,7 @@ public class SignIn {
     @FXML
     void navtolog(MouseEvent event) {
         try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/login.fxml")));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/user/login.fxml")));
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -195,7 +194,7 @@ public class SignIn {
 
     private void navigateToMainLayout(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainLayout.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/user/MainLayout.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -207,7 +206,7 @@ public class SignIn {
 
     private void navigateToSetPassword(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SetPassword.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/user/SetPassword.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));

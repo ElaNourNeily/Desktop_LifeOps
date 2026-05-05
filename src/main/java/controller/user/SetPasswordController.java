@@ -1,4 +1,4 @@
-package Controllers;
+package controller.user;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,11 +9,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
-import model.User;
-import Service.Userservice;
+import model.user.User;
+import service.user.UserService;
 import utils.Session;
-
-import java.io.IOException;
 
 public class SetPasswordController {
 
@@ -26,7 +24,7 @@ public class SetPasswordController {
     @FXML
     private Label errorLabel;
 
-    private final Userservice userservice = new Userservice();
+    private final UserService userservice = new UserService();
 
     @FXML
     void confirmPassword(ActionEvent event) {
@@ -59,7 +57,7 @@ public class SetPasswordController {
             System.out.println("Password set successfully for: " + currentUser.getEmail());
 
             // Navigate to MainLayout
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainLayout.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/user/MainLayout.fxml"));
             Parent root = loader.load();
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

@@ -13,7 +13,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.user.User;
-import service.user.Userservice;
+import service.user.UserService;
 import service.task.TaskSpaceUserService;
 import service.task.PusherService;
 import java.util.HashMap;
@@ -28,7 +28,7 @@ public class InviteMemberController {
     @FXML private Label lblStatus;
 
     private int taskSpaceId;
-    private final Userservice userService = new Userservice();
+    private final UserService userService = new UserService();
     private final TaskSpaceUserService spaceUserService = new TaskSpaceUserService();
     private final PusherService pusherService = new PusherService();
 

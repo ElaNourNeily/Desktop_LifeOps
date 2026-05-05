@@ -1,19 +1,20 @@
-package Service;
+package service.user;
 
-import model.User;
-import utils.MyDB;
+import model.user.User;
+import utils.MyDatabase;
+import service.CRUD;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Userservice implements CRUD<User> {
+public class UserService implements CRUD<User> {
     private final Connection connection;
 
-    public Userservice() {
-        this.connection = MyDB.getInstance().getConnection();
+    public UserService() {
+        this.connection = MyDatabase.getInstance().getConnection();
     }
 
     @Override
@@ -123,8 +124,19 @@ public class Userservice implements CRUD<User> {
     @Override
     public boolean recherche(User user) throws SQLException {
         User result = this.findbyMail(user.getEmail());
-        if (result != null && result.getMot_de_passe().equals(user.getMot_de_passe())) {
-            return true;
+        if (result != null) {
+            String dbPass = result.getMot_de_passe();
+            String inputPass = user.getMot_de_passe();
+            if (dbPass != null && (dbPass.startsWith("$2a$") || dbPass.startsWith("$2y$"))) {
+                String checkPass = dbPass.replaceFirst("^\\$2y\\$", "\\$2a\\$");
+                try {
+                    return BCrypt.checkpw(inputPass, checkPass);
+                } catch (Exception e) {
+                    return false;
+                }
+            } else if (dbPass != null) {
+                return dbPass.equals(inputPass);
+            }
         }
         return false;
     }
@@ -135,10 +147,18 @@ public class Userservice implements CRUD<User> {
     public User login(String email, String password) {
         try {
             User user = findbyMail(email);
-            if (user != null && user.getMot_de_passe().equals(password)) {
-                return user;
+            if (user != null) {
+                String dbPass = user.getMot_de_passe();
+                if (dbPass != null && (dbPass.startsWith("$2a$") || dbPass.startsWith("$2y$"))) {
+                    String checkPass = dbPass.replaceFirst("^\\$2y\\$", "\\$2a\\$");
+                    if (BCrypt.checkpw(password, checkPass)) {
+                        return user;
+                    }
+                } else if (dbPass != null && dbPass.equals(password)) {
+                    return user;
+                }
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

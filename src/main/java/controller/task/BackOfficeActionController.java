@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 import model.user.User;
 import model.task.Tache;
 import service.task.TaskService;
-import service.user.Userservice;
+import service.user.UserService;
 
 public class BackOfficeActionController {
 
@@ -23,7 +23,7 @@ public class BackOfficeActionController {
     private ProblemItem problem;
     private Object parentController; // Not used in automated mode
     private final TaskService taskService = new TaskService();
-    private final Userservice userService = new Userservice();
+    private final UserService userService = new UserService();
     
     // UI Elements
     private DatePicker datePicker;

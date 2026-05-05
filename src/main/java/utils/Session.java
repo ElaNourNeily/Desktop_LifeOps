@@ -6,11 +6,11 @@ import model.user.User;
  * Session — holds the currently logged-in user.
  *
  * Usage:
- *   Session.getInstance().setCurrentUser(user)  ← set after login
- *   Session.getInstance().logout()              ← clear on logout
- *   Session.getCurrentUser()                    ← get user (static, used by task services)
- *   Session.isLoggedIn()                        ← check login (static, used by task services)
- *   Session.getInstance().getCurrentUser()      ← also works (delegates to static field)
+ *   Session.getInstance().setCurrentUser(user)  - set after login
+ *   Session.getInstance().logout()              - clear on logout
+ *   Session.getCurrentUser()                    - get user (static, used by task services)
+ *   Session.isLoggedIn()                        - check login (static, used by task services)
+ *   Session.getInstance().getCurrentUser()      - also works (delegates to static field)
  */
 public class Session {
 

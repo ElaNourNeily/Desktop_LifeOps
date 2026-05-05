@@ -1,4 +1,4 @@
-package Controllers;
+package controller.user;
 
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.auth.oauth2.Credential;
@@ -20,8 +20,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import model.User;
-import Service.Userservice;
+import model.user.User;
+import service.user.UserService;
 import utils.Session;
 import utils.RememberMe;
 import org.json.JSONObject;
@@ -48,18 +48,27 @@ public class login {
     @FXML
     private CheckBox rememberMeCheckbox;
 
-    Userservice userservice = new Userservice();
+    UserService userservice = new UserService();
 
     @FXML
     void LogIn(ActionEvent event) {
         try {
+            String emailText = email.getText() != null ? email.getText().trim() : "";
+            String passwordText = password.getText() != null ? password.getText().trim() : "";
+
+            if (emailText.isEmpty() || passwordText.isEmpty()) {
+                error.setText("Aucun mot de passe ou email n’est fourni!!");
+                error.setVisible(true);
+                return;
+            }
+
             User testingUser = new User();
-            testingUser.setEmail(email.getText());
-            testingUser.setMot_de_passe(password.getText());
+            testingUser.setEmail(emailText);
+            testingUser.setMot_de_passe(passwordText);
 
             if (userservice.recherche(testingUser)) {
                 // Fetch the full user from the DB and store in session
-                User loggedInUser = userservice.findbyMail(email.getText());
+                User loggedInUser = userservice.findbyMail(emailText);
                 Session.getInstance().setCurrentUser(loggedInUser);
 
                 System.out.println("Login successful — Welcome "
@@ -71,10 +80,6 @@ public class login {
                 }
 
                 navigateToMainLayout(event);
-            } else if (!userservice.recherche(testingUser)) {
-                error.setVisible(true);
-                error.setText("Aucun mot de passe ou email n’est fourni!!");
-
             } else {
                 error.setText("Email ou mot de passe incorrect!");
                 error.setVisible(true);
@@ -141,7 +146,7 @@ public class login {
     @FXML
     void navtosignin(MouseEvent event) {
         try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/SignIn.fxml")));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/user/SignIn.fxml")));
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -156,7 +161,7 @@ public class login {
      */
     private void navigateToMainLayout(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainLayout.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/user/MainLayout.fxml"));
             Parent root = loader.load();
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -172,7 +177,7 @@ public class login {
      */
     private void navigateToSetPassword(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SetPassword.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/user/SetPassword.fxml"));
             Parent root = loader.load();
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

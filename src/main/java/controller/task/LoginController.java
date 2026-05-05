@@ -8,7 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import model.user.User;
-import service.user.Userservice;
+import service.user.UserService;
 import utils.Session;
 
 import java.io.IOException;
@@ -19,7 +19,7 @@ public class LoginController {
     @FXML private PasswordField txtPassword;
     @FXML private Label lblError;
 
-    private final Userservice userService = new Userservice();
+    private final UserService userService = new UserService();
 
     @FXML
     private void handleLogin(ActionEvent event) {

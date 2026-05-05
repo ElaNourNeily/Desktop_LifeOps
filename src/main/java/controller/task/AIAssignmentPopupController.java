@@ -12,7 +12,7 @@ import model.user.User;
 import model.task.Recommendation;
 import model.task.Tache;
 import service.task.TaskService;
-import service.user.Userservice;
+import service.user.UserService;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class AIAssignmentPopupController {
     private List<Recommendation> recommendations;
     private Runnable onAssignedCallback;
     private final TaskService taskService = new TaskService();
-    private final Userservice userService = new Userservice();
+    private final UserService userService = new UserService();
 
     public void initData(Tache task, List<Recommendation> recs, Runnable onAssignedCallback) {
         this.currentTask = task;

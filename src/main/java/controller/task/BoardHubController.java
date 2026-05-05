@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.task.TaskSpace;
 import service.task.TaskSpaceService;
+import controller.user.MainLayoutController;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -195,8 +196,8 @@ public class BoardHubController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Task/board_view.fxml"));
             Parent root = loader.load();
-            BoardViewController controller = loader.getController();
-            controller.setBoard(space);
+            BoardViewController boardController = loader.getController();
+            boardController.setBoard(space);
             MainLayoutController.getInstance().loadContent(root);
         } catch (IOException e) {
             e.printStackTrace();

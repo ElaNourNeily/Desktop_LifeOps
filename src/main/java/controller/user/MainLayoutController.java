@@ -1,8 +1,7 @@
-package Controllers;
+package controller.user;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -11,7 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import model.User;
+import model.user.User;
 import utils.RememberMe;
 import utils.Session;
 
@@ -65,14 +64,7 @@ public class MainLayoutController {
         // Load the Dashboard by default
         chargerVue("/Dashboard.fxml");
         // Mark Dashboard as active
-        resetMenuStyles();
-        if (menuTableauBord != null) {
-            menuTableauBord.setStyle("-fx-padding: 11 14; -fx-cursor: hand; -fx-background-color: #2d1f4e; -fx-background-radius: 8; -fx-border-color: #8b5cf6; -fx-border-width: 0 0 0 3px;");
-            if (menuTableauBord.getChildren().size() > 1) {
-                javafx.scene.control.Label label = (javafx.scene.control.Label) menuTableauBord.getChildren().get(1);
-                label.setStyle("-fx-text-fill: #a78bfa; -fx-font-size: 14px; -fx-font-weight: bold;");
-            }
-        }
+        setActiveMenu(menuTableauBord);
     }
 
     public static MainLayoutController getInstance() {
@@ -102,21 +94,12 @@ public class MainLayoutController {
         resetMenuStyles();
 
         // Activate clicked menu
-        menuClique.getStyleClass().clear();
-        menuClique.getStyleClass().add("menu-item-active");
-        menuClique.setStyle("-fx-padding: 12 15; -fx-cursor: hand; -fx-background-color: #2d1f4e; -fx-background-radius: 8; -fx-border-color: #8b5cf6; -fx-border-width: 0 0 0 3px;");
-
-        // Set text to light purple and bold
-        if (menuClique.getChildren().size() > 1) {
-            javafx.scene.control.Label label = (javafx.scene.control.Label) menuClique.getChildren().get(1);
-            label.setStyle("-fx-text-fill: #a78bfa; -fx-font-size: 14px; -fx-font-weight: bold;");
-        }
+        setActiveMenu(menuClique);
 
         // Load corresponding view
         if (menuClique == menuTableauBord) {
             chargerVue("/Dashboard.fxml");
         } else if (menuClique == menuTaches) {
-            // Load task management board hub
             chargerVueTask("/Task/board_hub.fxml");
         } else if (menuClique == menuFinance) {
             chargerVue("/finance/finance.fxml");
@@ -127,11 +110,22 @@ public class MainLayoutController {
         } else if (menuClique == menuTemps) {
             chargerVue("/Temps.fxml");
         } else if (menuClique == menuBackOffice) {
-            // Load BackOffice (admin only)
             User currentUser = Session.getInstance().getCurrentUser();
             if (currentUser != null && currentUser.isAdmin()) {
                 chargerVueTask("/Task/backoffice_dashboard.fxml");
             }
+        }
+    }
+
+    private void setActiveMenu(HBox menu) {
+        if (menu == null) return;
+        menu.getStyleClass().clear();
+        menu.getStyleClass().add("nav-item-active");
+        // Activate the label (second child)
+        if (menu.getChildren().size() > 1) {
+            javafx.scene.control.Label label = (javafx.scene.control.Label) menu.getChildren().get(1);
+            label.getStyleClass().clear();
+            label.getStyleClass().add("nav-label-active");
         }
     }
 
@@ -140,7 +134,7 @@ public class MainLayoutController {
         Session.getInstance().logout();
         try {
             RememberMe.clear();
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/login.fxml")));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/user/login.fxml")));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
@@ -155,13 +149,13 @@ public class MainLayoutController {
         for (HBox menu : menus) {
             if (menu == null) continue;
             menu.getStyleClass().clear();
-            menu.getStyleClass().add("menu-item");
-            menu.setStyle("-fx-padding: 12 15; -fx-cursor: hand;");
+            menu.getStyleClass().add("nav-item");
 
-            // Reset text to gray
+            // Reset label to gray nav-label style
             if (menu.getChildren().size() > 1) {
                 javafx.scene.control.Label label = (javafx.scene.control.Label) menu.getChildren().get(1);
-                label.setStyle("-fx-text-fill: #8a8d91; -fx-font-size: 14px;");
+                label.getStyleClass().clear();
+                label.getStyleClass().add("nav-label");
             }
         }
     }
