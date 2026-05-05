@@ -1,41 +1,14 @@
 package test;
 
-import model.User;
-import Service.Userservice;
-import utils.MyDB;
+import Service.ObjectifService;
+import Utilis.MyDatabase;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
+public class Main {
+    public static void main(String[] args) {
+        // By calling MainFX.main from a class that doesn't extend Application,
+        // we bypass the strict JavaFX module requirements.
+        ObjectifService objectifService = new ObjectifService();
+        MainFX.main(args);
 
-public class main {
-    static void main() {
-        Userservice userservice = new Userservice();
-
-       /* User u = new User("naim","zarbabou","na3im@gmail.esprit",200 , "123456");
-       Userservice userservice = new Userservice();
-
-       try {
-            List<User> users = userservice.findAll();
-            for (User user : users) {
-                System.out.println(user.getNom()+"  "+user.getPrenom()+"  "+user.getEmail());
-            }
-        }catch (SQLException e){
-            System.out.println(e.getMessage());        } */
-       /* try{
-            System.out.println(userservice.findbyID(19).getPrenom());
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }*/
-
-      /*  try {
-            List<User> users = userservice.sortbyName();
-            for (User user : users) {
-                System.out.println(user.getNom()+"  "+user.getPrenom()+"  "+user.getEmail());
-        }
-    }catch (SQLException e){
-            System.out.println(e.getMessage());}*/
     }
-
-
 }
