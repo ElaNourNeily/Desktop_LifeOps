@@ -15,7 +15,7 @@
       stylesheets="@board_style.css"
       xmlns="http://javafx.com/javafx/19"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="controller.BoardHubController">
+      fx:controller="controller.task.BoardHubController">
 
     <padding>
         <Insets bottom="30.0" left="36.0" right="36.0" top="32.0" />

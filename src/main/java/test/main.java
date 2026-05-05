@@ -1,19 +1,17 @@
 package test;
 
-import model.User;
-import Service.Userservice;
-import utils.MyDB;
-
-import java.sql.Connection;
+import service.user.UserService;
+import model.user.User;
 import java.sql.SQLException;
 import java.util.List;
 
 public class main {
-    static void main() {
-        Userservice userservice = new Userservice();
+    public static void main(String[] args) {
+        UserService userservice = new UserService();
+        mainfx.main(args);
 
        /* User u = new User("naim","zarbabou","na3im@gmail.esprit",200 , "123456");
-       Userservice userservice = new Userservice();
+       UserService userservice = new UserService();
 
        try {
             List<User> users = userservice.findAll();

@@ -5,8 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.User;
-import Service.Userservice;
+import model.user.User;
+import service.user.UserService;
 import utils.RememberMe;
 import utils.Session;
 
@@ -23,7 +23,7 @@ public class mainfx extends Application {
 
         if (savedEmail != null) {
             // Try to auto-login with the saved email
-            Userservice userservice = new Userservice();
+            UserService userservice = new UserService();
             User user = userservice.findbyMail(savedEmail);
 
             if (user != null) {
@@ -31,7 +31,7 @@ public class mainfx extends Application {
                 Session.getInstance().setCurrentUser(user);
                 System.out.println("Auto-login: Welcome back " + user.getPrenom() + " " + user.getNom());
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainLayout.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/user/MainLayout.fxml"));
                 Parent root = loader.load();
                 stage.setTitle("LifeOps");
                 stage.setScene(new Scene(root));
@@ -44,7 +44,7 @@ public class mainfx extends Application {
         }
 
         // No saved session — show login screen
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/user/login.fxml"));
         Parent root = loader.load();
         stage.setTitle("LifeOps — Connexion");
         stage.setScene(new Scene(root));

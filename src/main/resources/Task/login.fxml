@@ -14,7 +14,7 @@
       stylesheets="@board_style.css"
       xmlns="http://javafx.com/javafx/19"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="controller.LoginController">
+      fx:controller="controller.task.LoginController">
 
     <children>
 
