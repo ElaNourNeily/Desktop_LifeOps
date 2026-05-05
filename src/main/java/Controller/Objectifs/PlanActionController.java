@@ -1,9 +1,9 @@
-package Controllers;
+package Controller.Objectifs;
 
 import Model.Objectif;
 import Model.PlanAction;
-import Service.GeminiService;
-import Service.PlanActionService;
+import Service.Objectifs.GeminiService;
+import Service.Objectifs.PlanActionService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;

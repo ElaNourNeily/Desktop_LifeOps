@@ -1,9 +1,8 @@
-package Controllers;
+package Controller;
 
 import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -29,7 +28,7 @@ public class MainLayoutController {
     @FXML
     public void initialize() {
         // Charger le Dashboard par défaut
-        chargerVue("/Dashboard.fxml");
+        chargerVue("/Objectifs/Dashboard.fxml");
 
         // Marquer Tableau de bord comme actif
         HBox[] menus = {menuTableauBord, menuTaches, menuFinance, menuObjectifs, menuSante, menuTemps};
@@ -80,13 +79,13 @@ public class MainLayoutController {
 
         // Charger la vue correspondante avec animation
         if (menuClique == menuTableauBord) {
-            chargerVueAnimee("/Dashboard.fxml");
+            chargerVueAnimee("/Objectifs/Dashboard.fxml");
         } else if (menuClique == menuTaches) {
             chargerVueAnimee("/Taches.fxml");
         } else if (menuClique == menuFinance) {
             chargerVueAnimee("/Finance.fxml");
         } else if (menuClique == menuObjectifs) {
-            chargerVueAnimee("/Objectifs.fxml");
+            chargerVueAnimee("/Objectifs/Objectifs.fxml");
         } else if (menuClique == menuSante) {
             chargerVueAnimee("/Sante.fxml");
         } else if (menuClique == menuTemps) {

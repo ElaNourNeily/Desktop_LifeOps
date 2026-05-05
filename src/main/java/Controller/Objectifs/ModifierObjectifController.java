@@ -1,7 +1,7 @@
-package Controllers;
+package Controller.Objectifs;
 
 import Model.Objectif;
-import Service.ObjectifService;
+import Service.Objectifs.ObjectifService;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 import java.time.LocalDate;
 
-public class AjouterObjectifController {
+public class ModifierObjectifController {
 
     @FXML private TextField txtTitre;
     @FXML private ComboBox<String> comboCategorie;
@@ -27,35 +27,26 @@ public class AjouterObjectifController {
     @FXML private Label errDateDebut;
     @FXML private Label errDateFin;
 
-    private static final String STYLE_ERREUR  = "-fx-border-color: #ff477e; -fx-border-width: 1.5; -fx-border-radius: 6;";
-    private static final String STYLE_NORMAL  = "";
-    private static final String STYLE_VALIDE  = "-fx-border-color: #00d285; -fx-border-width: 1.5; -fx-border-radius: 6;";
+    private static final String STYLE_ERREUR = "-fx-border-color: #ff477e; -fx-border-width: 1.5; -fx-border-radius: 6;";
+    private static final String STYLE_VALIDE = "-fx-border-color: #00d285; -fx-border-width: 1.5; -fx-border-radius: 6;";
 
     private final ObjectifService objectifService = new ObjectifService();
-    private Objectif nouvelObjectif;
+    private Objectif objectifAModifier;
 
     @FXML
     public void initialize() {
         comboCategorie.setItems(FXCollections.observableArrayList(
             "Santé", "Loisirs", "Personnel", "Finances", "Etudes"
         ));
-        comboCategorie.setValue("Personnel");
-
         comboStatut.setItems(FXCollections.observableArrayList(
             "En cours", "Complété", "Abandonné", "En pause"
         ));
-        comboStatut.setValue("En cours");
-
-        dateDebut.setValue(LocalDate.now());
-        dateFin.setValue(LocalDate.now().plusMonths(1));
-
         sliderProgression.valueProperty().addListener((obs, oldVal, newVal) ->
             labelProgression.setText((int) newVal.doubleValue() + "%")
         );
 
         // ── Validation en temps réel ──────────────────────────────────────
 
-        // Titre : obligatoire, 3 à 100 caractères
         txtTitre.textProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal == null || newVal.trim().isEmpty()) {
                 setErreur(txtTitre, errTitre, "Le titre est obligatoire.");
@@ -68,7 +59,6 @@ public class AjouterObjectifController {
             }
         });
 
-        // Catégorie : obligatoire
         comboCategorie.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal == null || newVal.isEmpty()) {
                 setErreur(comboCategorie, errCategorie, "Veuillez choisir une catégorie.");
@@ -77,16 +67,54 @@ public class AjouterObjectifController {
             }
         });
 
-        // Date début : obligatoire
-        dateDebut.valueProperty().addListener((obs, oldVal, newVal) -> {
-            validerDates();
-        });
-
-        // Date fin : obligatoire + doit être après date début
-        dateFin.valueProperty().addListener((obs, oldVal, newVal) -> {
-            validerDates();
-        });
+        dateDebut.valueProperty().addListener((obs, oldVal, newVal) -> validerDates());
+        dateFin.valueProperty().addListener((obs, oldVal, newVal) -> validerDates());
     }
+
+    public void setObjectif(Objectif objectif) {
+        this.objectifAModifier = objectif;
+        txtTitre.setText(objectif.getTitre());
+        txtDescription.setText(objectif.getDescription() != null ? objectif.getDescription() : "");
+        comboCategorie.setValue(objectif.getCategorie());
+        comboStatut.setValue(objectif.getStatut());
+        dateDebut.setValue(objectif.getDate_debut());
+        dateFin.setValue(objectif.getDate_fin());
+        sliderProgression.setValue(objectif.getProgression());
+        labelProgression.setText(objectif.getProgression() + "%");
+    }
+
+    @FXML
+    void handleEnregistrer(ActionEvent event) {
+        // Déclencher toutes les validations
+        txtTitre.textProperty().set(txtTitre.getText());
+        validerDates();
+        if (comboCategorie.getValue() == null)
+            setErreur(comboCategorie, errCategorie, "Veuillez choisir une catégorie.");
+
+        if (!toutEstValide()) return;
+
+        String categorie = comboCategorie.getValue();
+        String statut    = comboStatut.getValue() != null ? comboStatut.getValue() : "En cours";
+
+        objectifAModifier.setTitre(txtTitre.getText().trim());
+        objectifAModifier.setDescription(txtDescription.getText());
+        objectifAModifier.setCategorie(categorie);
+        objectifAModifier.setStatut(statut);
+        objectifAModifier.setDate_debut(dateDebut.getValue());
+        objectifAModifier.setDate_fin(dateFin.getValue());
+        objectifAModifier.setProgression((int) sliderProgression.getValue());
+
+        try {
+            objectifService.update(objectifAModifier);
+        } catch (java.sql.SQLException e) {
+            System.err.println("Erreur mise à jour objectif : " + e.getMessage());
+        }
+
+        Stage stage = (Stage) txtTitre.getScene().getWindow();
+        stage.close();
+    }
+
+    // ── Helpers ──────────────────────────────────────────────────────────
 
     private void validerDates() {
         LocalDate debut = dateDebut.getValue();
@@ -107,39 +135,8 @@ public class AjouterObjectifController {
         }
     }
 
-    @FXML
-    void handleEnregistrer(ActionEvent event) {
-        // Déclencher toutes les validations
-        txtTitre.textProperty().set(txtTitre.getText()); // force listener
-        validerDates();
-        if (comboCategorie.getValue() == null)
-            setErreur(comboCategorie, errCategorie, "Veuillez choisir une catégorie.");
-
-        if (!toutEstValide()) return;
-
-        String titre      = txtTitre.getText().trim();
-        String categorie  = comboCategorie.getValue();
-        String statut     = comboStatut.getValue() != null ? comboStatut.getValue() : "En cours";
-        String description = txtDescription.getText();
-        LocalDate debut   = dateDebut.getValue();
-        LocalDate fin     = dateFin.getValue();
-        int progression   = (int) sliderProgression.getValue();
-
-        nouvelObjectif = new Objectif(titre, description, categorie, statut, debut, fin, progression);
-        try {
-            objectifService.create(nouvelObjectif);
-        } catch (java.sql.SQLException e) {
-            System.err.println("Erreur création objectif : " + e.getMessage());
-        }
-
-        Stage stage = (Stage) txtTitre.getScene().getWindow();
-        stage.close();
-    }
-
-    // ── Helpers de validation ─────────────────────────────────────────────
-
     private boolean toutEstValide() {
-        String titre = txtTitre.getText();
+        String titre  = txtTitre.getText();
         LocalDate debut = dateDebut.getValue();
         LocalDate fin   = dateFin.getValue();
 
@@ -165,9 +162,5 @@ public class AjouterObjectifController {
             labelErreur.setText("");
             labelErreur.setVisible(false);
         }
-    }
-
-    public Objectif getNouvelObjectif() {
-        return nouvelObjectif;
     }
 }

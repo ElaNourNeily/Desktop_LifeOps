@@ -1,9 +1,9 @@
-package Service;
+package Service.Interfaces;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public interface CRUD <T>{
+public interface CRUD<T> {
     void create(T t) throws SQLException;
     void update(T t) throws SQLException;
     void delete(T t) throws SQLException;

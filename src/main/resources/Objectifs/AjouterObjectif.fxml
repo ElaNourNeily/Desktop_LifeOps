@@ -14,10 +14,10 @@
 
 <VBox prefHeight="620.0" prefWidth="480.0" spacing="0"
       style="-fx-background-color: #121417;"
-      stylesheets="@style.css"
+      stylesheets="@../style.css"
       xmlns="http://javafx.com/javafx/19"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="Controllers.AjouterObjectifController">
+      fx:controller="Controller.Objectifs.AjouterObjectifController">
 
     <!-- HEADER -->
     <VBox style="-fx-background-color: linear-gradient(to bottom, #1a0533, #121417); -fx-padding: 30 30 25 30;">

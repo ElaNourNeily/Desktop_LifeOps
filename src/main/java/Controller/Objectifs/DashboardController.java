@@ -1,16 +1,14 @@
-package Controllers;
+package Controller.Objectifs;
 
-import Service.PatternAnalysisService;
-import Service.PatternAnalysisService.*;
+import Service.Objectifs.PatternAnalysisService;
+import Service.Objectifs.PatternAnalysisService.*;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
@@ -25,21 +23,11 @@ public class DashboardController implements Initializable {
     @FXML private VBox  patternsContainer;
     @FXML private VBox  recommandationsContainer;
     @FXML private VBox  emptyContainer;
-    @FXML private Button btnActualiser;
 
     private final PatternAnalysisService analysisService = new PatternAnalysisService();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        chargerAnalyse();
-    }
-
-    @FXML
-    void handleActualiser(ActionEvent event) {
-        // Animation de rotation sur le bouton
-        scoreContainer.setOpacity(0);
-        patternsContainer.setOpacity(0);
-        recommandationsContainer.setOpacity(0);
         chargerAnalyse();
     }
 

@@ -1,10 +1,10 @@
-package Controllers;
+package Controller.Objectifs;
 
 import Model.Objectif;
 import Model.PlanAction;
-import Service.ObjectifService;
-import Service.PlanActionService;
-import Service.VisionBoardService;
+import Service.Objectifs.ObjectifService;
+import Service.Objectifs.PlanActionService;
+import Service.Objectifs.VisionBoardService;
 import javafx.animation.*;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -12,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -333,7 +332,7 @@ public class ObjectifController implements Initializable {
 
     @FXML
     void handleNouvelObjectif(ActionEvent event) {        try {
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/AjouterObjectif.fxml"));
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/Objectifs/AjouterObjectif.fxml"));
             javafx.scene.Parent root = loader.load();
 
             AjouterObjectifController controller = loader.getController();
@@ -579,7 +578,7 @@ public class ObjectifController implements Initializable {
 
     private void handlePlanAction(Objectif obj, VBox planPanel) {
         try {
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/PlanAction.fxml"));
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/Objectifs/PlanAction.fxml"));
             javafx.scene.Parent root = loader.load();
 
             PlanActionController controller = loader.getController();
@@ -601,7 +600,7 @@ public class ObjectifController implements Initializable {
 
     private void handleModifier(Objectif obj) {
         try {
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/ModifierObjectif.fxml"));
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/Objectifs/ModifierObjectif.fxml"));
             javafx.scene.Parent root = loader.load();
 
             ModifierObjectifController controller = loader.getController();
