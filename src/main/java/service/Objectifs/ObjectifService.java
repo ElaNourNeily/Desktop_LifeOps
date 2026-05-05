@@ -1,13 +1,12 @@
-package Service.Objectifs;
+package service.Objectifs;
 
 import Model.Objectif;
 import Utilis.MyDatabase;
-import Service.Interfaces.CRUD;
+import service.Interfaces.CRUD;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ObjectifService implements CRUD<Objectif> {
     private final Connection connection;
@@ -116,6 +115,20 @@ public class ObjectifService implements CRUD<Objectif> {
         return objectifs;
     }
 
+    // RECHERCHE : recherche par titre (partielle)
+    @Override
+    public boolean recherche(Objectif objectif) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM objectif WHERE titre = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, objectif.getTitre());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+        return false;
+    }
+
     // Méthode utilitaire : recherche par titre (partielle)
     public List<Objectif> searchByTitre(String titre) throws SQLException {
         List<Objectif> objectifs = new ArrayList<>();
@@ -133,15 +146,8 @@ public class ObjectifService implements CRUD<Objectif> {
     /**
      * Recalcule automatiquement la progression d'un objectif
      * en fonction du ratio de plans d'action terminés.
-     *
-     * Règles :
-     *  - Aucun plan          → progression inchangée
-     *  - Tous terminés       → 100% + statut "Complété"
-     *  - Partiellement       → (nb terminés / total) * 100, arrondi
-     *  - Aucun terminé       → 0%
      */
     public void recalculerProgression(int objectifId) throws SQLException {
-        // Compter le total et les terminés en une seule requête
         String sql = """
             SELECT
                 COUNT(*) AS total,
@@ -157,11 +163,9 @@ public class ObjectifService implements CRUD<Objectif> {
                 int total    = rs.getInt("total");
                 int termines = rs.getInt("termines");
 
-                if (total == 0) return; // pas de plans → on ne touche pas à la progression manuelle
+                if (total == 0) return;
 
                 int nouvelleProgression = (int) Math.round((double) termines / total * 100);
-
-                // Mettre à jour progression (et statut si 100%)
                 String nouveauStatut = nouvelleProgression == 100 ? "Complété" : null;
 
                 String updateSql = nouveauStatut != null

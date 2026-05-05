@@ -1,4 +1,4 @@
-package Service.Objectifs;
+package service.Objectifs;
 
 import Model.Objectif;
 

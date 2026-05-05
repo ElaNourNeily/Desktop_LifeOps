@@ -1,8 +1,8 @@
-package Service.Objectifs;
+package service.Objectifs;
 
 import Model.PlanAction;
 import Utilis.MyDatabase;
-import Service.Interfaces.CRUD;
+import service.Interfaces.CRUD;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -38,7 +38,6 @@ public class PlanActionService implements CRUD<PlanAction> {
             }
             System.out.println("Plan d'action créé, ID = " + plan.getId());
         }
-        // Recalcul automatique de la progression
         objectifService.recalculerProgression(plan.getObjectif_id());
     }
 
@@ -57,21 +56,19 @@ public class PlanActionService implements CRUD<PlanAction> {
             ps.executeUpdate();
             System.out.println("Plan d'action mis à jour.");
         }
-        // Recalcul automatique de la progression
         objectifService.recalculerProgression(plan.getObjectif_id());
     }
 
     // DELETE
     @Override
     public void delete(PlanAction plan) throws SQLException {
-        int objectifId = plan.getObjectif_id(); // sauvegarder avant suppression
+        int objectifId = plan.getObjectif_id();
         String sql = "DELETE FROM plan_action WHERE id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, plan.getId());
             ps.executeUpdate();
             System.out.println("Plan d'action supprimé.");
         }
-        // Recalcul automatique de la progression
         objectifService.recalculerProgression(objectifId);
     }
 
@@ -109,7 +106,7 @@ public class PlanActionService implements CRUD<PlanAction> {
         return plans;
     }
 
-    // SORT BY NAME : Trier les plans d'action par titre
+    // SORT BY NAME
     @Override
     public List<PlanAction> sortbyName() throws SQLException {
         List<PlanAction> plans = new ArrayList<>();
@@ -123,7 +120,21 @@ public class PlanActionService implements CRUD<PlanAction> {
         return plans;
     }
 
-    // Méthode utilitaire : lire les plans d'action par objectif
+    // RECHERCHE
+    @Override
+    public boolean recherche(PlanAction plan) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM plan_action WHERE titre = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, plan.getTitre());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+        return false;
+    }
+
+    // Lire les plans d'action par objectif
     public List<PlanAction> readByObjectif(int objectifId) throws SQLException {
         List<PlanAction> plans = new ArrayList<>();
         String sql = "SELECT * FROM plan_action WHERE objectif_id = ?";
@@ -137,7 +148,7 @@ public class PlanActionService implements CRUD<PlanAction> {
         return plans;
     }
 
-    // Méthode utilitaire : mapper un ResultSet vers un PlanAction
+    // Mapper un ResultSet vers un PlanAction
     private PlanAction mapResultSet(ResultSet rs) throws SQLException {
         return new PlanAction(
             rs.getInt("id"),

@@ -1,7 +1,7 @@
 package Controller.Objectifs;
 
-import Service.Objectifs.PatternAnalysisService;
-import Service.Objectifs.PatternAnalysisService.*;
+import service.Objectifs.PatternAnalysisService;
+import service.Objectifs.PatternAnalysisService.*;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;

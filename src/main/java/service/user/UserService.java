@@ -2,7 +2,7 @@ package service.user;
 
 import model.user.User;
 import utils.MyDatabase;
-import service.CRUD;
+import service.Interfaces.CRUD;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
