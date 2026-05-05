@@ -62,7 +62,7 @@ public class MainLayoutController {
         }
         
         // Load the Dashboard by default
-        chargerVue("/Dashboard.fxml");
+        chargerVue("/Objectifs/Dashboard.fxml");
         // Mark Dashboard as active
         setActiveMenu(menuTableauBord);
     }
@@ -98,7 +98,7 @@ public class MainLayoutController {
 
         // Load corresponding view
         if (menuClique == menuTableauBord) {
-            chargerVue("/Dashboard.fxml");
+            chargerVue("/Objectifs/Dashboard.fxml");
         } else if (menuClique == menuTaches) {
             chargerVueTask("/Task/board_hub.fxml");
         } else if (menuClique == menuFinance) {
