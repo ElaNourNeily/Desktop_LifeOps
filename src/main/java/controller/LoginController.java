@@ -7,8 +7,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import model.User;
-import service.UserService;
+import model.user.User;
+import service.user.UserService;
 import utils.Session;
 
 import java.io.IOException;
@@ -34,10 +34,9 @@ public class LoginController {
         User user = userService.login(email, password);
 
         if (user != null) {
-            Session.setCurrentUser(user);
+            Session.getInstance().setCurrentUser(user);
             openMainApp();
         } else {
-            // Check if the login failed because of has_set_password
             User existingUser = userService.getUserByEmail(email);
             if (existingUser != null && !existingUser.hasSetPassword()) {
                 showError("Veuillez vous connecter via Google/Facebook (Mot de passe non défini).");
@@ -49,9 +48,8 @@ public class LoginController {
 
     private void openMainApp() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Task/MainLayout.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/user/MainLayout.fxml"));
             Parent root = loader.load();
-
             javafx.stage.Stage stage = (javafx.stage.Stage) txtEmail.getScene().getWindow();
             stage.setScene(new javafx.scene.Scene(root));
         } catch (IOException e) {

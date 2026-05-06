@@ -17,7 +17,7 @@
             stylesheets="@board_style.css"
             xmlns="http://javafx.com/javafx/19"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controller.MainLayoutController">
+            fx:controller="controller.user.MainLayoutController">
 
     <!-- ══════════════════════════════════════════════
          SIDEBAR  — mirrors Finance sidebar exactly
@@ -33,7 +33,7 @@
             <padding><Insets left="20.0" /></padding>
             <children>
                 <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                    <image><Image url="@../../../../assets/5555.png" /></image>
+                    <image><Image url="@../assets/5555.png" /></image>
                 </ImageView>
                 <Label styleClass="logo-label" text="LifeOps">
                     <font><Font name="System Bold" size="18.0" /></font>
@@ -47,78 +47,78 @@
             <children>
 
                 <!-- Tableau de bord -->
-                <HBox fx:id="menuTableauBord" onMouseClicked="#handleDashboardClick"
+                <HBox fx:id="menuTableauBord" onMouseClicked="#handleMenuClick"
                       alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0"
                       spacing="10.0" styleClass="nav-item">
                     <padding><Insets left="20.0" /></padding>
                     <children>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <image><Image url="@../../../assets/home_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
+                            <image><Image url="@../assets/home_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
                         </ImageView>
                         <Label styleClass="nav-label" text="Tableau de bord" />
                     </children>
                 </HBox>
 
                 <!-- Tâches — ACTIVE -->
-                <HBox fx:id="menuTaches" onMouseClicked="#handleTachesClick"
+                <HBox fx:id="menuTaches" onMouseClicked="#handleMenuClick"
                       alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0"
                       spacing="10.0" styleClass="nav-item-active">
                     <padding><Insets left="20.0" /></padding>
                     <children>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <image><Image url="@../../../assets/done_all_24dp_7A4ED4_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                            <image><Image url="@../assets/done_all_24dp_7A4ED4_FILL0_wght400_GRAD0_opsz24.png" /></image>
                         </ImageView>
                         <Label styleClass="nav-label-active" text="Tâches" />
                     </children>
                 </HBox>
 
                 <!-- Finance -->
-                <HBox fx:id="menuFinance" onMouseClicked="#handleFinanceClick"
+                <HBox fx:id="menuFinance" onMouseClicked="#handleMenuClick"
                       alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0"
                       spacing="10.0" styleClass="nav-item">
                     <padding><Insets left="20.0" /></padding>
                     <children>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <image><Image url="@../../../assets/account_balance_wallet_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
+                            <image><Image url="@../assets/account_balance_wallet_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
                         </ImageView>
                         <Label styleClass="nav-label" text="Finance" />
                     </children>
                 </HBox>
 
                 <!-- Objectifs -->
-                <HBox fx:id="menuObjectifs" onMouseClicked="#handleObjectifsClick"
+                <HBox fx:id="menuObjectifs" onMouseClicked="#handleMenuClick"
                       alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0"
                       spacing="10.0" styleClass="nav-item">
                     <padding><Insets left="20.0" /></padding>
                     <children>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <image><Image url="@../../../assets/target_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
+                            <image><Image url="@../assets/target_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
                         </ImageView>
                         <Label styleClass="nav-label" text="Objectifs" />
                     </children>
                 </HBox>
 
                 <!-- Santé -->
-                <HBox fx:id="menuSante" onMouseClicked="#handleSanteClick"
+                <HBox fx:id="menuSante" onMouseClicked="#handleMenuClick"
                       alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0"
                       spacing="10.0" styleClass="nav-item">
                     <padding><Insets left="20.0" /></padding>
                     <children>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <image><Image url="@../../../assets/ecg_heart_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
+                            <image><Image url="@../assets/ecg_heart_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
                         </ImageView>
                         <Label styleClass="nav-label" text="Santé" />
                     </children>
                 </HBox>
 
                 <!-- Temps -->
-                <HBox fx:id="menuTemps" onMouseClicked="#handleTempsClick"
+                <HBox fx:id="menuTemps" onMouseClicked="#handleMenuClick"
                       alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0"
                       spacing="10.0" styleClass="nav-item">
                     <padding><Insets left="20.0" /></padding>
                     <children>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <image><Image url="@../../../assets/schedule_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
+                            <image><Image url="@../assets/schedule_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
                         </ImageView>
                         <Label styleClass="nav-label" text="Temps" />
                     </children>
@@ -133,12 +133,12 @@
         <!-- Account box — matches Finance exactly -->
         <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="229.0"
               spacing="10.0" styleClass="account-box"
-              onMouseClicked="#handleCompteClick">
+              onMouseClicked="#navtomodify">
             <padding><Insets bottom="10.0" left="15.0" right="15.0" top="10.0" /></padding>
             <VBox.margin><Insets bottom="20.0" left="10.0" right="10.0" /></VBox.margin>
             <children>
                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                    <image><Image url="@../../../assets/account_circle_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
+                    <image><Image url="@../assets/account_circle_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
                 </ImageView>
                 <Label styleClass="account-label" text="Compte" />
             </children>

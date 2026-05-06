@@ -15,10 +15,10 @@
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane prefHeight="660.0" prefWidth="680.0" style="-fx-background-color: #121417;"
-            stylesheets="@style.css"
+            stylesheets="@../style.css"
             xmlns="http://javafx.com/javafx/19"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="Controllers.PlanActionController">
+            fx:controller="Controller.Objectifs.PlanActionController">
     <padding>
         <Insets bottom="20" left="25" right="25" top="20" />
     </padding>
@@ -45,6 +45,15 @@
             </ScrollPane>
 
             <Separator style="-fx-background-color: #2a2d32;" />
+
+            <!-- BOUTON SUGGESTIONS IA -->
+            <HBox alignment="CENTER_RIGHT">
+                <Button fx:id="btnSuggestions" onAction="#handleSuggestionsIA"
+                        text="✨ Suggestions IA"
+                        style="-fx-background-color: linear-gradient(to right, #7c3aed, #a78bfa);
+                               -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px;
+                               -fx-background-radius: 20; -fx-padding: 8 20; -fx-cursor: hand;" />
+            </HBox>
 
             <!-- FORMULAIRE AJOUT / MODIFICATION -->
             <Label fx:id="labelFormTitre" style="-fx-text-fill: #a78bfa; -fx-font-weight: bold; -fx-font-size: 14px;" text="➕ Nouveau plan d'action" />

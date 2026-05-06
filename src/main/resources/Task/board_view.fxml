@@ -14,7 +14,7 @@
             stylesheets="@board_style.css"
             xmlns="http://javafx.com/javafx/19"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controller.BoardViewController">
+            fx:controller="controller.task.BoardViewController">
 
     <children>
         <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"

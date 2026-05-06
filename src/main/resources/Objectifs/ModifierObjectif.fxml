@@ -13,10 +13,10 @@
 
 <VBox prefHeight="600.0" prefWidth="440.0" spacing="13.0"
       style="-fx-background-color: #121417;"
-      stylesheets="@style.css"
+      stylesheets="@../style.css"
       xmlns="http://javafx.com/javafx/19"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="Controllers.ModifierObjectifController">
+      fx:controller="Controller.Objectifs.ModifierObjectifController">
     <padding>
         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
     </padding>

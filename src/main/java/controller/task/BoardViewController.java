@@ -1,4 +1,4 @@
-package controller;
+package controller.task;
 
 import enums.StatutTache;
 import javafx.event.ActionEvent;
@@ -13,13 +13,15 @@ import model.task.TaskSpace;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pusher.client.channel.Channel;
-import service.TaskService;
-import service.TaskSpaceService;
-import service.TaskSpaceUserService;
-import service.TimeTrackingService;
-import service.PusherService;
-import service.TaskPriorityService;
+import model.user.User;
+import service.task.TaskService;
+import service.task.TaskSpaceService;
+import service.task.TaskSpaceUserService;
+import service.task.TimeTrackingService;
+import service.task.TaskPriorityService;
+import service.task.PusherService;
 import utils.Session;
+import controller.user.MainLayoutController;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -406,7 +408,13 @@ public class BoardViewController {
         if (currentBoard != null && pusherService.isEnabled()) {
             try { pusherService.unsubscribe(pusherService.channelForBoard(currentBoard.getId())); } catch (Exception ignored) {}
         }
-        MainLayoutController.getInstance().loadPage("board_hub.fxml");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Task/board_hub.fxml"));
+            Parent root = loader.load();
+            MainLayoutController.getInstance().loadContent(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setSelectedTask(Tache task) {
@@ -421,14 +429,14 @@ public class BoardViewController {
             return;
         }
         
-        List<model.User> users = spaceUserService.getMembersByBoard(currentBoard.getId());
+        List<User> users = spaceUserService.getMembersByBoard(currentBoard.getId());
         // For a TEAM board, we should include the leader as well in case they are not in the members table
         if (users.stream().noneMatch(u -> u.getId() == currentBoard.getLeaderId())) {
-            model.User leader = new service.UserService().getById(currentBoard.getLeaderId());
+            User leader = new service.user.UserService().getById(currentBoard.getLeaderId());
             if (leader != null) users.add(leader);
         }
 
-        service.AIService aiService = new service.AIService();
+        service.task.AIService aiService = new service.task.AIService();
         List<model.task.Recommendation> recommendations = aiService.getRecommendations(selectedTask, users);
 
         try {
