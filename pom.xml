@@ -86,6 +86,30 @@
             <artifactId>google-api-services-oauth2</artifactId>
             <version>v2-rev20200213-2.0.0</version>
         </dependency>
+
+        <!-- PDF Export (iText 7) -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>kernel</artifactId>
+            <version>7.2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>layout</artifactId>
+            <version>7.2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>io</artifactId>
+            <version>7.2.5</version>
+        </dependency>
+
+        <!-- JavaFX Swing interop (for SwingFXUtils in PdfChartRenderer) -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
+            <version>21.0.2</version>
+        </dependency>
     </dependencies>
 
     <build>

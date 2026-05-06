@@ -2,6 +2,7 @@ package Controller.Objectifs;
 
 import service.Objectifs.PatternAnalysisService;
 import service.Objectifs.PatternAnalysisService.*;
+import service.health.HealthDataService;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
@@ -20,11 +21,13 @@ import java.util.ResourceBundle;
 public class DashboardController implements Initializable {
 
     @FXML private HBox  scoreContainer;
+    @FXML private HBox  santeKpiContainer;
     @FXML private VBox  patternsContainer;
     @FXML private VBox  recommandationsContainer;
     @FXML private VBox  emptyContainer;
 
     private final PatternAnalysisService analysisService = new PatternAnalysisService();
+    private final HealthDataService healthDataService = new HealthDataService();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -37,12 +40,73 @@ public class DashboardController implements Initializable {
         List<Recommandation> recs = analysisService.genererRecommandations(patterns, score);
 
         afficherScore(score);
+        afficherSanteKpis();
         afficherPatterns(patterns);
         afficherRecommandations(recs);
 
         boolean vide = patterns.isEmpty();
         emptyContainer.setVisible(vide);
         emptyContainer.setManaged(vide);
+    }
+
+    // ── Santé KPIs ────────────────────────────────────────────────────
+
+    private void afficherSanteKpis() {
+        santeKpiContainer.getChildren().clear();
+        santeKpiContainer.setSpacing(16);
+
+        // Section title
+        Label titre = new Label("❤  Santé — Indicateurs du jour");
+        titre.setStyle("-fx-text-fill: #f1f2f4; -fx-font-size: 16px; -fx-font-weight: bold;");
+        // We'll add it as a full-width row above the cards — use a wrapper
+        VBox wrapper = new VBox(12);
+        wrapper.getChildren().add(titre);
+        HBox.setHgrow(wrapper, Priority.ALWAYS);
+
+        List<HealthDataService.SuiviSanteDTO> suivis = healthDataService.getRecentData();
+
+        if (suivis.isEmpty()) {
+            Label empty = new Label("Aucun suivi santé enregistré. Rendez-vous dans la section Santé pour commencer.");
+            empty.setStyle("-fx-text-fill: #6b7280; -fx-font-size: 13px; -fx-font-style: italic;");
+            wrapper.getChildren().add(empty);
+            santeKpiContainer.getChildren().add(wrapper);
+            return;
+        }
+
+        HealthDataService.SuiviSanteDTO dernier = suivis.get(0);
+
+        String burnoutColor = switch (dernier.risqueBurnout()) {
+            case "CRITIQUE" -> "#ef4444";
+            case "ELEVE"    -> "#f59e0b";
+            case "MODERE"   -> "#3b82f6";
+            default          -> "#10b981";
+        };
+        double score = dernier.scoreForme();
+        String scoreColor = score >= 70 ? "#10b981" : score >= 40 ? "#f59e0b" : "#ef4444";
+
+        HBox cards = new HBox(12);
+        cards.getChildren().addAll(
+            creerCarteScore("⚡", String.format("%.0f pts", score),    "Score de forme",    scoreColor),
+            creerCarteScore("🧠", dernier.risqueBurnout(),              "Risque burnout",     burnoutColor),
+            creerCarteScore("🌙", String.format("%.1fh", healthDataService.getMoyenneSommeil()), "Sommeil moy.", "#8b5cf6"),
+            creerCarteScore("💧", String.format("%.0f verres", healthDataService.getMoyenneEau()), "Hydratation moy.", "#3b82f6"),
+            creerCarteScore("😊", String.format("%.1f/5", healthDataService.getMoyenneHumeur()), "Humeur moy.", "#a78bfa")
+        );
+        for (javafx.scene.Node c : cards.getChildren()) HBox.setHgrow(c, Priority.ALWAYS);
+
+        wrapper.getChildren().add(cards);
+        santeKpiContainer.getChildren().add(wrapper);
+
+        // Animate
+        int delay = 0;
+        for (javafx.scene.Node card : cards.getChildren()) {
+            card.setOpacity(0);
+            FadeTransition ft = new FadeTransition(Duration.millis(350), card);
+            ft.setToValue(1.0);
+            ft.setDelay(Duration.millis(delay));
+            ft.play();
+            delay += 60;
+        }
     }
 
     // ── Score global ──────────────────────────────────────────────────

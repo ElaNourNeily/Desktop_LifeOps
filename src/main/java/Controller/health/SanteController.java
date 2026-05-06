@@ -167,6 +167,7 @@ public class SanteController {
 
     @FXML void openDrugSearch(ActionEvent e)     { loadView("/health/DrugSearch.fxml"); }
     @FXML void openHealthArticles(ActionEvent e) { loadView("/health/HealthArticles.fxml"); }
+    @FXML void openDashboard(ActionEvent e)      { loadView("/health/DashboardSante.fxml"); }
 
     private void loadView(String path) {
         try {

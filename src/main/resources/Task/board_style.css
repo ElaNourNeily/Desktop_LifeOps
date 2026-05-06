@@ -670,7 +670,7 @@
     -fx-background-color: #0B0C10;
 }
 
-/* DatePicker */
+/* ── DatePicker field ───────────────────────────────────────── */
 .date-picker {
     -fx-background-color: #0B0C10;
     -fx-background-radius: 9;
@@ -679,44 +679,138 @@
     -fx-border-radius: 9;
 }
 
-.date-picker .text-field {
+/* also style it when used with form-field class */
+.form-field.date-picker,
+DatePicker.form-field {
+    -fx-background-color: #0B0C10;
+    -fx-background-radius: 9;
+    -fx-border-color: #2a2d32;
+    -fx-border-width: 1;
+    -fx-border-radius: 9;
+}
+
+.date-picker .text-field,
+.form-field.date-picker .text-field {
     -fx-background-color: transparent;
     -fx-text-fill: white;
     -fx-prompt-text-fill: #6a6d71;
+    -fx-padding: 9 12;
 }
 
-.date-picker .arrow-button {
+.date-picker .arrow-button,
+.form-field.date-picker .arrow-button {
     -fx-background-color: transparent;
 }
 
-.date-picker .arrow-button .arrow {
+.date-picker .arrow-button .arrow,
+.form-field.date-picker .arrow-button .arrow {
     -fx-background-color: #a1a1aa;
 }
 
-.date-picker:focused {
+.date-picker:focused,
+.form-field.date-picker:focused {
     -fx-border-color: #8b5cf6;
 }
 
-.date-picker .date-picker-popup {
+/* ── DatePicker popup calendar (scene-level node — must be top-level) ── */
+.date-picker-popup {
     -fx-background-color: #17191F;
     -fx-border-color: #2a2d32;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 20, 0, 0, 4);
 }
 
-.date-picker .date-picker-popup .month-year-pane {
+.date-picker-popup > * {
+    -fx-background-color: #17191F;
+}
+
+.date-picker-popup .month-year-pane {
+    -fx-background-color: #0d0f12;
+    -fx-padding: 8 12;
+}
+
+.date-picker-popup .spinner {
     -fx-background-color: #0d0f12;
 }
 
-.date-picker .date-picker-popup .day-cell {
-    -fx-text-fill: white;
+.date-picker-popup .spinner .button {
     -fx-background-color: transparent;
+    -fx-cursor: hand;
 }
 
-.date-picker .date-picker-popup .day-cell:hover {
+.date-picker-popup .spinner .button .left-arrow,
+.date-picker-popup .spinner .button .right-arrow {
+    -fx-background-color: #a1a1aa;
+}
+
+.date-picker-popup .spinner .button:hover .left-arrow,
+.date-picker-popup .spinner .button:hover .right-arrow {
+    -fx-background-color: white;
+}
+
+.date-picker-popup .spinner Label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.date-picker-popup .day-name-cell {
+    -fx-text-fill: #8a8d91;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-background-color: #0d0f12;
+}
+
+.date-picker-popup .week-number-cell {
+    -fx-text-fill: #6a6d71;
+    -fx-background-color: #0d0f12;
+}
+
+.date-picker-popup .calendar-grid {
+    -fx-background-color: #17191F;
+}
+
+.date-picker-popup .day-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-background-radius: 6;
+}
+
+.date-picker-popup .day-cell:hover {
     -fx-background-color: #1E1333;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
 }
 
-.date-picker .date-picker-popup .selected {
+.date-picker-popup .day-cell:focused {
+    -fx-background-color: #2a1f4a;
+}
+
+.date-picker-popup .day-cell.today {
+    -fx-background-color: rgba(139,92,246,0.2);
+    -fx-text-fill: #a78bfa;
+    -fx-font-weight: bold;
+    -fx-border-color: #8b5cf6;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+}
+
+.date-picker-popup .day-cell.selected,
+.date-picker-popup .day-cell:selected {
     -fx-background-color: #7a4ed4;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+}
+
+.date-picker-popup .day-cell.previous-month,
+.date-picker-popup .day-cell.next-month {
+    -fx-text-fill: #3a3d45;
+}
+
+.date-picker-popup .secondary-label {
+    -fx-text-fill: #6a6d71;
 }
 
 /* Field error state */

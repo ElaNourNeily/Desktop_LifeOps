@@ -37,6 +37,11 @@
                 style="-fx-background-color: #1c1e24; -fx-text-fill: #8a8d91; -fx-background-radius: 8; -fx-padding: 8 20; -fx-cursor: hand;"
                 text="Mes Bilans" />
         <Region HBox.hgrow="ALWAYS" />
+        <Button onAction="#openDashboard"
+                style="-fx-background-color: rgba(139,92,246,0.15); -fx-text-fill: #a78bfa;
+                       -fx-border-color: rgba(139,92,246,0.3); -fx-border-radius: 10; -fx-background-radius: 10;
+                       -fx-font-size: 12px; -fx-cursor: hand; -fx-padding: 7 14; -fx-font-weight: bold;"
+                text="📈 Dashboard IA" />
         <Button onAction="#openDrugSearch"
                 style="-fx-background-color: #1c1e24; -fx-text-fill: #8a8d91;
                        -fx-border-color: #2a2d32; -fx-border-radius: 10; -fx-background-radius: 10;

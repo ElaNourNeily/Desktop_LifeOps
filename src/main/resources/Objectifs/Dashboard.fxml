@@ -42,6 +42,9 @@
                 <!-- Score global -->
                 <HBox fx:id="scoreContainer" spacing="16" />
 
+                <!-- Santé KPIs -->
+                <HBox fx:id="santeKpiContainer" spacing="16" />
+
                 <!-- Patterns d'échec -->
                 <VBox fx:id="patternsContainer" spacing="12" />
 
