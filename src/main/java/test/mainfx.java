@@ -5,8 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.User;
-import Service.Userservice;
+import Model.User;
+import service.user.Userservice;
 import utils.RememberMe;
 import utils.Session;
 

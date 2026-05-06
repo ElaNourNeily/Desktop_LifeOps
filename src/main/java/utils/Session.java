@@ -1,6 +1,6 @@
 package utils;
 
-import model.User;
+import Model.User;
 
 /**
  * Singleton class that holds the currently logged-in user's session.

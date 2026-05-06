@@ -1,4 +1,4 @@
-package Controllers;
+package controller.user;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,11 +9,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
-import model.User;
-import Service.Userservice;
+import Model.User;
+import service.user.Userservice;
 import utils.Session;
-
-import java.io.IOException;
 
 public class SetPasswordController {
 

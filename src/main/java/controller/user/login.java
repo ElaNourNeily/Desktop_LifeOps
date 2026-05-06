@@ -1,4 +1,4 @@
-package Controllers;
+package controller.user;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,15 +12,14 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import model.User;
-import Service.Userservice;
+import Model.User;
+import service.user.Userservice;
 import utils.RememberMe;
 import utils.Session;
 import utils.Mailsender;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;

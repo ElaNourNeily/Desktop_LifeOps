@@ -15,7 +15,8 @@
 <?import javafx.scene.shape.SVGPath?>
 
 <StackPane prefHeight="700.0" prefWidth="445.0" styleClass="root-pane" stylesheets="@login.css"
-           xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.login">
+           xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="controller.user.login">
 
     <VBox alignment="CENTER" maxWidth="450" spacing="25" styleClass="main-container">
 

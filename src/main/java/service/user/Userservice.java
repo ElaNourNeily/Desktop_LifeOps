@@ -1,6 +1,7 @@
-package Service;
+package service.user;
 
-import model.User;
+import Interfaces.CRUD;
+import Model.User;
 import utils.MyDB;
 
 import java.sql.*;

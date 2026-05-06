@@ -1,8 +1,7 @@
-package Controllers;
+package controller.user;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -11,7 +10,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import model.User;
+import Model.User;
+import service.user.Userservice;
 import utils.RememberMe;
 import utils.Session;
 
@@ -104,7 +104,7 @@ public class MainLayoutController {
             long seconds = java.time.Duration.between(loginTime, java.time.LocalDateTime.now()).getSeconds();
             currentUser.setTotalConnectionTime(currentUser.getTotalConnectionTime() + seconds);
             try {
-                new Service.Userservice().updateConnectionTime(currentUser);
+                new Userservice().updateConnectionTime(currentUser);
             } catch (Exception e) {
                 e.printStackTrace();
             }

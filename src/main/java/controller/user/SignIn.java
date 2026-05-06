@@ -1,4 +1,4 @@
-package Controllers;
+package controller.user;
 
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.auth.oauth2.Credential;
@@ -19,8 +19,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import model.User;
-import Service.Userservice;
+import Model.User;
+import service.user.Userservice;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -108,7 +108,7 @@ public class SignIn {
             }
 
             // Validate Prenom
-            if (prenom.getText().matches("^[a-zA-Z].*")){
+            if (prenom.getText().matches("^[a-zA-Z].*")) {
                 p.setVisible(false);
                 newUser.setPrenom(prenom.getText());
                 x++;
@@ -117,7 +117,7 @@ public class SignIn {
             }
 
             // Validate Nom
-            if (nom.getText().matches("^[a-zA-Z].*")){
+            if (nom.getText().matches("^[a-zA-Z].*")) {
                 nomerror.setVisible(false);
                 newUser.setNom(nom.getText());
                 x++;
@@ -195,15 +195,15 @@ public class SignIn {
     void createwithgoogle(ActionEvent event) {
         try {
             GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
-                            new NetHttpTransport(),
-                            JacksonFactory.getDefaultInstance(),
+                    new NetHttpTransport(),
+                    JacksonFactory.getDefaultInstance(),
                     "",
                     "",
-                            Arrays.asList(
-                                    "https://www.googleapis.com/auth/userinfo.profile",
-                                    "https://www.googleapis.com/auth/userinfo.email"
-                            )
-                    ).build();
+                    Arrays.asList(
+                            "https://www.googleapis.com/auth/userinfo.profile",
+                            "https://www.googleapis.com/auth/userinfo.email"
+                    )
+            ).build();
 
             LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
             Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
