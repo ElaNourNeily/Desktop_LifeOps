@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefWidth="480.0" spacing="20.0"
+      styleClass="popup-card"
+      stylesheets="@board_style.css"
+      xmlns="http://javafx.com/javafx/19"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controller.task.CreateBoardController">
+
+    <padding>
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+    </padding>
+
+    <children>
+
+        <!-- Header -->
+        <VBox spacing="4.0">
+            <children>
+                <Label styleClass="popup-title" text="Créer un nouveau tableau" />
+                <Label styleClass="popup-subtitle"
+                       text="Configurez votre workspace avec tous les détails nécessaires." />
+                <Label fx:id="lblError"
+                       style="-fx-text-fill: #f87171; -fx-font-size: 11px; -fx-background-color: rgba(239,68,68,0.1); -fx-background-radius: 6; -fx-padding: 6 10;"
+                       visible="false" wrapText="true" />
+            </children>
+        </VBox>
+
+        <!-- Name -->
+        <VBox spacing="6.0">
+            <children>
+                <Label styleClass="panel-section-title" text="NOM DU TABLEAU *" />
+                <TextField fx:id="txtName" promptText="ex: Projet Marketing 2024"
+                           styleClass="form-field" />
+            </children>
+        </VBox>
+
+        <!-- Mode + Category -->
+        <HBox spacing="16.0">
+            <children>
+                <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label styleClass="panel-section-title" text="MODE *" />
+                        <ComboBox fx:id="comboMode" maxWidth="Infinity"
+                                  promptText="Choisir mode"
+                                  styleClass="combo-form" />
+                    </children>
+                </VBox>
+                <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label styleClass="panel-section-title" text="CATÉGORIE *" />
+                        <ComboBox fx:id="comboCategory" maxWidth="Infinity"
+                                  promptText="Choisir catégorie"
+                                  styleClass="combo-form" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+        <!-- Description -->
+        <VBox spacing="6.0">
+            <children>
+                <Label styleClass="panel-section-title" text="DESCRIPTION" />
+                <TextArea fx:id="txtDescription" prefHeight="75.0"
+                          promptText="Décrivez l'objectif de ce board..."
+                          wrapText="true" styleClass="form-field" />
+            </children>
+        </VBox>
+
+        <!-- Sprint Duration -->
+        <VBox spacing="6.0">
+            <children>
+                <Label styleClass="panel-section-title" text="DURÉE DU SPRINT (JOURS) *" />
+                <TextField fx:id="txtSprintDuration" promptText="ex: 14"
+                           styleClass="form-field" />
+            </children>
+        </VBox>
+
+        <!-- Actions -->
+        <HBox alignment="CENTER_RIGHT" spacing="12.0" style="-fx-padding: 4 0 0 0;">
+            <children>
+                <Button mnemonicParsing="false" onAction="#handleCancel"
+                        style="-fx-background-color: transparent; -fx-text-fill: #8a8d91; -fx-cursor: hand; -fx-padding: 8 14; -fx-border-color: #2a2d32; -fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10;"
+                        text="Annuler" />
+                <Button mnemonicParsing="false" onAction="#handleCreate"
+                        styleClass="btn-primary"
+                        text="Créer le tableau" />
+            </children>
+        </HBox>
+
+    </children>
+</VBox>

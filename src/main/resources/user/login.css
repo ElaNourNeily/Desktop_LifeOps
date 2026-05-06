@@ -1,0 +1,129 @@
+.root-pane {
+    -fx-background-color: #121212;
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+.main-container {
+    -fx-background-color: #1a1a1a;
+    -fx-padding: 50;
+    -fx-border-color: #2a2a2a;
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+}
+
+.title-label {
+    -fx-text-fill: white;
+    -fx-font-size: 28px;
+    -fx-font-weight: 700;
+}
+
+.subtitle-label {
+    -fx-text-fill: #9CA3AF;
+    -fx-font-size: 14px;
+}
+
+.field-label {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+.forgot-password {
+    -fx-text-fill: #9CA3AF;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+}
+.forgot-password:hover {
+    -fx-underline: true;
+}
+
+.input-field {
+    -fx-background-color: #121212;
+    -fx-border-color: #3f3f3f;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 12 12;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: #666666;
+}
+
+.input-field:focused {
+    -fx-border-color: white;
+}
+
+.pwd-field {
+    -fx-padding: 12 40 12 12; 
+}
+
+.remember-checkbox {
+    -fx-text-fill: #9CA3AF;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+}
+
+.remember-checkbox .box {
+    -fx-background-color: #121212;
+    -fx-border-color: #3f3f3f;
+    -fx-border-radius: 3;
+}
+.remember-checkbox:selected .box {
+    -fx-background-color: white;
+    -fx-border-color: white;
+}
+.remember-checkbox:selected .mark {
+    -fx-background-color: black;
+}
+
+.login-button {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-font-weight: 700;
+    -fx-font-size: 15px;
+    -fx-padding: 12;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+.login-button:hover {
+    -fx-background-color: #f0f0f0;
+}
+
+.separator-container {
+    -fx-padding: 10 0;
+}
+.separator-label {
+    -fx-text-fill: #666666;
+    -fx-font-size: 11px;
+    -fx-font-weight: 600;
+}
+.separator-container .separator {
+    -fx-background-color: #2a2a2a;
+    -fx-border-width: 0;
+}
+
+.social-btn {
+    -fx-background-color: transparent;
+    -fx-border-color: #2a2a2a;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 10 0;
+    -fx-cursor: hand;
+}
+.social-btn:hover {
+    -fx-background-color: #222222;
+}
+
+.sub-text {
+    -fx-text-fill: #9CA3AF;
+    -fx-font-size: 13px;
+}
+.link-text {
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+}
+.link-text:hover {
+    -fx-underline: true;
+}
