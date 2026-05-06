@@ -55,7 +55,10 @@ public class CreateSanteController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initStyle(StageStyle.UNDECORATED);
             stage.setTitle("Nouveau Suivi Santé");
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(
+                    CreateSanteController.class.getResource("/Task/board_style.css").toExternalForm());
+            stage.setScene(scene);
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();

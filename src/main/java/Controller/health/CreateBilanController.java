@@ -46,7 +46,10 @@ public class CreateBilanController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initStyle(StageStyle.UNDECORATED);
             stage.setTitle("Bilan IA");
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(
+                    CreateBilanController.class.getResource("/Task/board_style.css").toExternalForm());
+            stage.setScene(scene);
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
