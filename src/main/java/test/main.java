@@ -1,9 +1,11 @@
 package test;
 
+/**
+ * Entry point that bypasses the JavaFX module requirement check.
+ * Run this class instead of MainFX directly.
+ */
 public class Main {
     public static void main(String[] args) {
-        // By calling MainFX.main from a class that doesn't extend Application,
-        // we bypass the strict JavaFX module requirements.
         MainFX.main(args);
     }
 }

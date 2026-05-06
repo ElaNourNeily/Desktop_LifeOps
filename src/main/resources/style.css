@@ -1,0 +1,254 @@
+/* ── Variables de couleur purple ───────────────────────────────────
+   Primaire  : #8b5cf6  (violet moyen)
+   Hover     : #7c3aed  (violet foncé)
+   Accent    : #a78bfa  (violet clair)
+   Fond app  : #121417
+   Carte     : #1c1e22
+   Bordure   : #2a2d32
+──────────────────────────────────────────────────────────────────── */
+
+.root {
+    -fx-background-color: #121417;
+    -fx-font-family: "Segoe UI", "Inter", sans-serif;
+}
+
+/* ── Typographie ─────────────────────────────────────────────────── */
+
+.title-label {
+    -fx-text-fill: white;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
+
+.subtitle-label {
+    -fx-text-fill: #8a8d91;
+    -fx-font-size: 15px;
+}
+
+.section-title {
+    -fx-text-fill: #8a8d91;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+/* ── Bouton principal ────────────────────────────────────────────── */
+
+.btn-primary {
+    -fx-background-color: linear-gradient(to bottom right, #8b5cf6, #7c3aed);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 25px;
+    -fx-padding: 10px 22px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(139, 92, 246, 0.3), 10, 0, 0, 4);
+}
+
+.btn-primary:hover {
+    -fx-background-color: linear-gradient(to bottom right, #a78bfa, #8b5cf6);
+    -fx-effect: dropshadow(three-pass-box, rgba(139, 92, 246, 0.5), 15, 0, 0, 6);
+}
+
+.btn-primary:pressed {
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+/* ── Champ de recherche ──────────────────────────────────────────── */
+
+.search-field {
+    -fx-background-color: #1c1e22;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #6a6d71;
+    -fx-background-radius: 12px;
+    -fx-padding: 12px 18px;
+    -fx-border-color: #2a2d32;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+}
+
+.search-field:focused {
+    -fx-border-color: #8b5cf6;
+    -fx-border-width: 1.5px;
+    -fx-background-color: #121417;
+    -fx-effect: dropshadow(three-pass-box, rgba(139, 92, 246, 0.2), 8, 0, 0, 0);
+}
+
+/* ── Boutons de filtre catégorie ─────────────────────────────────── */
+
+.filter-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #8a8d91;
+    -fx-background-radius: 12px;
+    -fx-padding: 7px 16px;
+    -fx-cursor: hand;
+    -fx-border-color: #2a2d32;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+}
+
+.filter-btn:hover {
+    -fx-background-color: #1c1e22;
+    -fx-text-fill: white;
+    -fx-border-color: #3a3d42;
+}
+
+.filter-btn-active {
+    -fx-background-color: rgba(139, 92, 246, 0.15);
+    -fx-text-fill: #a78bfa;
+    -fx-background-radius: 12px;
+    -fx-padding: 7px 16px;
+    -fx-font-weight: bold;
+    -fx-border-color: #8b5cf6;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+}
+
+/* ── Carte objectif ──────────────────────────────────────────────── */
+
+.card {
+    -fx-background-color: #1c1e22;
+    -fx-background-radius: 16px;
+    -fx-border-color: #2a2d32;
+    -fx-border-radius: 16px;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 5);
+}
+
+.card-title {
+    -fx-text-fill: white;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+}
+
+/* ── Navbar menu items ───────────────────────────────────────────── */
+
+.menu-item {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+}
+
+.menu-item:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+}
+
+.menu-item-active {
+    -fx-background-color: rgba(139, 92, 246, 0.1);
+    -fx-background-radius: 10px;
+    -fx-border-color: #8b5cf6;
+    -fx-border-width: 0 0 0 4px;
+}
+
+/* ── Champs de formulaire ────────────────────────────────────────── */
+
+.form-field {
+    -fx-background-color: #1c1e22;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #6a6d71;
+    -fx-background-radius: 10px;
+    -fx-padding: 12px 16px;
+    -fx-border-color: #2a2d32;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+}
+
+.form-field:focused {
+    -fx-border-color: #8b5cf6;
+    -fx-border-width: 1.5px;
+}
+
+.combo-form {
+    -fx-background-color: #1c1e22;
+    -fx-border-color: #2a2d32;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.combo-form .list-cell {
+    -fx-background-color: #1c1e22;
+    -fx-text-fill: white;
+}
+
+.date-form {
+    -fx-background-color: #1c1e22;
+    -fx-border-color: #2a2d32;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.form-label {
+    -fx-text-fill: #a78bfa;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+/* ── ScrollBar custom ────────────────────────────────────────────── */
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane>.viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-width: 8px;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #2a2d32;
+    -fx-background-radius: 10px;
+}
+
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #3a3d42;
+}
+
+.scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-shape: "";
+}
+
+/* ── Progress Bar custom ─────────────────────────────────────────── */
+
+.progress-bar {
+    -fx-pref-height: 8px;
+}
+
+.progress-bar .track {
+    -fx-background-color: #2a2d32;
+    -fx-background-radius: 5px;
+}
+
+.progress-bar .bar {
+    -fx-background-radius: 5px;
+}
+
+/* ── Charts ──────────────────────────────────────────────────────── */
+
+.chart-card {
+    -fx-background-color: #1c1e22;
+    -fx-background-radius: 16px;
+    -fx-border-color: #2a2d32;
+    -fx-border-radius: 16px;
+    -fx-border-width: 1px;
+    -fx-padding: 20;
+}
+
+.chart-plot-background {
+    -fx-background-color: rgba(28, 30, 34, 0.5);
+}
+
+.axis {
+    -fx-tick-label-fill: #8a8d91;
+    -fx-axis-label-fill: #8a8d91;
+}
