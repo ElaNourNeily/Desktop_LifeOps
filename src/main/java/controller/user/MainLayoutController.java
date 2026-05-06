@@ -106,7 +106,7 @@ public class MainLayoutController {
         } else if (menuClique == menuObjectifs) {
             chargerVue("/Objectifs/Objectifs.fxml");
         } else if (menuClique == menuSante) {
-            chargerVue("/Sante.fxml");
+            chargerVue("/health/Sante.fxml");
         } else if (menuClique == menuTemps) {
             chargerVue("/Temps.fxml");
         } else if (menuClique == menuBackOffice) {
