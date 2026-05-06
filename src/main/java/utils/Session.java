@@ -1,23 +1,24 @@
 package utils;
 
-import model.User;
+import model.user.User;
 
 /**
- * Singleton class that holds the currently logged-in user's session.
- * Use Session.getInstance() from any controller to access the logged-in user.
+ * Session — holds the currently logged-in user.
+ *
+ * Usage:
+ *   Session.getInstance().setCurrentUser(user)  - set after login
+ *   Session.getInstance().logout()              - clear on logout
+ *   Session.getCurrentUser()                    - get user (static, used by task services)
+ *   Session.isLoggedIn()                        - check login (static, used by task services)
+ *   Session.getInstance().getCurrentUser()      - also works (delegates to static field)
  */
 public class Session {
 
     private static Session instance;
-    private User currentUser;
+    private static User currentUser;   // static so both instance and static access share state
 
-    private Session() {
-        // Private constructor — use getInstance()
-    }
+    private Session() {}
 
-    /**
-     * Returns the single Session instance (creates it on first call).
-     */
     public static Session getInstance() {
         if (instance == null) {
             instance = new Session();
@@ -25,40 +26,28 @@ public class Session {
         return instance;
     }
 
-    /**
-     * Stores the authenticated user in the session.
-     * Call this after a successful login.
-     */
+    /** Set the logged-in user after successful authentication. */
     public void setCurrentUser(User user) {
-        this.currentUser = user;
+        currentUser = user;
     }
 
-    /**
-     * Returns the currently logged-in user, or null if no one is logged in.
-     */
-    public User getCurrentUser() {
+    /** @return the currently logged-in user, or null */
+    public static User getCurrentUser() {
         return currentUser;
     }
 
-    /**
-     * Returns true if a user is currently logged in.
-     */
-    public boolean isLoggedIn() {
+    /** @return true if a user is currently logged in */
+    public static boolean isLoggedIn() {
         return currentUser != null;
     }
 
-    /**
-     * Clears the session (logout).
-     */
+    /** Clear the session (logout). */
     public void logout() {
         currentUser = null;
-
     }
 
-    /**
-     * Destroys the session instance entirely.
-     */
     public static void destroy() {
         instance = null;
+        currentUser = null;
     }
 }
