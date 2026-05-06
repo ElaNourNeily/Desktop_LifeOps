@@ -44,9 +44,10 @@ public class CreateBilanController {
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initStyle(StageStyle.UNDECORATED);
+            stage.initStyle(StageStyle.TRANSPARENT);
             stage.setTitle("Bilan IA");
             Scene scene = new Scene(root);
+            scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
             scene.getStylesheets().add(
                     CreateBilanController.class.getResource("/Task/board_style.css").toExternalForm());
             stage.setScene(scene);

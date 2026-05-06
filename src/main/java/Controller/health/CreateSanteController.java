@@ -53,9 +53,10 @@ public class CreateSanteController {
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initStyle(StageStyle.UNDECORATED);
+            stage.initStyle(StageStyle.TRANSPARENT);
             stage.setTitle("Nouveau Suivi Santé");
             Scene scene = new Scene(root);
+            scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
             scene.getStylesheets().add(
                     CreateSanteController.class.getResource("/Task/board_style.css").toExternalForm());
             stage.setScene(scene);
