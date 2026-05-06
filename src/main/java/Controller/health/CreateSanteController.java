@@ -7,7 +7,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import service.health.SuiviSanteService;
 
 import java.io.IOException;
@@ -27,6 +31,7 @@ public class CreateSanteController {
     @FXML private Label errorLabel;
 
     private final SuiviSanteService service = new SuiviSanteService();
+    private Runnable onSaved; // callback to refresh the list
 
     @FXML
     public void initialize() {
@@ -35,6 +40,26 @@ public class CreateSanteController {
         qualiteSommeilBox.setValue(3);
         humeurBox.setValue(3);
         datePicker.setValue(java.time.LocalDate.now());
+    }
+
+    /** Open this form as a modal popup. */
+    public static void openPopup(Runnable onSaved) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    CreateSanteController.class.getResource("/health/CreateSantePopup.fxml"));
+            Parent root = loader.load();
+            CreateSanteController ctrl = loader.getController();
+            ctrl.onSaved = onSaved;
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.setTitle("Nouveau Suivi Santé");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -52,12 +77,19 @@ public class CreateSanteController {
             s.setActivite(activiteTypeField.getText());
             s.setNotes(notesField.getText());
             service.ajouter(s);
-            goBack(event);
+            if (onSaved != null) onSaved.run();
+            closeStage();
         } catch (SQLException e) {
             showError("Erreur base de données : " + e.getMessage());
         }
     }
 
+    @FXML
+    void handleClose(ActionEvent event) {
+        closeStage();
+    }
+
+    // Also used by the non-popup version (CreateSante.fxml)
     @FXML
     void goBack(ActionEvent event) {
         try {
@@ -65,6 +97,12 @@ public class CreateSanteController {
             MainLayoutController ctrl = MainLayoutController.getInstance();
             if (ctrl != null) ctrl.loadContent(view);
         } catch (IOException e) { e.printStackTrace(); }
+    }
+
+    private void closeStage() {
+        if (datePicker != null && datePicker.getScene() != null) {
+            ((Stage) datePicker.getScene().getWindow()).close();
+        }
     }
 
     private boolean isValid() {

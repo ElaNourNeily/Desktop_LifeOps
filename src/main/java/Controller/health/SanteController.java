@@ -140,8 +140,19 @@ public class SanteController {
         applyFilters(null);
     }
 
-    @FXML void openCreate(ActionEvent e) { loadView("/health/CreateSante.fxml"); }
-    @FXML void openCreateBilan(ActionEvent e) { loadView("/health/CreateBilan.fxml"); }
+    @FXML void openCreate(ActionEvent e) {
+        CreateSanteController.openPopup(() -> {
+            loadData();
+            showSuivis(null);
+        });
+    }
+
+    @FXML void openCreateBilan(ActionEvent e) {
+        CreateBilanController.openPopup(() -> {
+            loadData();
+            showBilans(null);
+        });
+    }
     @FXML void openDrugSearch(ActionEvent e) { loadView("/health/DrugSearch.fxml"); }
     @FXML void openHealthArticles(ActionEvent e) { loadView("/health/HealthArticles.fxml"); }
 

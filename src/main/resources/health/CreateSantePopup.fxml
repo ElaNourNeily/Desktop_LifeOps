@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefWidth="500.0" spacing="18.0"
+      styleClass="popup-card"
+      stylesheets="@../../Task/board_style.css"
+      xmlns="http://javafx.com/javafx/19"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controller.health.CreateSanteController">
+
+    <padding><Insets bottom="30.0" left="30.0" right="30.0" top="30.0" /></padding>
+
+    <!-- Header -->
+    <VBox spacing="4.0">
+        <Label style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" text="Nouveau Suivi Santé" />
+        <Label styleClass="popup-subtitle" text="Enregistrez vos indicateurs de santé du jour" />
+    </VBox>
+
+    <!-- Error -->
+    <Label fx:id="errorLabel" text="" visible="false" wrapText="true"
+           style="-fx-text-fill: #f87171; -fx-font-size: 11px;
+                  -fx-background-color: rgba(239,68,68,0.1); -fx-background-radius: 6; -fx-padding: 6 10;" />
+
+    <!-- Date -->
+    <VBox spacing="6.0">
+        <Label styleClass="panel-section-title" text="DATE DU SUIVI *" />
+        <DatePicker fx:id="datePicker" maxWidth="Infinity" styleClass="form-field" />
+    </VBox>
+
+    <!-- Sommeil + Qualité -->
+    <HBox spacing="16.0">
+        <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+            <Label styleClass="panel-section-title" text="HEURES DE SOMMEIL *" />
+            <TextField fx:id="sommeilField" promptText="Ex: 7.5" styleClass="form-field" maxWidth="Infinity" />
+        </VBox>
+        <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+            <Label styleClass="panel-section-title" text="QUALITÉ SOMMEIL (1-5)" />
+            <ChoiceBox fx:id="qualiteSommeilBox" maxWidth="Infinity" styleClass="combo-form" />
+        </VBox>
+    </HBox>
+
+    <!-- Eau + Activité min -->
+    <HBox spacing="16.0">
+        <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+            <Label styleClass="panel-section-title" text="VERRES D'EAU *" />
+            <TextField fx:id="eauField" promptText="Ex: 8" styleClass="form-field" maxWidth="Infinity" />
+        </VBox>
+        <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+            <Label styleClass="panel-section-title" text="MINUTES D'ACTIVITÉ" />
+            <TextField fx:id="activiteMinField" promptText="Ex: 45" styleClass="form-field" maxWidth="Infinity" />
+        </VBox>
+    </HBox>
+
+    <!-- Poids + Humeur -->
+    <HBox spacing="16.0">
+        <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+            <Label styleClass="panel-section-title" text="POIDS (KG) *" />
+            <TextField fx:id="poidsField" promptText="Ex: 70.0" styleClass="form-field" maxWidth="Infinity" />
+        </VBox>
+        <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+            <Label styleClass="panel-section-title" text="HUMEUR (1-5)" />
+            <ChoiceBox fx:id="humeurBox" maxWidth="Infinity" styleClass="combo-form" />
+        </VBox>
+    </HBox>
+
+    <!-- Activité type -->
+    <VBox spacing="6.0">
+        <Label styleClass="panel-section-title" text="TYPE D'ACTIVITÉ *" />
+        <TextField fx:id="activiteTypeField" promptText="Ex: Course à pied, Natation..." styleClass="form-field" />
+    </VBox>
+
+    <!-- Notes -->
+    <VBox spacing="6.0">
+        <Label styleClass="panel-section-title" text="NOTES" />
+        <TextField fx:id="notesField" promptText="Remarques optionnelles..." styleClass="form-field" />
+    </VBox>
+
+    <!-- Buttons -->
+    <HBox alignment="CENTER_RIGHT" spacing="12.0">
+        <Region HBox.hgrow="ALWAYS" />
+        <Button onAction="#handleClose"
+                style="-fx-background-color: transparent; -fx-text-fill: #8a8d91; -fx-cursor: hand;
+                       -fx-padding: 8 14; -fx-border-color: #2a2d32; -fx-border-width: 1;
+                       -fx-border-radius: 10; -fx-background-radius: 10;"
+                text="Annuler" />
+        <Button onAction="#saveSuiviSante" styleClass="btn-primary" text="Enregistrer" />
+    </HBox>
+
+</VBox>
