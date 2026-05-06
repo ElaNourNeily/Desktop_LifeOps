@@ -10,6 +10,9 @@ public class Session {
 
     private static Session instance;
     private User currentUser;
+    private String resetPasswordEmail;
+    private String verificationCode;
+    private java.time.LocalDateTime loginTime;
 
     private Session() {
         // Private constructor — use getInstance()
@@ -52,8 +55,32 @@ public class Session {
      */
     public void logout() {
         currentUser = null;
-
     }
+
+    public String getResetPasswordEmail() {
+        return resetPasswordEmail;
+    }
+
+    public void setResetPasswordEmail(String resetPasswordEmail) {
+        this.resetPasswordEmail = resetPasswordEmail;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public java.time.LocalDateTime getLoginTime() {
+        return loginTime;
+    }
+
+    public void setLoginTime(java.time.LocalDateTime loginTime) {
+        this.loginTime = loginTime;
+    }
+
 
     /**
      * Destroys the session instance entirely.

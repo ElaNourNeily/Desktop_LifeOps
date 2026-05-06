@@ -9,8 +9,16 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class main {
-    static void main() {
+    public static void main(String[] args) {
+
         Userservice userservice = new Userservice();
+        try {
+            System.out.println(userservice.findbyID(6).getRole());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
 
        /* User u = new User("naim","zarbabou","na3im@gmail.esprit",200 , "123456");
        Userservice userservice = new Userservice();

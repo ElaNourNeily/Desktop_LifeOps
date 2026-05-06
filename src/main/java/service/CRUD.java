@@ -12,4 +12,6 @@ public interface CRUD <T>{
     List<T> findAll() throws SQLException;
     List<T> sortbyName() throws SQLException;
     boolean recherche(T t) throws SQLException;
+
+    void ban(T t) throws SQLException;
 }

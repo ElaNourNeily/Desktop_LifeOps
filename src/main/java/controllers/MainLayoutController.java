@@ -97,6 +97,19 @@ public class MainLayoutController {
 
     @FXML
     void handleLogout(MouseEvent event) {
+        User currentUser = Session.getInstance().getCurrentUser();
+        java.time.LocalDateTime loginTime = Session.getInstance().getLoginTime();
+
+        if (currentUser != null && loginTime != null) {
+            long seconds = java.time.Duration.between(loginTime, java.time.LocalDateTime.now()).getSeconds();
+            currentUser.setTotalConnectionTime(currentUser.getTotalConnectionTime() + seconds);
+            try {
+                new Service.Userservice().updateConnectionTime(currentUser);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         Session.getInstance().logout();
         try {
             RememberMe.clear();
@@ -158,7 +171,7 @@ public class MainLayoutController {
     }
 
     @FXML
-    void navtomodify(MouseEvent event) {
-
+    void editprofile(MouseEvent event) {
+        chargerVue("/edituser.fxml");
     }
 }

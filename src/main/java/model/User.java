@@ -15,6 +15,7 @@ public class User {
     private LocalDateTime created_at = LocalDateTime.now();
     private int is_verified ;
     private String telephone;
+    private long totalConnectionTime; 
 
     public User (){}
 
@@ -151,6 +152,14 @@ public class User {
 
     public void setCreated_at(LocalDateTime created_at) {
         this.created_at = created_at;
+    }
+
+    public long getTotalConnectionTime() {
+        return totalConnectionTime;
+    }
+
+    public void setTotalConnectionTime(long totalConnectionTime) {
+        this.totalConnectionTime = totalConnectionTime;
     }
 }
 

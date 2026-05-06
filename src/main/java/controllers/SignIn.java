@@ -25,8 +25,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Objects;
+import java.util.Random;
 
 import utils.Session;
 
@@ -35,21 +35,16 @@ public class SignIn {
     private Label nomerror;
     @FXML
     private TextField prenom;
-
     @FXML
     private TextField nom;
-
     @FXML
     private TextField age;
     @FXML
     private Label p;
-
     @FXML
     private TextField telephone;
-
     @FXML
     private TextField email;
-
     @FXML
     private PasswordField password;
     @FXML
@@ -61,103 +56,158 @@ public class SignIn {
     @FXML
     private Label phoneerror;
 
+    // CAPTCHA fields
+    @FXML
+    private Label captchaLabel;
+    @FXML
+    private TextField captchaInput;
+    @FXML
+    private Label captchaError;
+
+    private String generatedCaptcha;
     private Userservice userservice = new Userservice();
+
+    @FXML
+    public void initialize() {
+        refreshCaptcha();
+    }
+
+    @FXML
+    private void refreshCaptcha() {
+        generatedCaptcha = generateRandomString(5);
+        captchaLabel.setText(generatedCaptcha);
+        // Add a slight random rotation to make it look like a real captcha
+        captchaLabel.setRotate(new Random().nextInt(10) - 5);
+        captchaInput.clear();
+        captchaError.setVisible(false);
+    }
+
+    private String generateRandomString(int length) {
+        String chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // Removed look-alike characters like 0, O, I, 1
+        StringBuilder sb = new StringBuilder();
+        Random rnd = new Random();
+        while (sb.length() < length) {
+            sb.append(chars.charAt(rnd.nextInt(chars.length())));
+        }
+        return sb.toString();
+    }
 
     @FXML
     void SignUp(ActionEvent event) {
         int x = 0;
         try {
             User newUser = new User();
-            if ((!telephone.getText().matches("^[0-9]+$")) || (Integer.parseInt(telephone.getText()) < 8)) {
+
+            // Validate Telephone
+            if ((!telephone.getText().matches("^[0-9]+$")) || (telephone.getText().length() < 8)) {
                 phoneerror.setVisible(true);
             } else {
                 phoneerror.setVisible(false);
                 newUser.setTelephone(telephone.getText());
+                x++;
             }
+
+            // Validate Prenom
             if (prenom.getText().matches("^[a-zA-Z].*")){
                 p.setVisible(false);
-
                 newUser.setPrenom(prenom.getText());
-                x+=1;
-                newUser.setNom(nom.getText());
-            }else {
+                x++;
+            } else {
                 p.setVisible(true);
             }
+
+            // Validate Nom
             if (nom.getText().matches("^[a-zA-Z].*")){
                 nomerror.setVisible(false);
                 newUser.setNom(nom.getText());
-                x+=1;
-
-
+                x++;
             } else {
                 nomerror.setText("Format incorrect");
                 nomerror.setVisible(true);
             }
 
-
+            // Validate Age
             if ((age.getText().isEmpty()) || Integer.parseInt(age.getText()) > 70 || Integer.parseInt(age.getText()) < 0) {
                 ageerror.setVisible(true);
-
             } else {
                 ageerror.setVisible(false);
                 newUser.setAge(Integer.parseInt(age.getText()));
-                x+=1;
+                x++;
             }
+
+            // Validate Email
             if (email.getText().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
                 if (userservice.findbyMail(email.getText()) != null) {
                     invalidmail.setText("Email already exists");
                     invalidmail.setVisible(true);
                 } else {
-
                     invalidmail.setVisible(false);
-                newUser.setEmail(email.getText());
-                    x += 1;
+                    newUser.setEmail(email.getText());
+                    x++;
                 }
-
-
             } else {
                 invalidmail.setText("Invalid email");
                 invalidmail.setVisible(true);
             }
-            if(password.getText().length()>5){
+
+            // Validate Password
+            if (password.getText().length() > 5) {
                 pwdinvalid.setVisible(false);
                 newUser.setMot_de_passe(password.getText());
-                x+=1;
+                x++;
+            } else {
+                pwdinvalid.setVisible(true);
+            }
 
+            // Validate CAPTCHA (The 7th validation)
+            if (captchaInput.getText().equalsIgnoreCase(generatedCaptcha)) {
+                captchaError.setVisible(false);
+                x++;
+            } else {
+                captchaError.setVisible(true);
+                refreshCaptcha(); // Change captcha on failure
+            }
 
-            } else pwdinvalid.setVisible(true);
-            if (x==5){
+            if (x == 7) {
                 userservice.create(newUser);
-                System.out.println("Sign in successful!");
+                System.out.println("Sign up successful!");
+                navtolog_manual(event);
             }
 
         } catch (Exception e) {
-            System.out.println("Sign in Failed: " + e.getMessage());
+            System.out.println("Sign up Failed: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void navtolog_manual(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/login.fxml")));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     @FXML
     void createwithgoogle(ActionEvent event) {
         try {
-            GoogleAuthorizationCodeFlow flow =
-                    new GoogleAuthorizationCodeFlow.Builder(
+            GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                             new NetHttpTransport(),
                             JacksonFactory.getDefaultInstance(),
-                            "",
-                            "",
+                    "",
+                    "",
                             Arrays.asList(
                                     "https://www.googleapis.com/auth/userinfo.profile",
                                     "https://www.googleapis.com/auth/userinfo.email"
                             )
                     ).build();
 
-            LocalServerReceiver receiver =
-                    new LocalServerReceiver.Builder().setPort(8888).build();
+            LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
+            Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
 
-            Credential credential =
-                    new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
-
-            // Get user info
             HttpRequest request = new NetHttpTransport()
                     .createRequestFactory(credential)
                     .buildGetRequest(new GenericUrl("https://www.googleapis.com/oauth2/v2/userinfo"));
@@ -168,10 +218,8 @@ public class SignIn {
             boolean isNewUser = createUserFromGoogle(response);
 
             if (isNewUser) {
-                // First-time Google user → force password creation
                 navigateToSetPassword(event);
             } else {
-                // Returning user → go to main app
                 navigateToMainLayout(event);
             }
 
@@ -184,7 +232,6 @@ public class SignIn {
     void navtolog(MouseEvent event) {
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/login.fxml")));
-
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
@@ -220,22 +267,17 @@ public class SignIn {
     private boolean createUserFromGoogle(String json) {
         try {
             JSONObject obj = new JSONObject(json);
-
             String email = obj.getString("email");
             String name = obj.getString("name");
-            String googleId = obj.getString("id");
 
-            // Split name (simple way)
             String[] parts = name.split(" ");
-
             User user = new User();
             user.setEmail(email);
             user.setPrenom(parts[0]);
             user.setNom(parts.length > 1 ? parts[1] : "");
-            user.setMot_de_passe("GOOGLE_USER"); // placeholder
-            user.setAge(0); // optional
+            user.setMot_de_passe("GOOGLE_USER");
+            user.setAge(0);
 
-            // Check if user already exists
             User existing = userservice.findbyMail(email);
 
             if (existing == null) {
@@ -243,13 +285,12 @@ public class SignIn {
                 User created = userservice.findbyMail(email);
                 Session.getInstance().setCurrentUser(created);
                 System.out.println("User created with Google!");
-                return true; // new user → must set password
+                return true;
             } else {
                 Session.getInstance().setCurrentUser(existing);
                 System.out.println("User already exists, logging in...");
-                return false; // existing user
+                return false;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

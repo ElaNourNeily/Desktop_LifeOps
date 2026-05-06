@@ -5,29 +5,20 @@ import java.nio.file.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * Persists a "remember me" token to a local file so the user stays
- * logged in across app restarts (for up to 30 days).
- * <p>
- * File location: ~/.lifeops/remember.dat
- */
+
 public class RememberMe {
 
     private static final String DIR_NAME = ".lifeops";
     private static final String FILE_NAME = "remember.dat";
     private static final int EXPIRY_DAYS = 30;
 
-    /**
-     * Returns the path to the remember file.
-     */
+
     private static Path getFilePath() {
         String home = System.getProperty("user.home");
         return Paths.get(home, DIR_NAME, FILE_NAME);
     }
 
-    /**
-     * Saves the user's email so they can be auto-logged-in next time.
-     */
+
     public static void save(String email) {
         try {
             Path dir = getFilePath().getParent();
@@ -48,10 +39,7 @@ public class RememberMe {
         }
     }
 
-    /**
-     * Loads the saved email if the token hasn't expired.
-     * Returns null if no saved session or if it has expired.
-     */
+
     public static String load() {
         try {
             Path file = getFilePath();
@@ -85,9 +73,7 @@ public class RememberMe {
         }
     }
 
-    /**
-     * Deletes the remember-me file (used on logout or expiry).
-     */
+
     public static void clear() {
         try {
             Files.deleteIfExists(getFilePath());

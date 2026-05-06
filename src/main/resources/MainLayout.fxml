@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -10,80 +9,62 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="700.0" prefWidth="1200.0"
-            style="-fx-background-color: #121417;"
-            stylesheets="@style.css"
-            xmlns="http://javafx.com/javafx/19"
-            xmlns:fx="http://javafx.com/fxml/1"
+<BorderPane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #121417;" stylesheets="@style.css"
+            xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="Controllers.MainLayoutController">
 
     <!-- NAVBAR GAUCHE -->
     <left>
-        <VBox prefWidth="260.0"
-              style="-fx-background-color: #0d0f12; -fx-border-color: #1c1e22; -fx-border-width: 0 1 0 0;"
-              spacing="0">
+        <VBox prefWidth="260.0" spacing="0"
+              style="-fx-background-color: #0d0f12; -fx-border-color: #1c1e22; -fx-border-width: 0 1 0 0;">
 
             <!-- LOGO + NOM APP -->
-            <HBox alignment="CENTER_LEFT" spacing="12"
-                  style="-fx-padding: 25 20 20 20;">
-                <ImageView fitWidth="38" fitHeight="38" preserveRatio="true">
+            <HBox alignment="CENTER_LEFT" spacing="12" style="-fx-padding: 25 20 20 20;">
+                <ImageView fitHeight="38" fitWidth="38" preserveRatio="true">
                     <image>
                         <Image url="@assets/logo.png"/>
                     </image>
                 </ImageView>
-                <Label text="LifeOps"
-                       style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;"/>
+                <Label style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;" text="LifeOps"/>
             </HBox>
 
             <!-- MENU ITEMS -->
             <VBox spacing="4" style="-fx-padding: 10 12;">
 
-                <HBox fx:id="menuTableauBord" onMouseClicked="#handleMenuClick"
-                      alignment="CENTER_LEFT" spacing="14"
+                <HBox fx:id="menuTableauBord" alignment="CENTER_LEFT" onMouseClicked="#handleMenuClick" spacing="14"
                       style="-fx-padding: 11 14; -fx-cursor: hand; -fx-background-radius: 8;">
-                    <Label text="🏠" style="-fx-font-size: 17px;"/>
-                    <Label text="Tableau de bord"
-                           style="-fx-text-fill: #8a8d91; -fx-font-size: 14px;"/>
+                    <Label style="-fx-font-size: 17px;" text="🏠"/>
+                    <Label style="-fx-text-fill: #8a8d91; -fx-font-size: 14px;" text="Tableau de bord"/>
                 </HBox>
 
-                <HBox fx:id="menuTaches" onMouseClicked="#handleMenuClick"
-                      alignment="CENTER_LEFT" spacing="14"
+                <HBox fx:id="menuTaches" alignment="CENTER_LEFT" onMouseClicked="#handleMenuClick" spacing="14"
                       style="-fx-padding: 11 14; -fx-cursor: hand; -fx-background-radius: 8;">
-                    <Label text="✔" style="-fx-font-size: 17px;"/>
-                    <Label text="Tâches"
-                           style="-fx-text-fill: #8a8d91; -fx-font-size: 14px;"/>
+                    <Label style="-fx-font-size: 17px;" text="✔"/>
+                    <Label style="-fx-text-fill: #8a8d91; -fx-font-size: 14px;" text="Tâches"/>
                 </HBox>
 
-                <HBox fx:id="menuFinance" onMouseClicked="#handleMenuClick"
-                      alignment="CENTER_LEFT" spacing="14"
+                <HBox fx:id="menuFinance" alignment="CENTER_LEFT" onMouseClicked="#handleMenuClick" spacing="14"
                       style="-fx-padding: 11 14; -fx-cursor: hand; -fx-background-radius: 8;">
-                    <Label text="💰" style="-fx-font-size: 17px;"/>
-                    <Label text="Finance"
-                           style="-fx-text-fill: #8a8d91; -fx-font-size: 14px;"/>
+                    <Label style="-fx-font-size: 17px;" text="💰"/>
+                    <Label style="-fx-text-fill: #8a8d91; -fx-font-size: 14px;" text="Finance"/>
                 </HBox>
 
-                <HBox fx:id="menuObjectifs" onMouseClicked="#handleMenuClick"
-                      alignment="CENTER_LEFT" spacing="14"
+                <HBox fx:id="menuObjectifs" alignment="CENTER_LEFT" onMouseClicked="#handleMenuClick" spacing="14"
                       style="-fx-padding: 11 14; -fx-cursor: hand; -fx-background-radius: 8;">
-                    <Label text="🎯" style="-fx-font-size: 17px;"/>
-                    <Label text="Objectifs"
-                           style="-fx-text-fill: #8a8d91; -fx-font-size: 14px;"/>
+                    <Label style="-fx-font-size: 17px;" text="🎯"/>
+                    <Label style="-fx-text-fill: #8a8d91; -fx-font-size: 14px;" text="Objectifs"/>
                 </HBox>
 
-                <HBox fx:id="menuSante" onMouseClicked="#handleMenuClick"
-                      alignment="CENTER_LEFT" spacing="14"
+                <HBox fx:id="menuSante" alignment="CENTER_LEFT" onMouseClicked="#handleMenuClick" spacing="14"
                       style="-fx-padding: 11 14; -fx-cursor: hand; -fx-background-radius: 8;">
-                    <Label text="❤" style="-fx-font-size: 17px;"/>
-                    <Label text="Santé"
-                           style="-fx-text-fill: #8a8d91; -fx-font-size: 14px;"/>
+                    <Label style="-fx-font-size: 17px;" text="❤"/>
+                    <Label style="-fx-text-fill: #8a8d91; -fx-font-size: 14px;" text="Santé"/>
                 </HBox>
 
-                <HBox fx:id="menuTemps" onMouseClicked="#handleMenuClick"
-                      alignment="CENTER_LEFT" spacing="14"
+                <HBox fx:id="menuTemps" alignment="CENTER_LEFT" onMouseClicked="#handleMenuClick" spacing="14"
                       style="-fx-padding: 11 14; -fx-cursor: hand; -fx-background-radius: 8;">
-                    <Label text="🕐" style="-fx-font-size: 17px;"/>
-                    <Label text="Temps"
-                           style="-fx-text-fill: #8a8d91; -fx-font-size: 14px;"/>
+                    <Label style="-fx-font-size: 17px;" text="🕐"/>
+                    <Label style="-fx-text-fill: #8a8d91; -fx-font-size: 14px;" text="Temps"/>
                 </HBox>
 
             </VBox>
@@ -94,16 +75,15 @@
             <!-- COMPTE (bas) -->
             <HBox alignment="CENTER_LEFT" spacing="12"
                   style="-fx-padding: 15 20; -fx-background-color: #16181b; -fx-border-color: #1c1e22; -fx-border-width: 1 0 0 0;">
-                <Label text="👤" style="-fx-font-size: 20px;"/>
+                <Label style="-fx-font-size: 20px;" text="👤"/>
                 <VBox spacing="2">
-                    <Label fx:id="userNameLabel" text="Compte"
-                           style="-fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;"/>
-                    <Label fx:id="userEmailLabel" text=""
-                           style="-fx-text-fill: #8a8d91; -fx-font-size: 11px;"/>
+                    <Label fx:id="userNameLabel" onMouseClicked="#editprofile"
+                           style="-fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;" text="Compte"/>
+                    <Label fx:id="userEmailLabel" style="-fx-text-fill: #8a8d91; -fx-font-size: 11px;" text=""/>
                 </VBox>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Label text="⎋" style="-fx-font-size: 18px; -fx-text-fill: #8a8d91; -fx-cursor: hand;"
-                       onMouseClicked="#handleLogout"/>
+                <Label onMouseClicked="#handleLogout"
+                       style="-fx-font-size: 18px; -fx-text-fill: #8a8d91; -fx-cursor: hand;" text="⎋"/>
             </HBox>
 
         </VBox>
@@ -111,8 +91,7 @@
 
     <!-- CONTENU CENTRAL -->
     <center>
-        <StackPane fx:id="contentArea"
-                   style="-fx-background-color: #121417;"/>
+        <StackPane fx:id="contentArea" style="-fx-background-color: #121417;"/>
     </center>
 
 </BorderPane>
