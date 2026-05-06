@@ -227,13 +227,21 @@ public class MainLayoutController {
     @FXML
     void navtomodify(MouseEvent event) {
         try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(
-                    getClass().getResource("/user/edituser.fxml")));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+            Parent view = FXMLLoader.load(
+                    Objects.requireNonNull(getClass().getResource("/user/edituser.fxml")));
+            loadContent(view);
+            resetMenuStyles(); // deactivate all menu items
         } catch (IOException e) {
             System.err.println("Erreur chargement edituser.fxml : " + e.getMessage());
+        }
+    }
+
+    /** Called by EditUserController after saving to refresh sidebar labels. */
+    public void refreshUserInfo() {
+        User currentUser = Session.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            if (userNameLabel != null) userNameLabel.setText(currentUser.getPrenom() + " " + currentUser.getNom());
+            if (userEmailLabel != null) userEmailLabel.setText(currentUser.getEmail());
         }
     }
 }
