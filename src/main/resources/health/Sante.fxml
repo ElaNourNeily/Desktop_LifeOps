@@ -16,41 +16,37 @@
       fx:controller="Controller.health.SanteController">
 
     <!-- ── Page header ─────────────────────────── -->
-    <VBox spacing="4" style="-fx-padding: 32 40 20 40;">
-        <Label style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" text="❤ Santé" />
-        <Label style="-fx-text-fill: #8a8d91; -fx-font-size: 13px;" text="Suivez votre bien-être et analysez vos habitudes" />
-    </VBox>
-
-    <!-- ── Action bar ──────────────────────────── -->
-    <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 0 40 20 40;">
-        <Button onAction="#openCreate" styleClass="btn-primary" text="+ Nouveau suivi" style="-fx-padding: 9 18;" />
-        <Button onAction="#openCreateBilan"
-                style="-fx-background-color: rgba(139,92,246,0.15); -fx-text-fill: #a78bfa;
-                       -fx-border-color: rgba(139,92,246,0.3); -fx-border-radius: 10;
-                       -fx-background-radius: 10; -fx-font-size: 13px; -fx-cursor: hand;
-                       -fx-padding: 9 18; -fx-font-weight: bold;"
-                text="🪄 Bilan IA" />
-        <Region HBox.hgrow="ALWAYS" />
-        <Button onAction="#openDrugSearch"
-                style="-fx-background-color: #1c1e24; -fx-text-fill: #8a8d91;
-                       -fx-border-color: #2a2d32; -fx-border-radius: 10; -fx-background-radius: 10;
-                       -fx-font-size: 13px; -fx-cursor: hand; -fx-padding: 9 16;"
-                text="💊 Médicaments" />
-        <Button onAction="#openHealthArticles"
-                style="-fx-background-color: #1c1e24; -fx-text-fill: #8a8d91;
-                       -fx-border-color: #2a2d32; -fx-border-radius: 10; -fx-background-radius: 10;
-                       -fx-font-size: 13px; -fx-cursor: hand; -fx-padding: 9 16;"
-                text="📚 Articles" />
+    <HBox alignment="CENTER_LEFT" style="-fx-padding: 32 40 20 40;">
+        <VBox spacing="4" HBox.hgrow="ALWAYS">
+            <Label style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" text="❤ Santé" />
+            <Label style="-fx-text-fill: #8a8d91; -fx-font-size: 13px;" text="Suivez votre bien-être et analysez vos habitudes" />
+        </VBox>
+        <!-- Context-aware primary action — changes label when switching tabs -->
+        <Button fx:id="btnActionPrimary" onAction="#openCreate"
+                styleClass="btn-primary"
+                text="+ Nouveau suivi"
+                style="-fx-padding: 9 18;" />
     </HBox>
 
-    <!-- ── Tabs ────────────────────────────────── -->
-    <HBox spacing="8" style="-fx-padding: 0 40 16 40;">
+    <!-- ── Tabs + secondary actions ───────────────── -->
+    <HBox alignment="CENTER_LEFT" spacing="8" style="-fx-padding: 0 40 16 40;">
         <Button fx:id="btnTabSuivi" onAction="#showSuivis"
                 style="-fx-background-color: #8b5cf6; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 8 20; -fx-cursor: hand; -fx-font-weight: bold;"
                 text="Mes Suivis" />
         <Button fx:id="btnTabBilan" onAction="#showBilans"
                 style="-fx-background-color: #1c1e24; -fx-text-fill: #8a8d91; -fx-background-radius: 8; -fx-padding: 8 20; -fx-cursor: hand;"
                 text="Mes Bilans" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button onAction="#openDrugSearch"
+                style="-fx-background-color: #1c1e24; -fx-text-fill: #8a8d91;
+                       -fx-border-color: #2a2d32; -fx-border-radius: 10; -fx-background-radius: 10;
+                       -fx-font-size: 12px; -fx-cursor: hand; -fx-padding: 7 14;"
+                text="💊 Médicaments" />
+        <Button onAction="#openHealthArticles"
+                style="-fx-background-color: #1c1e24; -fx-text-fill: #8a8d91;
+                       -fx-border-color: #2a2d32; -fx-border-radius: 10; -fx-background-radius: 10;
+                       -fx-font-size: 12px; -fx-cursor: hand; -fx-padding: 7 14;"
+                text="📚 Articles" />
     </HBox>
 
     <!-- ── Filter bars ─────────────────────────── -->
