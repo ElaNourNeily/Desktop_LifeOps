@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class MyDatabase {
 
-    private final String URL = "jdbc:mysql://localhost:3306/life_ops_symfony";
+    private final String URL = "jdbc:mysql://localhost:3306/jlifeops";
     private final String USER = "root";
     private final String PASSWORD = "";
 
