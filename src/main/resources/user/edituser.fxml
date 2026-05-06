@@ -1,14 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="CONTROLLER_NAME"
-            prefHeight="400.0" prefWidth="600.0">
+<StackPane prefHeight="700.0" prefWidth="500.0"
+           style="-fx-background-color: #121417;"
+           stylesheets="@../Task/board_style.css"
+           xmlns="http://javafx.com/javafx/19"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="controller.user.EditUserController">
 
-</AnchorPane>
+    <VBox alignment="CENTER" maxWidth="440.0" spacing="28.0" styleClass="login-card">
+
+        <!-- Header -->
+        <VBox alignment="CENTER" spacing="8.0">
+            <Label style="-fx-text-fill: white; -fx-font-size: 26px; -fx-font-weight: bold;"
+                   text="👤 Mon Profil" />
+            <Label styleClass="subtitle-label"
+                   text="Modifiez vos informations personnelles" />
+        </VBox>
+
+        <!-- Error / success banner -->
+        <Label fx:id="messageLabel"
+               style="-fx-font-size: 12px; -fx-background-radius: 6; -fx-padding: 7 12;"
+               text="" visible="false" wrapText="true" maxWidth="360.0" />
+
+        <!-- Form -->
+        <VBox spacing="14.0" maxWidth="360.0">
+
+            <!-- Prénom + Nom -->
+            <HBox spacing="12.0">
+                <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                    <Label styleClass="form-label" text="PRÉNOM" />
+                    <TextField fx:id="prenomField" promptText="Prénom" styleClass="form-field" />
+                </VBox>
+                <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                    <Label styleClass="form-label" text="NOM" />
+                    <TextField fx:id="nomField" promptText="Nom" styleClass="form-field" />
+                </VBox>
+            </HBox>
+
+            <!-- Âge -->
+            <VBox spacing="6.0">
+                <Label styleClass="form-label" text="ÂGE" />
+                <TextField fx:id="ageField" promptText="ex: 25" styleClass="form-field"
+                           maxWidth="150.0" />
+            </VBox>
+
+            <!-- Téléphone -->
+            <VBox spacing="6.0">
+                <Label styleClass="form-label" text="TÉLÉPHONE" />
+                <TextField fx:id="telephoneField" promptText="+216 12345678"
+                           styleClass="form-field" />
+            </VBox>
+
+            <!-- Email (read-only) -->
+            <VBox spacing="6.0">
+                <Label styleClass="form-label" text="EMAIL" />
+                <TextField fx:id="emailField" promptText="email@exemple.com"
+                           styleClass="form-field"
+                           style="-fx-opacity: 0.6;" editable="false" />
+            </VBox>
+
+        </VBox>
+
+        <!-- Buttons -->
+        <VBox spacing="10.0" maxWidth="360.0">
+            <Button maxWidth="Infinity" onAction="#handleSave"
+                    styleClass="btn-primary" text="Enregistrer les modifications" />
+            <Button maxWidth="Infinity" onAction="#handleChangePassword"
+                    style="-fx-background-color: transparent; -fx-text-fill: #a78bfa;
+                           -fx-border-color: rgba(139,92,246,0.4); -fx-border-radius: 10;
+                           -fx-background-radius: 10; -fx-font-size: 13px; -fx-cursor: hand;
+                           -fx-padding: 9 0;"
+                    text="🔒 Changer le mot de passe" />
+            <Button maxWidth="Infinity" onAction="#handleClose"
+                    style="-fx-background-color: transparent; -fx-text-fill: #6a6d71;
+                           -fx-font-size: 13px; -fx-cursor: hand; -fx-padding: 6 0;"
+                    text="Annuler" />
+        </VBox>
+
+    </VBox>
+
+</StackPane>

@@ -226,6 +226,14 @@ public class MainLayoutController {
 
     @FXML
     void navtomodify(MouseEvent event) {
-        // TODO: Navigate to user profile modification
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(
+                    getClass().getResource("/user/edituser.fxml")));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            System.err.println("Erreur chargement edituser.fxml : " + e.getMessage());
+        }
     }
 }
