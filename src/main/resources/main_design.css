@@ -1,0 +1,67 @@
+/* Palette de couleur Mauve Premium */
+.root {
+    -fx-primary-mauve: #8b5cf6;
+    -fx-secondary-mauve: #a78bfa;
+    -fx-dark-mauve: #6d28d9;
+    -fx-bg-dark: #0f172a;
+    -fx-surface: #1e293b;
+    -fx-text-main: #f8fafc;
+    -fx-text-muted: #94a3b8;
+}
+
+.root-pane {
+    -fx-background-color: -fx-bg-dark;
+}
+
+/* Boutons Mauves */
+.btn-mauve {
+    -fx-background-color: -fx-primary-mauve;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+.btn-mauve:hover {
+    -fx-background-color: -fx-dark-mauve;
+}
+
+.btn-outline-mauve {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-secondary-mauve;
+    -fx-border-color: -fx-secondary-mauve;
+    -fx-border-radius: 5;
+    -fx-cursor: hand;
+}
+
+/* Cartes avec accent mauve */
+.card-mauve {
+    -fx-background-color: -fx-surface;
+    -fx-background-radius: 10;
+    -fx-border-color: -fx-primary-mauve;
+    -fx-border-width: 0.5;
+}
+
+/* Sidebar accent */
+.sidebar-active {
+    -fx-background-color: -fx-surface;
+    -fx-text-fill: -fx-secondary-mauve;
+}
+
+/* Sidebar accent */
+.sidebar-active {
+    -fx-background-color: -fx-surface;
+    -fx-text-fill: -fx-secondary-mauve;
+}
+
+.axis {
+    -fx-tick-label-fill: #94a3b8;
+    -fx-tick-mark-stroke: #334155;
+}
+
+/* Couleurs des Graphiques Mauve */
+.default-color0.chart-series-line { -fx-stroke: #8b5cf6; }
+.default-color0.chart-line-symbol { -fx-background-color: #8b5cf6, white; }
+
+.default-color0.chart-bar { -fx-bar-fill: #a78bfa; }
+.default-color1.chart-bar { -fx-bar-fill: #7c3aed; }
