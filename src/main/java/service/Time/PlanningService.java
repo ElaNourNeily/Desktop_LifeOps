@@ -1,6 +1,6 @@
-package service;
+package service.Time;
 
-import model.Planning;
+import model.Time.Planning;
 import utils.MyDatabase;
 
 import java.sql.*;
@@ -134,7 +134,7 @@ public class PlanningService implements IService<Planning> {
     }
 
     // ─── DASHBOARD : Récupérer les plannings d'une période ──────────────
-    public List<Planning> recupererParPeriode(int utilisateurId, java.sql.Date debut, java.sql.Date fin) throws SQLException {
+    public List<Planning> recupererParPeriode(int utilisateurId, Date debut, Date fin) throws SQLException {
         List<Planning> plannings = new ArrayList<>();
         String sql = "SELECT * FROM planning WHERE utilisateur_id = ? AND date >= ? AND date <= ? ORDER BY date ASC";
         PreparedStatement ps = connection.prepareStatement(sql);
@@ -156,7 +156,7 @@ public class PlanningService implements IService<Planning> {
     }
 
     // ─── DASHBOARD : Récupérer les plannings d'une semaine ──────────────
-    public List<Planning> recupererParSemaine(int utilisateurId, java.sql.Date debutSemaine) throws SQLException {
+    public List<Planning> recupererParSemaine(int utilisateurId, Date debutSemaine) throws SQLException {
         List<Planning> plannings = new ArrayList<>();
         String sql = "SELECT * FROM planning WHERE utilisateur_id = ? AND date >= ? AND date <= DATE_ADD(?, INTERVAL 6 DAY) ORDER BY date ASC";
         PreparedStatement ps = connection.prepareStatement(sql);
@@ -180,7 +180,7 @@ public class PlanningService implements IService<Planning> {
     // ─── DASHBOARD : Statistiques minutes travaillées ──────────────
     public java.util.Map<String, Integer> getWeeklyWorkedMinutes(int utilisateurId) throws SQLException {
         java.util.Map<String, Integer> stats = new java.util.LinkedHashMap<>();
-        String sql = "SELECT p.date, SUM(TIME_TO_SEC(TIMEDIFF(a.heure_fin_estimee, a.heure_debut_estimee))/60) as minutes " +
+        String sql = "SELECT p.date, SUM((TIME_TO_SEC(TIMEDIFF(a.heure_fin_estimee, a.heure_debut_estimee)) + IF(a.heure_fin_estimee < a.heure_debut_estimee, 86400, 0)) / 60) as minutes " +
                      "FROM planning p " +
                      "JOIN activite a ON p.id = a.planning_id " +
                      "WHERE p.utilisateur_id = ? " +
@@ -199,7 +199,7 @@ public class PlanningService implements IService<Planning> {
     public Planning recupererParDate(java.time.LocalDate date, int utilisateurId) throws SQLException {
         String sql = "SELECT * FROM planning WHERE date = ? AND utilisateur_id = ?";
         PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setDate(1, java.sql.Date.valueOf(date));
+        ps.setDate(1, Date.valueOf(date));
         ps.setInt(2, utilisateurId);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
@@ -232,5 +232,23 @@ public class PlanningService implements IService<Planning> {
             ));
         }
         return plannings;
+    }
+
+    public Planning recupererParId(int id) throws SQLException {
+        String sql = "SELECT * FROM planning WHERE id = ?";
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return new Planning(
+                rs.getInt("id"),
+                rs.getDate("date"),
+                rs.getBoolean("disponibilite"),
+                rs.getTime("heure_debut_journee"),
+                rs.getTime("heure_fin_journee"),
+                rs.getInt("utilisateur_id")
+            );
+        }
+        return null;
     }
 }

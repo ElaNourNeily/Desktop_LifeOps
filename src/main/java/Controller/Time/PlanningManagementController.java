@@ -1,6 +1,5 @@
-package controller;
+package Controller.Time;
 
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
@@ -12,11 +11,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import model.Activite;
-import model.Planning;
+import model.Time.Activite;
+import model.Time.Planning;
 
-import service.ActiviteService;
-import service.PlanningService;
+import service.Time.ActiviteService;
+import service.Time.PlanningService;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -112,19 +111,19 @@ public class PlanningManagementController {
         header.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
         
         Label lblTitle = new Label(p.getDate().toLocalDate().format(DateTimeFormatter.ofPattern("MM-yyyy")));
-        lblTitle.setStyle("-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #1e293b;");
+        lblTitle.setStyle("-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: white;");
         
         Region spacer1 = new Region(); HBox.setHgrow(spacer1, Priority.ALWAYS);
         
-        Label lblBadge = new Label("Dispo: " + (p.isDisponibilite() ? "OUI" : "NON"));
-        lblBadge.getStyleClass().add("badge-purple");
+        Label lblBadge = new Label("Dispo: " + (p.isDisponibilite() ? "✓ OUI" : "✗ NON"));
+        lblBadge.setStyle("-fx-background-color: rgba(139, 92, 246, 0.15); -fx-text-fill: #a78bfa; -fx-background-radius: 6; -fx-padding: 4 10; -fx-font-weight: bold; -fx-font-size: 11;");
         
-        Button btnEdit = new Button("Modifier");
-        btnEdit.getStyleClass().add("btn-modifier");
+        Button btnEdit = new Button("✎ Modifier");
+        btnEdit.getStyleClass().addAll("button", "btn-edit");
         btnEdit.setOnAction(e -> openForm(p));
         
-        Button btnDelete = new Button("Supprimer");
-        btnDelete.getStyleClass().add("btn-supprimer");
+        Button btnDelete = new Button("✕ Supprimer");
+        btnDelete.getStyleClass().addAll("button", "btn-delete");
         btnDelete.setOnAction(e -> {
             try {
                 service.supprimer(p.getId());
@@ -147,7 +146,7 @@ public class PlanningManagementController {
         // Activities Section
         VBox activitiesList = new VBox(5);
         Label lblSubtitle = new Label("Activités rattachées");
-        lblSubtitle.setStyle("-fx-font-size: 10; -fx-font-weight: bold; -fx-text-fill: #64748b; -fx-padding: 10 0 5 0;");
+        lblSubtitle.setStyle("-fx-font-size: 10; -fx-font-weight: bold; -fx-text-fill: #71717a; -fx-padding: 10 0 5 0;");
         activitiesList.getChildren().add(lblSubtitle);
         
         try {
@@ -160,18 +159,18 @@ public class PlanningManagementController {
                 for (Activite a : activities) {
                     HBox actItem = new HBox(10);
                     actItem.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                    actItem.setStyle("-fx-padding: 5 0; -fx-border-color: transparent transparent #f1f5f9 transparent;");
+                    actItem.setStyle("-fx-padding: 5 0; -fx-border-color: transparent transparent rgba(255,255,255,0.05) transparent;");
                     
                     Label dot = new Label("•");
                     dot.setStyle("-fx-text-fill: " + (a.getCouleur() != null ? a.getCouleur() : "#8b5cf6") + ";");
                     
                     Label actTitle = new Label(a.getTitre());
-                    actTitle.setStyle("-fx-font-size: 12; -fx-text-fill: #475569;");
+                    actTitle.setStyle("-fx-font-size: 12; -fx-text-fill: #d1d5db;");
                     
                     Region s = new Region(); HBox.setHgrow(s, Priority.ALWAYS);
                     
-                    Label actTime = new Label(a.getHeureDebutEstimee().toString().substring(0, 5) + " DT"); // "DT" to mimic screenshot style
-                    actTime.setStyle("-fx-font-size: 11; -fx-font-weight: bold; -fx-text-fill: #6366f1;");
+                    Label actTime = new Label(a.getHeureDebutEstimee().toString().substring(0, 5));
+                    actTime.setStyle("-fx-font-size: 11; -fx-font-weight: bold; -fx-text-fill: #8b5cf6;");
                     
                     actItem.getChildren().addAll(dot, actTitle, s, actTime);
                     activitiesList.getChildren().add(actItem);
@@ -232,7 +231,7 @@ public class PlanningManagementController {
 
     private void openForm(Planning p) {
         try {
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/planning_form.fxml"));
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/Time/planning_form.fxml"));
             javafx.scene.Parent root = loader.load();
             PlanningFormController ctrl = loader.getController();
             ctrl.setUserId(currentUserId);

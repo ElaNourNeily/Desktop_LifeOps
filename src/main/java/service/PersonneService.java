@@ -1,13 +1,14 @@
 package service;
 
 import model.Personne;
+import service.Time.IService;
 import utils.MyDatabase;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonneService  implements IService<Personne>{
+public class PersonneService  implements IService<Personne> {
 
 private  Connection connection ;
 

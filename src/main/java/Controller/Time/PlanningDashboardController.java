@@ -1,27 +1,30 @@
-package controller;
+package Controller.Time;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.chart.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Rectangle;
-import model.Activite;
-import model.Planning;
-import service.ActiviteService;
-import service.PlanningService;
+import model.Time.Activite;
+import model.Time.Planning;
+import service.Time.ActiviteService;
+import service.Time.PlanningService;
 
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.io.*;
+import com.lowagie.text.*;
+import com.lowagie.text.pdf.*;
+import java.awt.Color;
+
+import javafx.stage.FileChooser;
 
 public class PlanningDashboardController {
 
@@ -45,6 +48,7 @@ public class PlanningDashboardController {
     @FXML private javafx.scene.control.Button btnFilterMoyenne;
     @FXML private javafx.scene.control.Button btnFilterBasse;
     @FXML private javafx.scene.control.Button btnFilterEnCours;
+    @FXML private javafx.scene.control.Button btnFilterTermine;
     @FXML private javafx.scene.control.Button btnFilterAttente;
     @FXML private javafx.scene.control.Button btnFilterReset;
 
@@ -56,10 +60,12 @@ public class PlanningDashboardController {
     private String currentFilter = "ALL";
 
     @FXML private javafx.scene.control.Button btnIA;
+    @FXML private Label lblWeather;
 
     private final PlanningService planningService = new PlanningService();
     private final ActiviteService activiteService = new ActiviteService();
-    private final service.AIService aiService = new service.AIService("AIzaSyBURe5qg2szXdtNuoiVmyq0Gw0x5dAflTM");
+    private final service.Time.AIService aiService = new service.Time.AIService("AIzaSyD8dXGwrl5TjTOAWw6uaq0s2x_5VrX0WmI");
+    private final service.Time.external.WeatherService weatherService = new service.Time.external.WeatherService();
     
     // Navigation Jump
     private static LocalDate jumpToDate;
@@ -84,6 +90,7 @@ public class PlanningDashboardController {
         currentDayView = LocalDate.now();
         setupGrid();
         refresh();
+        refreshWeather();
 
         // Wire real-time search
         if (txtSearch != null) {
@@ -94,7 +101,39 @@ public class PlanningDashboardController {
         }
     }
 
-    private void loadFirstUserId() {
+    private void refreshWeather() {
+        double lat = 36.8065;
+        double lon = 10.1815;
+        
+        if (lblWeather != null) {
+            lblWeather.setCursor(javafx.scene.Cursor.HAND);
+            lblWeather.setOnMouseClicked(e -> openWeatherDetails());
+            
+            new Thread(new javafx.concurrent.Task<String>() {
+                @Override protected String call() {
+                    return weatherService.getMeteoAujourdHui(36.8065, 10.1815);
+                }
+                @Override protected void succeeded() {
+                    lblWeather.setText(getValue());
+                }
+            }).start();
+        }
+    }
+
+    private void openWeatherDetails() {
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/Time/weather_details.fxml"));
+            javafx.scene.Parent root = loader.load();
+            javafx.stage.Stage stage = new javafx.stage.Stage();
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            stage.initStyle(javafx.stage.StageStyle.TRANSPARENT);
+            javafx.scene.Scene scene = new javafx.scene.Scene(root);
+            scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+ private void loadFirstUserId() {
         try {
             java.sql.ResultSet rs = utils.MyDatabase.getInstance().getConnection()
                     .createStatement().executeQuery("SELECT id FROM utilisateur LIMIT 1");
@@ -284,29 +323,71 @@ public class PlanningDashboardController {
 
         try {
             if (viewMode.equals("DAY")) {
-                // Show activities for only this day
                 List<Planning> plannings = planningService.recupererParSemaine(currentUserId, Date.valueOf(currentDayView));
+                List<Activite> dayActs = new ArrayList<>();
                 for (Planning p : plannings) {
                     if (p.getDate().toLocalDate().equals(currentDayView)) {
-                        List<Activite> activities = activiteService.recupererParPlanning(p.getId());
-                        for (Activite a : activities) {
-                            if (passesFilter(a)) addActivityToGrid(a, 1);
-                        }
+                        dayActs.addAll(activiteService.recupererParPlanning(p.getId()));
                     }
                 }
+                layoutDayActivities(dayActs, 1, currentDayView);
             } else {
                 List<Planning> plannings = planningService.recupererParSemaine(currentUserId, Date.valueOf(currentMonday));
                 for (Planning p : plannings) {
                     int dayIndex = p.getDate().toLocalDate().getDayOfWeek().getValue();
-                    List<Activite> activities = activiteService.recupererParPlanning(p.getId());
-                    for (Activite a : activities) {
-                        if (passesFilter(a)) addActivityToGrid(a, dayIndex);
-                    }
+                    List<Activite> dayActs = activiteService.recupererParPlanning(p.getId());
+                    layoutDayActivities(dayActs, dayIndex, p.getDate().toLocalDate());
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void layoutDayActivities(List<Activite> activities, int colIndex, LocalDate date) {
+        // 1. Filter
+        List<Activite> filtered = new ArrayList<>();
+        for (Activite a : activities) {
+            if (passesFilter(a, date)) filtered.add(a);
+        }
+        
+        // 2. Sort by start time
+        filtered.sort((a, b) -> a.getHeureDebutEstimee().compareTo(b.getHeureDebutEstimee()));
+
+        // 3. Find overlapping groups
+        List<List<Activite>> groups = new ArrayList<>();
+        for (Activite a : filtered) {
+            boolean added = false;
+            for (List<Activite> group : groups) {
+                if (overlapsAny(a, group)) {
+                    group.add(a);
+                    added = true;
+                    break;
+                }
+            }
+            if (!added) {
+                List<Activite> newGroup = new ArrayList<>();
+                newGroup.add(a);
+                groups.add(newGroup);
+            }
+        }
+
+        // 4. For each group, calculate side-by-side positions
+        for (List<Activite> group : groups) {
+            for (int i = 0; i < group.size(); i++) {
+                addActivityToGrid(group.get(i), colIndex, i, group.size());
+            }
+        }
+    }
+
+    private boolean overlapsAny(Activite a, List<Activite> group) {
+        for (Activite other : group) {
+            if (a.getHeureDebutEstimee().before(other.getHeureFinEstimee()) && 
+                other.getHeureDebutEstimee().before(a.getHeureFinEstimee())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -379,6 +460,7 @@ public class PlanningDashboardController {
     @FXML private void handleFilterMoyenne() { currentFilter = "MOYENNE";  refreshGrid(); updateFilterStyle(); }
     @FXML private void handleFilterBasse()   { currentFilter = "BASSE";    refreshGrid(); updateFilterStyle(); }
     @FXML private void handleFilterEnCours() { currentFilter = "EN_COURS"; refreshGrid(); updateFilterStyle(); }
+    @FXML private void handleFilterTermine() { currentFilter = "TERMINE";  refreshGrid(); updateFilterStyle(); }
     @FXML private void handleFilterAttente() { currentFilter = "ATTENTE";  refreshGrid(); updateFilterStyle(); }
     @FXML private void handleFilterReset() {
         currentFilter = "ALL";
@@ -397,6 +479,7 @@ public class PlanningDashboardController {
         btnFilterMoyenne.setStyle(btnFilterMoyenne.getStyle().replaceAll("-fx-border.*?;", "") + resetStyle);
         btnFilterBasse.setStyle(btnFilterBasse.getStyle().replaceAll("-fx-border.*?;", "") + resetStyle);
         btnFilterEnCours.setStyle(btnFilterEnCours.getStyle().replaceAll("-fx-border.*?;", "") + resetStyle);
+        if (btnFilterTermine != null) btnFilterTermine.setStyle(btnFilterTermine.getStyle().replaceAll("-fx-border.*?;", "") + resetStyle);
         btnFilterAttente.setStyle(btnFilterAttente.getStyle().replaceAll("-fx-border.*?;", "") + resetStyle);
         // Highlight active
         switch (currentFilter) {
@@ -404,24 +487,30 @@ public class PlanningDashboardController {
             case "MOYENNE"  -> btnFilterMoyenne.setStyle(btnFilterMoyenne.getStyle() + activeBase + "-fx-border-color: #f59e0b;");
             case "BASSE"    -> btnFilterBasse.setStyle(btnFilterBasse.getStyle() + activeBase + "-fx-border-color: #10b981;");
             case "EN_COURS" -> btnFilterEnCours.setStyle(btnFilterEnCours.getStyle() + activeBase + "-fx-border-color: #8b5cf6;");
+            case "TERMINE"  -> { if (btnFilterTermine != null) btnFilterTermine.setStyle(btnFilterTermine.getStyle() + activeBase + "-fx-border-color: #3b82f6;"); }
             case "ATTENTE"  -> btnFilterAttente.setStyle(btnFilterAttente.getStyle() + activeBase + "-fx-border-color: #71717a;");
         }
     }
 
-    private boolean passesFilter(Activite a) {
+    private boolean passesFilter(Activite a, LocalDate date) {
         // Search keyword check
         if (!searchKeyword.isEmpty()) {
             String title = a.getTitre() != null ? a.getTitre().toLowerCase() : "";
             String cat   = a.getCategorie() != null ? a.getCategorie().toLowerCase() : "";
             if (!title.contains(searchKeyword) && !cat.contains(searchKeyword)) return false;
         }
+
+        // Get the dynamic status as displayed in the UI
+        String dynamicStatus = a.getStatutDynamique(java.sql.Date.valueOf(date));
+
         // Priority / State filter
         return switch (currentFilter) {
-            case "HAUTE"    -> a.getPriorite() >= 4;
-            case "MOYENNE"  -> a.getPriorite() == 2 || a.getPriorite() == 3;
+            case "HAUTE"    -> a.getPriorite() >= 3; // Adjusted for 1-3 scale
+            case "MOYENNE"  -> a.getPriorite() == 2;
             case "BASSE"    -> a.getPriorite() <= 1;
-            case "EN_COURS" -> "en_cours".equalsIgnoreCase(a.getEtat());
-            case "ATTENTE"  -> "en_attente".equalsIgnoreCase(a.getEtat());
+            case "EN_COURS" -> "En cours".equals(dynamicStatus);
+            case "TERMINE"  -> "Terminé".equals(dynamicStatus);
+            case "ATTENTE"  -> "En attente".equals(dynamicStatus);
             default         -> true;
         };
     }
@@ -444,7 +533,7 @@ public class PlanningDashboardController {
 
     private void openForm(String fxml, String title, Object data, int hour, LocalDate dayDate) {
         try {
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/" + fxml));
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/Time/" + fxml));
             javafx.scene.Parent root = loader.load();
             
             Object controller = loader.getController();
@@ -506,7 +595,7 @@ public class PlanningDashboardController {
         }
     }
 
-    private void addActivityToGrid(Activite a, int colIndex) {
+    private void addActivityToGrid(Activite a, int colIndex, int indexInOverlap, int totalInOverlap) {
         if (a.getHeureDebutEstimee() == null || a.getHeureFinEstimee() == null) return;
         
         int startHour = a.getHeureDebutEstimee().toLocalTime().getHour();
@@ -515,6 +604,8 @@ public class PlanningDashboardController {
         
         VBox card = new VBox(4);
         card.getStyleClass().add("activity-block");
+        if (a.isSuggestedByAi()) card.getStyleClass().add("activity-block-ai");
+        
         String color = a.getCouleur() != null ? a.getCouleur() : "#8b5cf6";
         card.setStyle("-fx-background-color: " + color + "; -fx-opacity: 0.9; -fx-background-radius: 12; -fx-padding: 8 10;");
         
@@ -524,6 +615,14 @@ public class PlanningDashboardController {
         Label lblTitle = new Label(a.getTitre() != null ? a.getTitre().toUpperCase() : "");
         lblTitle.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 11;");
         Region spacer = new Region(); HBox.setHgrow(spacer, Priority.ALWAYS);
+        
+        if (a.isSuggestedByAi()) {
+            Label lblIA = new Label("🤖 IA");
+            lblIA.getStyleClass().add("badge-ai-suggestion");
+            topRow.getChildren().add(lblIA);
+            topRow.getChildren().add(new Label(" ")); // small gap
+        }
+
         Label lblTime = new Label(a.getHeureDebutEstimee().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
         lblTime.setStyle("-fx-text-fill: rgba(255,255,255,0.85); -fx-font-size: 10; -fx-font-weight: bold;");
         topRow.getChildren().addAll(lblTitle, spacer, lblTime);
@@ -532,19 +631,53 @@ public class PlanningDashboardController {
         Label lblSub = new Label((a.getCategorie() != null ? a.getCategorie() : "Activité") + " + 1");
         lblSub.setStyle("-fx-text-fill: rgba(255,255,255,0.7); -fx-font-size: 9;");
 
-        card.getChildren().addAll(topRow, lblSub);
+        // Status logic
+        LocalDate cardDate = viewMode.equals("DAY") ? currentDayView : currentMonday.plusDays(colIndex - 1);
+        String status = a.getStatutDynamique(java.sql.Date.valueOf(cardDate));
         
-        GridPane.setHgrow(card, Priority.ALWAYS);
-        card.setMaxWidth(Double.MAX_VALUE);
+        Label lblStatus = new Label(status);
+        String statusColor = "#71717a"; // Default gray
+        if ("En cours".equals(status)) statusColor = "#10b981"; // Green
+        else if ("Terminé".equals(status)) {
+            statusColor = "#3b82f6"; // Blue
+            card.setOpacity(0.6); // Dim completed tasks
+        }
+        lblStatus.setStyle("-fx-text-fill: " + statusColor + "; -fx-font-size: 9; -fx-font-weight: bold; -fx-background-color: rgba(255,255,255,0.1); -fx-background-radius: 4; -fx-padding: 1 4;");
+
+        card.getChildren().addAll(topRow, lblSub, lblStatus);
         
-        card.setOnMouseClicked(e -> {
+        // Context Menu
+        javafx.scene.control.ContextMenu contextMenu = new javafx.scene.control.ContextMenu();
+        javafx.scene.control.MenuItem doneItem = new javafx.scene.control.MenuItem("✅ Marquer comme Terminé");
+        doneItem.setOnAction(e -> {
+            try {
+                a.setEtat("terminé");
+                a.setHeureFinReelle(Time.valueOf(LocalTime.now()));
+                if (a.getHeureDebutReelle() == null) a.setHeureDebutReelle(a.getHeureDebutEstimee());
+                activiteService.modifier(a);
+                refresh();
+            } catch (SQLException ex) { ex.printStackTrace(); }
+        });
+        javafx.scene.control.MenuItem focusItem = new javafx.scene.control.MenuItem("🚀 Lancer Focus (Pomodoro)");
+        focusItem.setOnAction(e -> openFocusSession(a));
+        javafx.scene.control.MenuItem editItem = new javafx.scene.control.MenuItem("🔧 Modifier");
+        editItem.setOnAction(e -> {
             LocalDate actDate = viewMode.equals("DAY") ? currentDayView : currentMonday.plusDays(colIndex - 1);
             openForm("activite_form.fxml", "Modifier Activité", a, -1, actDate);
         });
+        contextMenu.getItems().addAll(doneItem, new javafx.scene.control.SeparatorMenuItem(), focusItem, editItem);
+        card.setOnContextMenuRequested(e -> contextMenu.show(card, e.getScreenX(), e.getScreenY()));
+        
+        card.setOnMouseClicked(e -> {
+            if (e.getButton() == javafx.scene.input.MouseButton.PRIMARY) {
+                LocalDate actDate = viewMode.equals("DAY") ? currentDayView : currentMonday.plusDays(colIndex - 1);
+                openForm("activite_form.fxml", "Modifier Activité", a, -1, actDate);
+            }
+        });
 
+        // Layout geometry
         double topOffset = (startMin / 60.0) * 60;
         double height = Math.max(45, (durationMin / 60.0) * 60);
-        
         int rowSpan = (int) Math.ceil((startMin + durationMin) / 60.0);
         if (rowSpan < 1) rowSpan = 1;
 
@@ -552,6 +685,13 @@ public class PlanningDashboardController {
         card.setPrefHeight(height);
         card.setMinHeight(height);
         card.setMaxHeight(height);
+
+        // Side-by-side logic: use dynamic width and translation based on overlap
+        int numCols = viewMode.equals("DAY") ? 1 : 7;
+        javafx.beans.binding.DoubleBinding colWidth = calendarGrid.widthProperty().subtract(60).divide(numCols);
+        
+        card.maxWidthProperty().bind(colWidth.divide(totalInOverlap).subtract(5));
+        card.translateXProperty().bind(colWidth.divide(totalInOverlap).multiply(indexInOverlap));
         
         calendarGrid.add(card, colIndex, startHour, 1, rowSpan);
     }
@@ -559,7 +699,7 @@ public class PlanningDashboardController {
     @FXML
     private void handleSeeAll() {
         if (DashboardController.getInstance() != null) {
-            DashboardController.getInstance().setView("planning_management.fxml");
+            DashboardController.getInstance().setView("advanced_stats.fxml");
         }
     }
 
@@ -660,15 +800,24 @@ public class PlanningDashboardController {
                 confirm.showAndWait().ifPresent(response -> {
                     if (response == btnAppliquer) {
                         try {
-                            aiService.saveConfirmedSuggestions(result, currentUserId);
+                            com.google.gson.JsonObject report = aiService.saveConfirmedSuggestions(result, currentUserId, userRequest);
                             handleFilterReset(); // Reset filters to show the new activities
                             refresh();
                             
                             javafx.scene.control.Alert success = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
-                            success.setTitle("Succès");
-                            success.setHeaderText(null);
-                            success.setContentText("Les recommandations ont été appliquées avec succès !");
-                            success.show();
+                            success.setTitle("Optimisation Terminée");
+                            success.setHeaderText("Rapport d'optimisation");
+                            
+                            StringBuilder reportMsg = new StringBuilder();
+                            reportMsg.append("✅ L'optimisation a été appliquée avec succès !\n\n");
+                            reportMsg.append("📊 Rapport :\n");
+                            reportMsg.append(" - Activités ajoutées : ").append(report.get("nb_ajouts").getAsInt()).append("\n");
+                            reportMsg.append(" - Activités modifiées : ").append(report.get("nb_modifications").getAsInt()).append("\n");
+                            reportMsg.append(" - Anciennes suggestions supprimées : ").append(report.get("nb_suppressions").getAsInt()).append("\n\n");
+                            reportMsg.append("📝 Résumé : ").append(report.get("resume").getAsString());
+                            
+                            success.setContentText(reportMsg.toString());
+                            success.showAndWait();
                         } catch (SQLException ex) {
                             ex.printStackTrace();
                             showError("Erreur lors de l'enregistrement : " + ex.getMessage());
@@ -695,5 +844,208 @@ public class PlanningDashboardController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.show();
+    }
+    private void openFocusSession(Activite a) {
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/Time/focus_session.fxml"));
+            javafx.scene.Parent root = loader.load();
+            FocusSessionController ctrl = loader.getController();
+            ctrl.setActivite(a);
+            
+            javafx.stage.Stage stage = new javafx.stage.Stage();
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            stage.setTitle("Focus Session - " + a.getTitre());
+            stage.setScene(new javafx.scene.Scene(root));
+            stage.setResizable(false);
+            stage.setOnHidden(e -> refresh()); // Refresh dashboard after focus session
+            stage.show();
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // ─── FEATURE 4 : EXPORT / IMPORT ──────────────────────────────
+    
+    @FXML
+    private void handleExportPDF() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Enregistrer le Planning (PDF)");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers PDF", "*.pdf"));
+        File file = fileChooser.showSaveDialog(lblCurrentDateTitle.getScene().getWindow());
+        
+        if (file != null) {
+            try {
+                Document document = new Document(PageSize.A4, 30, 30, 30, 30);
+                PdfWriter.getInstance(document, new FileOutputStream(file));
+                document.open();
+
+                // 1. Title & Header
+                Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 22, new Color(139, 92, 246));
+                Paragraph title = new Paragraph("LIFEOPS - PLANNING", titleFont);
+                title.setAlignment(Element.ALIGN_CENTER);
+                document.add(title);
+
+                String period = lblCurrentDateTitle.getText();
+                Font subTitleFont = FontFactory.getFont(FontFactory.HELVETICA, 14, Color.GRAY);
+                Paragraph subtitle = new Paragraph("Période : " + period, subTitleFont);
+                subtitle.setAlignment(Element.ALIGN_CENTER);
+                subtitle.setSpacingAfter(20);
+                document.add(subtitle);
+
+                // 2. Table Construction
+                PdfPTable table = new PdfPTable(5); // Columns: Time, Activity, Category, Priority, State
+                table.setWidthPercentage(100);
+                table.setWidths(new float[]{1.5f, 4f, 2f, 1.5f, 1.5f});
+
+                // Header styling
+                Font headFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 11, Color.WHITE);
+                String[] headers = {"HEURE", "ACTIVITÉ", "CATÉGORIE", "PRIORITÉ", "ÉTAT"};
+                for (String h : headers) {
+                    PdfPCell cell = new PdfPCell(new Paragraph(h, headFont));
+                    cell.setBackgroundColor(new Color(31, 31, 35));
+                    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    cell.setPadding(8);
+                    table.addCell(cell);
+                }
+
+                // 3. Data Collection (Matching the current view)
+                List<Planning> dataList = new ArrayList<>();
+                if (viewMode.equals("DAY")) {
+                    Planning p = planningService.recupererParDate(currentDayView, currentUserId);
+                    if (p != null) dataList.add(p);
+                } else {
+                    dataList.addAll(planningService.recupererParSemaine(currentUserId, java.sql.Date.valueOf(currentMonday)));
+                }
+
+                Font rowFont = FontFactory.getFont(FontFactory.HELVETICA, 10, Color.BLACK);
+                for (Planning p : dataList) {
+                    // Day Sub-header
+                    PdfPCell dayCell = new PdfPCell(new Paragraph(p.getDate().toString().toUpperCase(), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10)));
+                    dayCell.setColspan(5);
+                    dayCell.setBackgroundColor(new Color(243, 244, 246));
+                    dayCell.setPadding(5);
+                    table.addCell(dayCell);
+
+                    List<Activite> acts = activiteService.recupererParPlanning(p.getId());
+                    acts.sort((a1, a2) -> a1.getHeureDebutEstimee().compareTo(a2.getHeureDebutEstimee()));
+
+                    for (Activite a : acts) {
+                        if (!passesFilter(a, p.getDate().toLocalDate())) continue;
+
+                        table.addCell(new PdfPCell(new Paragraph(a.getHeureDebutEstimee().toString().substring(0, 5) + " - " + a.getHeureFinEstimee().toString().substring(0, 5), rowFont)));
+                        table.addCell(new PdfPCell(new Paragraph(a.getTitre(), rowFont)));
+                        table.addCell(new PdfPCell(new Paragraph(a.getCategorie(), rowFont)));
+                        table.addCell(new PdfPCell(new Paragraph(String.valueOf(a.getPriorite()), rowFont)));
+                        table.addCell(new PdfPCell(new Paragraph(a.getStatutDynamique(p.getDate()), rowFont)));
+                    }
+                }
+
+                document.add(table);
+                
+                // Footer
+                Paragraph footer = new Paragraph("\nGénéré par LifeOps AI - " + java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), 
+                                   FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 8, Color.LIGHT_GRAY));
+                footer.setAlignment(Element.ALIGN_RIGHT);
+                document.add(footer);
+
+                document.close();
+                
+                javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+                alert.setTitle("Export Réussi");
+                alert.setContentText("Le planning PDF a été généré avec succès.");
+                alert.show();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                showError("Erreur lors de la génération du PDF : " + e.getMessage());
+            }
+        }
+    }
+
+    @FXML
+    private void handleExportICS() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Exporter en iCalendar (.ics)");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichier iCalendar", "*.ics"));
+        File file = fileChooser.showSaveDialog(lblCurrentDateTitle.getScene().getWindow());
+        
+        if (file != null) {
+            try (PrintWriter writer = new PrintWriter(file)) {
+                writer.println("BEGIN:VCALENDAR");
+                writer.println("VERSION:2.0");
+                writer.println("PRODID:-//LifeOps//Planning//FR");
+                
+                List<Planning> weekPlannings = planningService.recupererParSemaine(currentUserId, java.sql.Date.valueOf(currentMonday));
+                for (Planning p : weekPlannings) {
+                    List<Activite> acts = activiteService.recupererParPlanning(p.getId());
+                    for (Activite a : acts) {
+                        writer.println("BEGIN:VEVENT");
+                        writer.println("SUMMARY:" + a.getTitre());
+                        writer.println("DESCRIPTION:" + a.getCategorie() + " - Priorité:" + a.getPriorite());
+                        
+                        String dStr = p.getDate().toString().replace("-", "");
+                        String sTime = a.getHeureDebutEstimee().toString().replace(":", "") + "Z";
+                        String eTime = a.getHeureFinEstimee().toString().replace(":", "") + "Z";
+                        
+                        writer.println("DTSTART:" + dStr + "T" + sTime);
+                        writer.println("DTEND:" + dStr + "T" + eTime);
+                        writer.println("END:VEVENT");
+                    }
+                }
+                writer.println("END:VCALENDAR");
+                
+                javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+                alert.setTitle("Export Réussi");
+                alert.setContentText("Fichier .ics généré avec succès.");
+                alert.show();
+            } catch (Exception e) {
+                showError("Erreur d'export : " + e.getMessage());
+            }
+        }
+    }
+
+    @FXML
+    private void handleImportCSV() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Importer depuis CSV");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichier CSV", "*.csv"));
+        File file = fileChooser.showOpenDialog(lblCurrentDateTitle.getScene().getWindow());
+        
+        if (file != null) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                int count = 0;
+                // Format attendu: Date (YYYY-MM-DD), Titre, Début (HH:mm), Fin (HH:mm), Catégorie
+                while ((line = reader.readLine()) != null) {
+                    if (line.startsWith("Date")) continue; // Skip header
+                    String[] parts = line.split(",");
+                    if (parts.length >= 5) {
+                        LocalDate date = LocalDate.parse(parts[0].trim());
+                        String titre = parts[1].trim();
+                        Time start = Time.valueOf(parts[2].trim() + ":00");
+                        Time end = Time.valueOf(parts[3].trim() + ":00");
+                        String cat = parts[4].trim();
+                        
+                        Planning targetP = planningService.recupererParDate(date, currentUserId);
+                        if (targetP == null) {
+                            targetP = new Planning(java.sql.Date.valueOf(date), true, Time.valueOf("08:00:00"), Time.valueOf("20:00:00"), currentUserId);
+                            planningService.ajouter(targetP);
+                        }
+                        
+                        Activite a = new Activite(0, titre, 0, 2, "en_attente", start, end, "moyen", cat, "#8b5cf6", false, targetP.getId(), 0);
+                        activiteService.ajouter(a);
+                        count++;
+                    }
+                }
+                refresh();
+                javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+                alert.setTitle("Import Réussi");
+                alert.setContentText(count + " activités importées avec succès.");
+                alert.show();
+            } catch (Exception e) {
+                showError("Erreur d'import : " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
     }
 }

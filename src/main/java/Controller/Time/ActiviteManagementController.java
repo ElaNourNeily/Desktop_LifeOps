@@ -1,4 +1,4 @@
-package controller;
+package Controller.Time;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -7,10 +7,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import model.Activite;
-import model.Planning;
-import service.ActiviteService;
-import service.PlanningService;
+import model.Time.Activite;
+import model.Time.Planning;
+import service.Time.ActiviteService;
+import service.Time.PlanningService;
 
 import java.sql.SQLException;
 import java.sql.Time;

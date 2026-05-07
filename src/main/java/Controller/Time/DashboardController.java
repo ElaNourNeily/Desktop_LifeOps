@@ -1,11 +1,11 @@
-package controller;
+package Controller.Time;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import model.Activite;
-import model.Planning;
-import service.ActiviteService;
-import service.PlanningService;
+import model.Time.Activite;
+import model.Time.Planning;
+import service.Time.ActiviteService;
+import service.Time.PlanningService;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -15,8 +15,6 @@ import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
 
 public class DashboardController {
 
@@ -43,6 +41,9 @@ public class DashboardController {
         instance = this;
         refreshData();
         handleHome(); // Load summary by default
+        
+        // Start Background Reminder Notifications
+        service.Time.NotificationService.getInstance().start();
     }
 
     public void setView(String fxml) {
@@ -74,7 +75,7 @@ public class DashboardController {
 
     private void loadView(String fxml) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/" + fxml));
+            Parent root = FXMLLoader.load(getClass().getResource("/Time/" + fxml));
             contentArea.getChildren().setAll(root);
             // Ensure the root fills the contentArea
             AnchorPane.setTopAnchor(root, 0.0);

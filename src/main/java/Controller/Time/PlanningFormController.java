@@ -1,10 +1,10 @@
-package controller;
+package Controller.Time;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import model.Planning;
-import service.PlanningService;
+import model.Time.Planning;
+import service.Time.PlanningService;
 
 import java.sql.Date;
 import java.sql.SQLException;

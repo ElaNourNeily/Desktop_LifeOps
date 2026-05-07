@@ -11,10 +11,10 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/dashboard.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/Time/dashboard.fxml"));
             primaryStage.setTitle("LifeOps Dashboard");
             Scene scene = new Scene(root, 1000, 700);
-            scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/Time/style.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException e) {

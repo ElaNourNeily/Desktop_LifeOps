@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS planning (
     UNIQUE KEY unique_planning_date_user (date, utilisateur_id)
 ) ENGINE=InnoDB;
 
--- Create Activite table
+-- Create Activite table (with all columns required by ActiviteService)
 CREATE TABLE IF NOT EXISTS activite (
     id INT AUTO_INCREMENT PRIMARY KEY,
     titre VARCHAR(255) NOT NULL,
@@ -40,5 +40,27 @@ CREATE TABLE IF NOT EXISTS activite (
     couleur VARCHAR(7) NOT NULL,
     suggested_by_ai BOOLEAN DEFAULT FALSE,
     planning_id INT NOT NULL,
+    minutes_rappel INT DEFAULT 0,
+    heure_debut_reelle TIME NULL,
+    heure_fin_reelle TIME NULL,
+    is_recurrent BOOLEAN DEFAULT FALSE,
+    recurrence_type VARCHAR(20) NULL,
+    recurrence_days VARCHAR(50) NULL,
+    recurrence_interval INT DEFAULT 1,
+    recurrence_group_id INT NULL,
     CONSTRAINT fk_activite_planning FOREIGN KEY (planning_id) REFERENCES planning(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- Create AI Optimization History table (used by AIService)
+CREATE TABLE IF NOT EXISTS historique_optimisation_ia (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    prompt_utilisateur TEXT,
+    resume TEXT,
+    nb_ajouts INT DEFAULT 0,
+    nb_modifications INT DEFAULT 0,
+    nb_suppressions INT DEFAULT 0,
+    details LONGTEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_historique_utilisateur FOREIGN KEY (user_id) REFERENCES utilisateur(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
