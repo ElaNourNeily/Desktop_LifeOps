@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.shape.Circle?>
+
+<AnchorPane prefHeight="400.0" prefWidth="500.0" style="-fx-background-color: #0f0f12; -fx-border-color: #8b5cf6; -fx-border-width: 2; -fx-border-radius: 20; -fx-background-radius: 20;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Time.FocusSessionController">
+   <children>
+      <VBox alignment="CENTER" spacing="25.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <children>
+            <VBox alignment="CENTER" spacing="5.0">
+               <children>
+                  <Label fx:id="lblFocusStatus" styleClass="badge-ai" text="SESSION DE TRAVAIL" />
+                  <Label fx:id="lblActivityTitle" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 20;" text="TITRE DE L'ACTIVITÉ" />
+               </children>
+            </VBox>
+
+            <AnchorPane>
+               <children>
+                  <Circle fx:id="timerCircle" fill="TRANSPARENT" radius="90.0" stroke="#8b5cf6" strokeWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" strokeDashArray="565"/>
+                  <VBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label fx:id="lblTimer" style="-fx-font-size: 48; -fx-text-fill: white; -fx-font-weight: bold;" text="25:00" />
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+
+            <HBox alignment="CENTER" spacing="20.0">
+               <children>
+                  <Button fx:id="btnStartPause" mnemonicParsing="false" onAction="#handleStartPause" styleClass="submit-button" text="DÉMARRER" />
+                  <Button mnemonicParsing="false" onAction="#handleStop" styleClass="btn-ghost" text="ARRÊTER" />
+               </children>
+            </HBox>
+
+            <CheckBox fx:id="chkMute" mnemonicParsing="false" text="Bloquer les notifications" style="-fx-text-fill: #71717a; -fx-font-size: 12;" selected="true"/>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
