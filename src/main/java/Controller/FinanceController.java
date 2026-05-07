@@ -1,4 +1,4 @@
-package Controller;
+package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -103,11 +103,6 @@ public class FinanceController {
         sortDepenseComboBox.valueProperty().addListener((observable, oldValue, newValue) -> applyFilters());
         
         refreshData();
-    }
-
-    @FXML
-    public void openTasks(javafx.event.Event event) {
-        ViewNavigator.navigate(event, "/readtask.fxml", "LifeOps");
     }
 
     private void refreshData() {
