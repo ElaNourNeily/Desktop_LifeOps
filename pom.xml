@@ -110,6 +110,20 @@
             <artifactId>javafx-swing</artifactId>
             <version>21.0.2</version>
         </dependency>
+
+        <!-- OCR - Tess4J (Tesseract wrapper for ReceiptOcrService) -->
+        <dependency>
+            <groupId>net.sourceforge.tess4j</groupId>
+            <artifactId>tess4j</artifactId>
+            <version>5.11.0</version>
+        </dependency>
+
+        <!-- SMS - Twilio (for SmsService / NotificationScheduler) -->
+        <dependency>
+            <groupId>com.twilio.sdk</groupId>
+            <artifactId>twilio</artifactId>
+            <version>9.14.1</version>
+        </dependency>
     </dependencies>
 
     <build>
