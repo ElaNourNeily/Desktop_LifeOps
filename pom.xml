@@ -124,13 +124,6 @@
             <artifactId>twilio</artifactId>
             <version>9.14.1</version>
         </dependency>
-
-        <!-- PDF Export legacy (iText 2 / OpenPDF) for PlanningDashboardController -->
-        <dependency>
-            <groupId>com.github.librepdf</groupId>
-            <artifactId>openpdf</artifactId>
-            <version>1.3.30</version>
-        </dependency>
     </dependencies>
 
     <build>

@@ -20,9 +20,16 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.*;
-import com.lowagie.text.*;
-import com.lowagie.text.pdf.*;
-import java.awt.Color;
+import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.colors.DeviceRgb;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
 
 import javafx.stage.FileChooser;
 
@@ -872,43 +879,45 @@ public class PlanningDashboardController {
         fileChooser.setTitle("Enregistrer le Planning (PDF)");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers PDF", "*.pdf"));
         File file = fileChooser.showSaveDialog(lblCurrentDateTitle.getScene().getWindow());
-        
+
         if (file != null) {
             try {
-                Document document = new Document(PageSize.A4, 30, 30, 30, 30);
-                PdfWriter.getInstance(document, new FileOutputStream(file));
-                document.open();
+                PdfWriter writer = new PdfWriter(new FileOutputStream(file));
+                PdfDocument pdf = new PdfDocument(writer);
+                Document document = new Document(pdf);
 
-                // 1. Title & Header
-                Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 22, new Color(139, 92, 246));
-                Paragraph title = new Paragraph("LIFEOPS - PLANNING", titleFont);
-                title.setAlignment(Element.ALIGN_CENTER);
+                // 1. Title
+                DeviceRgb purple = new DeviceRgb(139, 92, 246);
+                Paragraph title = new Paragraph("LIFEOPS - PLANNING")
+                        .setFontColor(purple)
+                        .setFontSize(22)
+                        .setBold()
+                        .setTextAlignment(TextAlignment.CENTER);
                 document.add(title);
 
                 String period = lblCurrentDateTitle.getText();
-                Font subTitleFont = FontFactory.getFont(FontFactory.HELVETICA, 14, Color.GRAY);
-                Paragraph subtitle = new Paragraph("Période : " + period, subTitleFont);
-                subtitle.setAlignment(Element.ALIGN_CENTER);
-                subtitle.setSpacingAfter(20);
+                Paragraph subtitle = new Paragraph("Période : " + period)
+                        .setFontColor(ColorConstants.GRAY)
+                        .setFontSize(14)
+                        .setTextAlignment(TextAlignment.CENTER)
+                        .setMarginBottom(20);
                 document.add(subtitle);
 
-                // 2. Table Construction
-                PdfPTable table = new PdfPTable(5); // Columns: Time, Activity, Category, Priority, State
-                table.setWidthPercentage(100);
-                table.setWidths(new float[]{1.5f, 4f, 2f, 1.5f, 1.5f});
+                // 2. Table: Time | Activity | Category | Priority | State
+                Table table = new Table(UnitValue.createPercentArray(new float[]{1.5f, 4f, 2f, 1.5f, 1.5f}))
+                        .useAllAvailableWidth();
 
-                // Header styling
-                Font headFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 11, Color.WHITE);
+                DeviceRgb headerBg = new DeviceRgb(31, 31, 35);
                 String[] headers = {"HEURE", "ACTIVITÉ", "CATÉGORIE", "PRIORITÉ", "ÉTAT"};
                 for (String h : headers) {
-                    PdfPCell cell = new PdfPCell(new Paragraph(h, headFont));
-                    cell.setBackgroundColor(new Color(31, 31, 35));
-                    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                    cell.setPadding(8);
-                    table.addCell(cell);
+                    table.addHeaderCell(new Cell()
+                            .add(new Paragraph(h).setBold().setFontColor(ColorConstants.WHITE).setFontSize(11))
+                            .setBackgroundColor(headerBg)
+                            .setTextAlignment(TextAlignment.CENTER)
+                            .setPadding(8));
                 }
 
-                // 3. Data Collection (Matching the current view)
+                // 3. Data
                 List<Planning> dataList = new ArrayList<>();
                 if (viewMode.equals("DAY")) {
                     Planning p = planningService.recupererParDate(currentDayView, currentUserId);
@@ -917,39 +926,42 @@ public class PlanningDashboardController {
                     dataList.addAll(planningService.recupererParSemaine(currentUserId, java.sql.Date.valueOf(currentMonday)));
                 }
 
-                Font rowFont = FontFactory.getFont(FontFactory.HELVETICA, 10, Color.BLACK);
+                DeviceRgb subHeaderBg = new DeviceRgb(243, 244, 246);
                 for (Planning p : dataList) {
-                    // Day Sub-header
-                    PdfPCell dayCell = new PdfPCell(new Paragraph(p.getDate().toString().toUpperCase(), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10)));
-                    dayCell.setColspan(5);
-                    dayCell.setBackgroundColor(new Color(243, 244, 246));
-                    dayCell.setPadding(5);
-                    table.addCell(dayCell);
+                    // Day sub-header row
+                    table.addCell(new Cell(1, 5)
+                            .add(new Paragraph(p.getDate().toString().toUpperCase()).setBold().setFontSize(10))
+                            .setBackgroundColor(subHeaderBg)
+                            .setPadding(5));
 
                     List<Activite> acts = activiteService.recupererParPlanning(p.getId());
                     acts.sort((a1, a2) -> a1.getHeureDebutEstimee().compareTo(a2.getHeureDebutEstimee()));
 
                     for (Activite a : acts) {
                         if (!passesFilter(a, p.getDate().toLocalDate())) continue;
-
-                        table.addCell(new PdfPCell(new Paragraph(a.getHeureDebutEstimee().toString().substring(0, 5) + " - " + a.getHeureFinEstimee().toString().substring(0, 5), rowFont)));
-                        table.addCell(new PdfPCell(new Paragraph(a.getTitre(), rowFont)));
-                        table.addCell(new PdfPCell(new Paragraph(a.getCategorie(), rowFont)));
-                        table.addCell(new PdfPCell(new Paragraph(String.valueOf(a.getPriorite()), rowFont)));
-                        table.addCell(new PdfPCell(new Paragraph(a.getStatutDynamique(p.getDate()), rowFont)));
+                        table.addCell(new Cell().add(new Paragraph(
+                                a.getHeureDebutEstimee().toString().substring(0, 5) + " - " +
+                                a.getHeureFinEstimee().toString().substring(0, 5)).setFontSize(10)));
+                        table.addCell(new Cell().add(new Paragraph(a.getTitre()).setFontSize(10)));
+                        table.addCell(new Cell().add(new Paragraph(a.getCategorie()).setFontSize(10)));
+                        table.addCell(new Cell().add(new Paragraph(String.valueOf(a.getPriorite())).setFontSize(10)));
+                        table.addCell(new Cell().add(new Paragraph(a.getStatutDynamique(p.getDate())).setFontSize(10)));
                     }
                 }
-
                 document.add(table);
-                
-                // Footer
-                Paragraph footer = new Paragraph("\nGénéré par LifeOps AI - " + java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), 
-                                   FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 8, Color.LIGHT_GRAY));
-                footer.setAlignment(Element.ALIGN_RIGHT);
+
+                // 4. Footer
+                Paragraph footer = new Paragraph(
+                        "\nGénéré par LifeOps AI - " +
+                        java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")))
+                        .setFontColor(ColorConstants.LIGHT_GRAY)
+                        .setFontSize(8)
+                        .setItalic()
+                        .setTextAlignment(TextAlignment.RIGHT);
                 document.add(footer);
 
                 document.close();
-                
+
                 javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
                 alert.setTitle("Export Réussi");
                 alert.setContentText("Le planning PDF a été généré avec succès.");

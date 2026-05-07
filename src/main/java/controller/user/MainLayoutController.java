@@ -108,7 +108,7 @@ public class MainLayoutController {
         } else if (menuClique == menuSante) {
             chargerVue("/health/Sante.fxml");
         } else if (menuClique == menuTemps) {
-            chargerVue("/Temps.fxml");
+            chargerVue("/Time/dashboard.fxml");
         } else if (menuClique == menuBackOffice) {
             User currentUser = Session.getInstance().getCurrentUser();
             if (currentUser != null && currentUser.isAdmin()) {
