@@ -1,7 +1,7 @@
 package service.Objectifs;
 
 import Model.Objectif;
-import Utilis.MyDatabase;
+import utils.MyDatabase;
 import service.Interfaces.CRUD;
 
 import java.sql.*;

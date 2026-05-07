@@ -1,6 +1,6 @@
 package service.Objectifs;
 
-import Utilis.MyDatabase;
+import utils.MyDatabase;
 
 import java.sql.*;
 import java.util.LinkedHashMap;
