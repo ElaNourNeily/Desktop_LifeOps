@@ -16,7 +16,7 @@ public class GeminiHealthService {
             "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent";
 
     // Fallback key — loaded from config.properties if available
-    private String apiKey = "AIzaSyCyLnytdlMKXEmvjsbrXdt7W7eivDsKQSk";
+    private String apiKey = "AIzaSyC0aNE07Fiu40sV1XpHL3fTgCiLLbiJHQg";
 
     private final OkHttpClient client = new OkHttpClient();
     private final Gson gson = new Gson();

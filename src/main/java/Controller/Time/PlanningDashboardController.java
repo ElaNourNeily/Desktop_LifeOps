@@ -71,7 +71,7 @@ public class PlanningDashboardController {
 
     private final PlanningService planningService = new PlanningService();
     private final ActiviteService activiteService = new ActiviteService();
-    private final service.Time.AIService aiService = new service.Time.AIService("AIzaSyD8dXGwrl5TjTOAWw6uaq0s2x_5VrX0WmI");
+    private final service.Time.AIService aiService = new service.Time.AIService("AIzaSyC0aNE07Fiu40sV1XpHL3fTgCiLLbiJHQg");
     private final service.Time.external.WeatherService weatherService = new service.Time.external.WeatherService();
     
     // Navigation Jump
