@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="0"
+      style="-fx-background-color: #17191F;"
+      stylesheets="@style.css"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controller.Time.DashboardHomeController">
+
+   <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+               style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;">
+      <content>
+         <VBox spacing="24.0" style="-fx-padding: 0 40 40 40;">
+            <children>
+
+               <!-- Hero card -->
+               <VBox spacing="14.0"
+                     style="-fx-background-color: linear-gradient(to right, rgba(28,31,45,0.96), rgba(97,61,164,0.78));
+                            -fx-background-radius: 24; -fx-padding: 28;
+                            -fx-border-color: rgba(255,255,255,0.08); -fx-border-radius: 24;">
+                  <children>
+                     <Label style="-fx-text-fill: #d8b4fe; -fx-font-size: 11px; -fx-font-weight: bold;" text="AUJOURD'HUI" />
+                     <HBox alignment="CENTER_LEFT" spacing="20.0">
+                        <children>
+                           <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                              <children>
+                                 <Label style="-fx-text-fill: white; -fx-font-size: 26px; -fx-font-weight: bold;" text="Bienvenue sur LifeOps" />
+                                 <Label style="-fx-text-fill: rgba(255,255,255,0.78); -fx-font-size: 13px;"
+                                        text="Voici un aperçu de vos tâches prioritaires pour aujourd'hui." wrapText="true" />
+                                 <Label fx:id="lblWeather"
+                                        style="-fx-text-fill: #93c5fd; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 4 0 0 0;"
+                                        text="Chargement météo..." />
+                              </children>
+                           </VBox>
+                           <VBox spacing="8.0"
+                                 style="-fx-background-color: rgba(12,14,20,0.35); -fx-background-radius: 18; -fx-padding: 12 20;">
+                              <children>
+                                 <Label style="-fx-text-fill: #c4b5fd; -fx-font-size: 11px;" text="Vue active" />
+                                 <Label style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" text="Accueil" />
+                              </children>
+                           </VBox>
+                        </children>
+                     </HBox>
+                  </children>
+               </VBox>
+
+               <!-- Main content row -->
+               <HBox spacing="24.0">
+                  <children>
+
+                     <!-- Planning du jour -->
+                     <VBox HBox.hgrow="ALWAYS" spacing="16.0"
+                           style="-fx-background-color: #17191F; -fx-background-radius: 20;
+                                  -fx-border-color: #2a2d32; -fx-border-width: 1; -fx-border-radius: 20; -fx-padding: 24;">
+                        <children>
+                           <HBox alignment="CENTER_LEFT">
+                              <children>
+                                 <Label style="-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;"
+                                        text="📋 Planning du jour" />
+                                 <Region HBox.hgrow="ALWAYS" />
+                                 <Button mnemonicParsing="false" onAction="#handleSeeAll"
+                                         style="-fx-background-color: transparent; -fx-text-fill: #8b5cf6;
+                                                -fx-font-weight: bold; -fx-font-size: 11px; -fx-cursor: hand;"
+                                         text="Voir tout →" />
+                              </children>
+                           </HBox>
+                           <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                                       style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;">
+                              <content>
+                                 <VBox fx:id="vboxTodayActivities" spacing="10.0" />
+                              </content>
+                           </ScrollPane>
+                        </children>
+                     </VBox>
+
+                     <!-- Rappels -->
+                     <VBox prefWidth="320.0" spacing="16.0"
+                           style="-fx-background-color: #17191F; -fx-background-radius: 20;
+                                  -fx-border-color: rgba(245,158,11,0.25); -fx-border-width: 1; -fx-border-radius: 20; -fx-padding: 24;">
+                        <children>
+                           <Label style="-fx-text-fill: #f59e0b; -fx-font-size: 16px; -fx-font-weight: bold;"
+                                  text="🔔 Rappels du jour" />
+                           <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                                       style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;">
+                              <content>
+                                 <VBox fx:id="vboxReminders" spacing="10.0" />
+                              </content>
+                           </ScrollPane>
+                        </children>
+                     </VBox>
+                  </children>
+               </HBox>
+
+               <!-- Stats row -->
+               <HBox spacing="16.0">
+                  <children>
+                     <VBox HBox.hgrow="ALWAYS" spacing="6.0"
+                           style="-fx-background-color: #1c1e24; -fx-background-radius: 12;
+                                  -fx-padding: 16; -fx-border-color: #2a2d32; -fx-border-radius: 12; -fx-border-width: 1;">
+                        <children>
+                           <Label style="-fx-text-fill: #6a6d71; -fx-font-size: 10px; -fx-font-weight: bold;" text="RESTANT" />
+                           <Label fx:id="lblItemsLeft" style="-fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;" text="0 tâches" />
+                        </children>
+                     </VBox>
+                     <VBox HBox.hgrow="ALWAYS" spacing="6.0"
+                           style="-fx-background-color: #1c1e24; -fx-background-radius: 12;
+                                  -fx-padding: 16; -fx-border-color: #2a2d32; -fx-border-radius: 12; -fx-border-width: 1;">
+                        <children>
+                           <Label style="-fx-text-fill: #6a6d71; -fx-font-size: 10px; -fx-font-weight: bold;" text="PROCHAINE" />
+                           <Label fx:id="lblNextTask" style="-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;" text="Aucune" />
+                        </children>
+                     </VBox>
+                  </children>
+               </HBox>
+
+            </children>
+         </VBox>
+      </content>
+   </ScrollPane>
+
+</VBox>
