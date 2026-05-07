@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1200.0"
+            styleClass="root-pane"
+            stylesheets="@board_style.css"
+            xmlns="http://javafx.com/javafx/19"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.user.MainLayoutController">
+
+    <!-- ══════════════════════════════════════════════
+         SIDEBAR  — mirrors Finance sidebar exactly
+    ══════════════════════════════════════════════ -->
+    <VBox prefHeight="700.0" prefWidth="229.0"
+          styleClass="sidebar"
+          AnchorPane.bottomAnchor="0.0"
+          AnchorPane.leftAnchor="0.0"
+          AnchorPane.topAnchor="0.0">
+
+        <!-- Logo row -->
+        <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="229.0" spacing="10.0">
+            <padding><Insets left="20.0" /></padding>
+            <children>
+                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                    <image><Image url="@../assets/5555.png" /></image>
+                </ImageView>
+                <Label styleClass="logo-label" text="LifeOps">
+                    <font><Font name="System Bold" size="18.0" /></font>
+                </Label>
+            </children>
+        </HBox>
+
+        <!-- Nav items -->
+        <VBox prefWidth="229.0" spacing="5.0">
+            <padding><Insets top="20.0" /></padding>
+            <children>
+
+                <!-- Tableau de bord -->
+                <HBox fx:id="menuTableauBord" onMouseClicked="#handleMenuClick"
+                      alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0"
+                      spacing="10.0" styleClass="nav-item">
+                    <padding><Insets left="20.0" /></padding>
+                    <children>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <image><Image url="@../assets/home_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
+                        </ImageView>
+                        <Label styleClass="nav-label" text="Tableau de bord" />
+                    </children>
+                </HBox>
+
+                <!-- Tâches — ACTIVE -->
+                <HBox fx:id="menuTaches" onMouseClicked="#handleMenuClick"
+                      alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0"
+                      spacing="10.0" styleClass="nav-item-active">
+                    <padding><Insets left="20.0" /></padding>
+                    <children>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <image><Image url="@../assets/done_all_24dp_7A4ED4_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                        </ImageView>
+                        <Label styleClass="nav-label-active" text="Tâches" />
+                    </children>
+                </HBox>
+
+                <!-- Finance -->
+                <HBox fx:id="menuFinance" onMouseClicked="#handleMenuClick"
+                      alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0"
+                      spacing="10.0" styleClass="nav-item">
+                    <padding><Insets left="20.0" /></padding>
+                    <children>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <image><Image url="@../assets/account_balance_wallet_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
+                        </ImageView>
+                        <Label styleClass="nav-label" text="Finance" />
+                    </children>
+                </HBox>
+
+                <!-- Objectifs -->
+                <HBox fx:id="menuObjectifs" onMouseClicked="#handleMenuClick"
+                      alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0"
+                      spacing="10.0" styleClass="nav-item">
+                    <padding><Insets left="20.0" /></padding>
+                    <children>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <image><Image url="@../assets/target_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
+                        </ImageView>
+                        <Label styleClass="nav-label" text="Objectifs" />
+                    </children>
+                </HBox>
+
+                <!-- Santé -->
+                <HBox fx:id="menuSante" onMouseClicked="#handleMenuClick"
+                      alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0"
+                      spacing="10.0" styleClass="nav-item">
+                    <padding><Insets left="20.0" /></padding>
+                    <children>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <image><Image url="@../assets/ecg_heart_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
+                        </ImageView>
+                        <Label styleClass="nav-label" text="Santé" />
+                    </children>
+                </HBox>
+
+                <!-- Temps -->
+                <HBox fx:id="menuTemps" onMouseClicked="#handleMenuClick"
+                      alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0"
+                      spacing="10.0" styleClass="nav-item">
+                    <padding><Insets left="20.0" /></padding>
+                    <children>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <image><Image url="@../assets/schedule_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
+                        </ImageView>
+                        <Label styleClass="nav-label" text="Temps" />
+                    </children>
+                </HBox>
+
+            </children>
+        </VBox>
+
+        <!-- Spacer pushes account box to bottom -->
+        <VBox VBox.vgrow="ALWAYS" />
+
+        <!-- Account box — matches Finance exactly -->
+        <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="229.0"
+              spacing="10.0" styleClass="account-box"
+              onMouseClicked="#navtomodify">
+            <padding><Insets bottom="10.0" left="15.0" right="15.0" top="10.0" /></padding>
+            <VBox.margin><Insets bottom="20.0" left="10.0" right="10.0" /></VBox.margin>
+            <children>
+                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                    <image><Image url="@../assets/account_circle_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
+                </ImageView>
+                <Label styleClass="account-label" text="Compte" />
+            </children>
+        </HBox>
+
+    </VBox>
+
+    <!-- Vertical divider line — same as Finance -->
+    <Line endX="0.0" endY="700.0" startX="0.0" startY="0.0"
+          styleClass="sidebar-divider"
+          AnchorPane.leftAnchor="229.0"
+          AnchorPane.topAnchor="0.0" />
+
+    <!-- ══════════════════════════════════════════════
+         CONTENT AREA
+    ══════════════════════════════════════════════ -->
+    <StackPane fx:id="contentArea"
+               style="-fx-background-color: #171A21;"
+               AnchorPane.bottomAnchor="0.0"
+               AnchorPane.leftAnchor="229.0"
+               AnchorPane.rightAnchor="0.0"
+               AnchorPane.topAnchor="0.0" />
+
+</AnchorPane>
+

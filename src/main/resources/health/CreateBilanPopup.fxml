@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefWidth="460.0" spacing="20.0"
+      styleClass="popup-card"
+      xmlns="http://javafx.com/javafx/19"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controller.health.CreateBilanController">
+
+    <padding><Insets bottom="30.0" left="30.0" right="30.0" top="30.0" /></padding>
+
+    <!-- Header -->
+    <VBox spacing="4.0">
+        <Label style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" text="🪄 Bilan IA" />
+        <Label styleClass="popup-subtitle"
+               text="L'IA analyse vos suivis et génère un bilan de santé complet" />
+    </VBox>
+
+    <!-- Status label -->
+    <Label fx:id="statusLabel" text="" visible="false" wrapText="true" maxWidth="400.0" />
+
+    <!-- Date range -->
+    <HBox spacing="16.0">
+        <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+            <Label styleClass="panel-section-title" text="DATE DE DÉBUT *" />
+            <DatePicker fx:id="dateDebutPicker" maxWidth="Infinity" styleClass="form-field" />
+        </VBox>
+        <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+            <Label styleClass="panel-section-title" text="DATE DE FIN *" />
+            <DatePicker fx:id="dateFinPicker" maxWidth="Infinity" styleClass="form-field" />
+        </VBox>
+    </HBox>
+
+    <!-- Info -->
+    <Label style="-fx-text-fill: #6a6d71; -fx-font-size: 12px;"
+           text="L'IA analysera tous vos suivis dans cette période et générera automatiquement le score de forme, le niveau de stress, la fatigue et les recommandations personnalisées."
+           wrapText="true" />
+
+    <!-- Buttons -->
+    <HBox alignment="CENTER_RIGHT" spacing="12.0">
+        <Region HBox.hgrow="ALWAYS" />
+        <Button onAction="#handleClose"
+                style="-fx-background-color: transparent; -fx-text-fill: #8a8d91; -fx-cursor: hand;
+                       -fx-padding: 8 14; -fx-border-color: #2a2d32; -fx-border-width: 1;
+                       -fx-border-radius: 10; -fx-background-radius: 10;"
+                text="Annuler" />
+        <Button onAction="#saveBilan" styleClass="btn-primary" text="🪄 Générer le bilan" />
+    </HBox>
+
+</VBox>

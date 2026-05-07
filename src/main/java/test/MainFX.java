@@ -5,26 +5,34 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.net.URL;
+import model.user.User;
+import service.user.UserService;
+import utils.RememberMe;
+import utils.Session;
 
 public class MainFX extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        URL viewUrl = getClass().getResource("/finance/finance.fxml");
-        if (viewUrl == null) {
-            throw new IllegalStateException("Vue introuvable: /finance/finance.fxml");
+        // Check for a saved "remember me" session
+        String savedEmail = RememberMe.load();
+        if (savedEmail != null) {
+            UserService userService = new UserService();
+            User user = userService.getUserByEmail(savedEmail);
+            if (user != null) {
+                Session.getInstance().setCurrentUser(user);
+                Parent root = FXMLLoader.load(getClass().getResource("/user/MainLayout.fxml"));
+                stage.setTitle("LifeOps");
+                stage.setScene(new Scene(root));
+                stage.show();
+                return;
+            }
         }
 
-        FXMLLoader loader = new FXMLLoader(viewUrl);
-        Parent root = loader.load();
-
-        Scene scene = new Scene(root);
-        stage.setTitle("LifeOps - Finance Management");
-        stage.setScene(scene);
-        stage.setMinWidth(1200);
-        stage.setMinHeight(700);
+        // No saved session → show login
+        Parent root = FXMLLoader.load(getClass().getResource("/user/login.fxml"));
+        stage.setTitle("LifeOps - Connexion");
+        stage.setScene(new Scene(root));
         stage.show();
     }
 
