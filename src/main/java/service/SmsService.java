@@ -11,14 +11,14 @@ public class SmsService {
     public static final String TWILIO_PHONE_NUMBER = System.getenv("TWILIO_PHONE_NUMBER");
 
     static {
-        // Initialize Twilio once
-        if (ACCOUNT_SID != null && ACCOUNT_SID.startsWith("AC") && !ACCOUNT_SID.contains("x")) {
+        // Initialize Twilio once (only if real credentials are provided)
+        if (ACCOUNT_SID != null && ACCOUNT_SID.startsWith("AC")) {
             Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         }
     }
 
     public void sendSms(String to, String messageBody) {
-        if (ACCOUNT_SID.startsWith("AC") && !ACCOUNT_SID.contains("x")) {
+        if (ACCOUNT_SID != null && ACCOUNT_SID.startsWith("AC")) {
             try {
                 Message message = Message.creator(
                         new PhoneNumber(to),
@@ -31,7 +31,7 @@ public class SmsService {
             }
         } else {
             System.out.println("[SIMULATED SMS] To: " + to + " | Body: " + messageBody);
-            System.out.println("[CONFIG NEEDED] Please update service.SmsService with real Twilio credentials.");
+            System.out.println("[CONFIG NEEDED] Set TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER env vars.");
         }
     }
 }
