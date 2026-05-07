@@ -31,7 +31,6 @@ public class AdvancedStatsController {
                     .createStatement().executeQuery("SELECT id FROM utilisateur LIMIT 1");
             if (rs.next()) {
                 currentUserId = rs.getInt("id");
-                System.out.println("[STATS] Detected User ID: " + currentUserId);
             }
         } catch (SQLException e) {
             e.printStackTrace();

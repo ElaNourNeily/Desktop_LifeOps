@@ -28,11 +28,7 @@ public class PlanningService implements IService<Planning> {
 
         ResultSet rs = ps.getGeneratedKeys();
         if (rs.next()) {
-            int generatedId = rs.getInt(1);
-            planning.setId(generatedId);
-            System.out.println("[DEBUG] Planning inserted. Generated ID: " + generatedId);
-        } else {
-            System.err.println("[DEBUG] Planning inserted but NO ID WAS RETURNED!");
+            planning.setId(rs.getInt(1));
         }
     }
 
@@ -46,9 +42,7 @@ public class PlanningService implements IService<Planning> {
         ps.setTime(4, planning.getHeureFinJournee());
         ps.setInt(5, planning.getUtilisateurId());
         ps.setInt(6, planning.getId());
-        
-        int rows = ps.executeUpdate();
-        System.out.println("[SQL DEBUG] Planning updated in DB. ID: " + planning.getId() + " | Rows affected: " + rows);
+        ps.executeUpdate();
         ps.close();
     }
 
@@ -70,10 +64,7 @@ public class PlanningService implements IService<Planning> {
     @Override
     public List<Planning> recuperer() throws SQLException {
         List<Planning> plannings = new ArrayList<>();
-        if (connection == null) {
-            System.err.println("Database connection is null. Cannot retrieve plannings.");
-            return plannings;
-        }
+        if (connection == null) return plannings;
         String sql = "SELECT * FROM planning";
         Statement s = connection.createStatement();
         ResultSet rs = s.executeQuery(sql);

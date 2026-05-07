@@ -89,13 +89,10 @@ public class PlanningFormController {
                 boolean isNew = (currentPlanning == null);
                 if (isNew) {
                     currentPlanning = new Planning();
-                    System.out.println("[DEBUG] Planning: Adding new record");
                 } else {
-                    System.out.println("[DEBUG] Planning: Updating existing record ID=" + currentPlanning.getId());
                 }
 
                 LocalDate selectedDate = datePicker.getValue();
-                System.out.println("[SQL] Final Date to save: " + selectedDate);
                 currentPlanning.setDate(Date.valueOf(selectedDate));
                 currentPlanning.setDisponibilite(checkDisponibilite.isSelected());
                 
@@ -112,7 +109,6 @@ public class PlanningFormController {
                 if (isNew) service.ajouter(currentPlanning);
                 else service.modifier(currentPlanning);
 
-                System.out.println("[DEBUG] Planning save successful.");
                 showAlert("Succès", "Planning enregistré avec succès !", Alert.AlertType.INFORMATION);
                 if (onSaveCallback != null) onSaveCallback.accept(datePicker.getValue());
                 close();
@@ -150,29 +146,23 @@ public class PlanningFormController {
         // Duplicate Check (Ignore self if editing)
         try {
             if (currentUserId <= 0) {
-                System.out.println("[VALIDATION ERROR] User ID is not set correctly: " + currentUserId);
                 showAlert("Erreur Système", "ID Utilisateur invalide. Veuillez redémarrer l'application.", Alert.AlertType.ERROR);
                 return false;
             }
 
-            System.out.println("[VALIDATION] Checking duplicate for User ID: " + currentUserId + " | Date: " + chosenDate);
             Planning existing = service.recupererParDate(chosenDate, currentUserId);
             
             if (existing != null) {
                 int existingId = existing.getId();
                 int currentId = (currentPlanning != null) ? currentPlanning.getId() : -1;
                 
-                System.out.println("[VALIDATION DEBUG] Comparing IDs -> Existing: " + existingId + " | Current: " + currentId);
                 
                 if (isNew || existingId != currentId) {
-                    System.out.println("[VALIDATION CONFLICT] Another record already occupies this date (ID " + existingId + ")");
                     showAlert("Date déjà occupée", "Un planning existe déjà pour la journée du " + chosenDate.format(java.time.format.DateTimeFormatter.ofPattern("d MMMM yyyy", java.util.Locale.FRENCH)) + ".", Alert.AlertType.ERROR);
                     return false;
                 } else {
-                    System.out.println("[VALIDATION OK] Matches current record ID " + existingId + ". Modification allowed.");
                 }
             } else {
-                System.out.println("[VALIDATION OK] No other planning found on this date.");
             }
         } catch (SQLException e) {
             e.printStackTrace();

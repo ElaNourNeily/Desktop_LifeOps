@@ -481,6 +481,5 @@ public class ActiviteFormController {
                 if (occurrencesCreated >= maxOccurrences) break;
             }
         }
-        System.out.println("[RECURRENCE] Created " + occurrencesCreated + " occurrences for Group ID: " + base.getRecurrenceGroupId());
     }
 }

@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.ColumnConstraints?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="main-content" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Time.AdvancedStatsController">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #17191F;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Time.AdvancedStatsController">
    <children>
       <VBox spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <padding>

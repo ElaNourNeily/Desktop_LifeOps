@@ -58,11 +58,9 @@ public class PlanningManagementController {
     }
 
     private void refreshPlanningList() {
-        System.out.println("[DEBUG] Refreshing Planning List for User ID: " + currentUserId);
         vboxPlanningList.getChildren().clear();
         try {
             List<Planning> all = service.recupererParUtilisateur(currentUserId);
-            System.out.println("[DEBUG] Found " + all.size() + " planning records.");
             all.sort((a, b) -> b.getDate().compareTo(a.getDate()));
 
             String lastWeekKey = "";

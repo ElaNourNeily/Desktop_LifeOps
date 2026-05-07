@@ -87,7 +87,6 @@ public class AIService {
 
                 // If Error 503 (High Demand) or 429 (Quota), retry
                 if ((response.statusCode() == 503 || response.statusCode() == 429) && attempt < maxRetries) {
-                    System.out.println("[AI] Attempt " + (attempt + 1) + " failed (HTTP " + response.statusCode() + "). Retrying in " + retryDelay + "ms...");
                     Thread.sleep(retryDelay);
                     retryDelay *= 2; // Exponential backoff
                     continue;
@@ -314,7 +313,6 @@ public class AIService {
             ps.setInt(6, deletes);
             ps.setString(7, details);
             ps.executeUpdate();
-            System.out.println("[AI] History saved successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -18,20 +18,72 @@ public class ActiviteService implements IService<Activite> {
 
     private void checkAndRepairDatabase() {
         try {
+            // Create planning table if not exists
+            connection.createStatement().execute(
+                "CREATE TABLE IF NOT EXISTS planning (" +
+                "  id INT PRIMARY KEY AUTO_INCREMENT," +
+                "  date DATE NOT NULL," +
+                "  disponibilite BOOLEAN DEFAULT TRUE," +
+                "  heure_debut_journee TIME NOT NULL," +
+                "  heure_fin_journee TIME NOT NULL," +
+                "  utilisateur_id INT NOT NULL" +
+                ")"
+            );
+
+            // Create activite table if not exists
+            connection.createStatement().execute(
+                "CREATE TABLE IF NOT EXISTS activite (" +
+                "  id INT PRIMARY KEY AUTO_INCREMENT," +
+                "  titre VARCHAR(255) NOT NULL," +
+                "  duree INT DEFAULT 0," +
+                "  priorite INT DEFAULT 1," +
+                "  etat VARCHAR(50) DEFAULT 'en_attente'," +
+                "  heure_debut_estimee TIME," +
+                "  heure_fin_estimee TIME," +
+                "  niveau_urgence VARCHAR(50) DEFAULT 'moyen'," +
+                "  categorie VARCHAR(100)," +
+                "  couleur VARCHAR(20)," +
+                "  suggested_by_ai BOOLEAN DEFAULT FALSE," +
+                "  planning_id INT NOT NULL," +
+                "  minutes_rappel INT DEFAULT 0," +
+                "  heure_debut_reelle TIME," +
+                "  heure_fin_reelle TIME," +
+                "  is_recurrent BOOLEAN DEFAULT FALSE," +
+                "  recurrence_type VARCHAR(20)," +
+                "  recurrence_days VARCHAR(50)," +
+                "  recurrence_interval INT DEFAULT 1," +
+                "  recurrence_group_id INT" +
+                ")"
+            );
+
+            // Create historique_optimisation_ia table if not exists
+            connection.createStatement().execute(
+                "CREATE TABLE IF NOT EXISTS historique_optimisation_ia (" +
+                "  id INT PRIMARY KEY AUTO_INCREMENT," +
+                "  user_id INT," +
+                "  prompt_utilisateur TEXT," +
+                "  resume TEXT," +
+                "  nb_ajouts INT DEFAULT 0," +
+                "  nb_modifications INT DEFAULT 0," +
+                "  nb_suppressions INT DEFAULT 0," +
+                "  details LONGTEXT," +
+                "  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
+                ")"
+            );
+
+            // Add recurrence_group_id column if missing (migration)
             DatabaseMetaData md = connection.getMetaData();
             ResultSet rs = md.getColumns(null, null, "activite", "recurrence_group_id");
             if (!rs.next()) {
-                System.out.println("[DB] Adding recurrence_group_id column to activite table...");
                 connection.createStatement().execute("ALTER TABLE activite ADD COLUMN recurrence_group_id INT NULL");
             }
         } catch (SQLException e) {
-            System.err.println("[DB] Could not check/repair table: " + e.getMessage());
+            System.err.println("[DB] Schema init error: " + e.getMessage());
         }
     }
 
     @Override
     public void ajouter(Activite activite) throws SQLException {
-        System.out.println("[DEBUG] Inserting Activity. Planning ID: " + activite.getPlanningId());
         String sql = "INSERT INTO activite (titre, duree, priorite, etat, heure_debut_estimee, heure_fin_estimee, niveau_urgence, categorie, couleur, suggested_by_ai, planning_id, minutes_rappel, heure_debut_reelle, heure_fin_reelle, is_recurrent, recurrence_type, recurrence_days, recurrence_interval, recurrence_group_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.setString(1, activite.getTitre());

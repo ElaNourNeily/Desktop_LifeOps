@@ -146,7 +146,6 @@ public class PlanningDashboardController {
                     .createStatement().executeQuery("SELECT id FROM utilisateur LIMIT 1");
             if (rs.next()) {
                 currentUserId = rs.getInt("id");
-                System.out.println("[DASHBOARD] Detected User ID: " + currentUserId);
             } else {
                 System.err.println("[DASHBOARD] WARNING: No users found in 'utilisateur' table. Foreign key errors expected.");
                 currentUserId = 1; 
@@ -586,7 +585,6 @@ public class PlanningDashboardController {
             // 2. If not found, create it
             Planning p = new Planning(Date.valueOf(date), true, Time.valueOf("08:00:00"), Time.valueOf("20:00:00"), currentUserId);
             planningService.ajouter(p);
-            System.out.println("[DASHBOARD] Created placeholder planning for " + date + " with ID: " + p.getId());
             return p.getId();
         } catch (SQLException e) {
             // 3. Fallback: If insertion failed (e.g. race condition/duplicate), try one last time to fetch it

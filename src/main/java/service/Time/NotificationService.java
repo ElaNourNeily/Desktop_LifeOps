@@ -30,7 +30,6 @@ public class NotificationService {
 
     public void start() {
         scheduler.scheduleAtFixedRate(this::checkReminders, 0, 1, TimeUnit.MINUTES);
-        System.out.println("[NOTIF] Notification Service started.");
     }
 
     public void stop() {
