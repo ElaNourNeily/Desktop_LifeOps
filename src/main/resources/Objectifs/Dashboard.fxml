@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="700.0" prefWidth="920.0"
+            stylesheets="@../style.css"
+            style="-fx-background-color: #0a0b0e;"
+            xmlns="http://javafx.com/javafx/19"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Controller.Objectifs.DashboardController">
+
+    <padding>
+        <Insets bottom="30" left="40" right="40" top="30" />
+    </padding>
+
+    <top>
+        <VBox spacing="6">
+            <HBox alignment="CENTER_LEFT" spacing="16">
+                <VBox spacing="4">
+                    <Label styleClass="title-label" text="Analyse des patterns" />
+                    <Label styleClass="subtitle-label" text="Détection intelligente de vos habitudes d'abandon et recommandations" />
+                </VBox>
+            </HBox>
+            <BorderPane.margin>
+                <Insets bottom="20" />
+            </BorderPane.margin>
+        </VBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true"
+                    style="-fx-background: #0a0b0e; -fx-background-color: transparent;">
+            <VBox spacing="20">
+                <padding><Insets top="4" bottom="20" /></padding>
+
+                <!-- Score global -->
+                <HBox fx:id="scoreContainer" spacing="16" />
+
+                <!-- Santé KPIs -->
+                <HBox fx:id="santeKpiContainer" spacing="16" />
+
+                <!-- Patterns d'échec -->
+                <VBox fx:id="patternsContainer" spacing="12" />
+
+                <!-- Recommandations -->
+                <VBox fx:id="recommandationsContainer" spacing="12" />
+
+                <!-- Message vide -->
+                <VBox fx:id="emptyContainer" alignment="CENTER" spacing="16"
+                      style="-fx-padding: 60 0;" visible="false" managed="false">
+                    <Label text="🎉" style="-fx-font-size: 48px;" />
+                    <Label text="Aucun pattern d'échec détecté !"
+                           style="-fx-text-fill: #f1f2f4; -fx-font-size: 18px; -fx-font-weight: bold;" />
+                    <Label text="Continuez comme ça, vous êtes sur la bonne voie."
+                           style="-fx-text-fill: #6b7280; -fx-font-size: 14px;" />
+                </VBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

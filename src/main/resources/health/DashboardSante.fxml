@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="700.0" prefWidth="920.0"
+            stylesheets="@../../Task/board_style.css"
+            style="-fx-background-color: #0a0b0e;"
+            xmlns="http://javafx.com/javafx/19"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Controller.health.DashboardSanteController">
+
+    <padding>
+        <Insets bottom="30" left="40" right="40" top="30" />
+    </padding>
+
+    <!-- Header -->
+    <top>
+        <VBox spacing="6">
+            <HBox alignment="CENTER_LEFT" spacing="16">
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label styleClass="title-label" text="❤ Analyse IA de Santé" />
+                    <Label styleClass="subtitle-label" text="Vos statistiques vitales, score de forme et recommandations personnalisées" />
+                </VBox>
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <ProgressIndicator fx:id="progressExport" prefHeight="22.0" prefWidth="22.0" visible="false" />
+                    <Button fx:id="btnExportPdf" onAction="#onExporterPdf" styleClass="btn-primary"
+                            text="📄 Rapport PDF" />
+                    <Button onAction="#goBack"
+                            style="-fx-background-color: #17191F; -fx-text-fill: #8a8d91; -fx-background-radius: 8;
+                                   -fx-border-color: #2a2d32; -fx-border-width: 1; -fx-border-radius: 8;
+                                   -fx-padding: 8 16; -fx-cursor: hand;"
+                            text="← Retour" />
+                    <Label fx:id="lblDerniereMaj" text="Maj: --:--:--"
+                           style="-fx-text-fill: #6b7280; -fx-font-size: 12px;" />
+                </HBox>
+            </HBox>
+            <BorderPane.margin>
+                <Insets bottom="20" />
+            </BorderPane.margin>
+        </VBox>
+    </top>
+
+    <!-- Content -->
+    <center>
+        <ScrollPane fitToWidth="true"
+                    style="-fx-background: #0a0b0e; -fx-background-color: transparent;">
+            <VBox spacing="20">
+                <padding><Insets top="4" bottom="20" /></padding>
+
+                <!-- KPI Cards -->
+                <HBox fx:id="kpiContainer" spacing="16" />
+
+                <!-- Charts row -->
+                <HBox spacing="16">
+
+                    <!-- Line chart -->
+                    <VBox spacing="12" HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: #111318; -fx-background-radius: 12;
+                                 -fx-border-color: #1c1e22; -fx-border-width: 1; -fx-border-radius: 12;
+                                 -fx-padding: 20;">
+                        <Label text="📈 Évolution du Score de Forme"
+                               style="-fx-text-fill: #f1f2f4; -fx-font-size: 14px; -fx-font-weight: bold;" />
+                        <LineChart fx:id="lineChartEvol" animated="false" createSymbols="true"
+                                   legendVisible="false" prefHeight="240.0"
+                                   style="-fx-background-color: transparent;">
+                            <xAxis><CategoryAxis side="BOTTOM" tickLabelFill="#6b7280" /></xAxis>
+                            <yAxis><NumberAxis side="LEFT" tickLabelFill="#6b7280" /></yAxis>
+                        </LineChart>
+                    </VBox>
+
+                    <!-- Bar chart -->
+                    <VBox spacing="12" prefWidth="340"
+                          style="-fx-background-color: #111318; -fx-background-radius: 12;
+                                 -fx-border-color: #1c1e22; -fx-border-width: 1; -fx-border-radius: 12;
+                                 -fx-padding: 20;">
+                        <Label text="🌙 Cycle du Sommeil (h)"
+                               style="-fx-text-fill: #f1f2f4; -fx-font-size: 14px; -fx-font-weight: bold;" />
+                        <BarChart fx:id="barChartHabitudes" animated="false"
+                                  legendVisible="false" prefHeight="240.0"
+                                  style="-fx-background-color: transparent;">
+                            <xAxis><CategoryAxis side="BOTTOM" tickLabelFill="#6b7280" /></xAxis>
+                            <yAxis><NumberAxis side="LEFT" tickLabelFill="#6b7280" /></yAxis>
+                        </BarChart>
+                    </VBox>
+
+                </HBox>
+
+                <!-- Radar + Recommandations row -->
+                <HBox spacing="16">
+
+                    <!-- Radar chart -->
+                    <VBox spacing="12" prefWidth="340"
+                          style="-fx-background-color: #111318; -fx-background-radius: 12;
+                                 -fx-border-color: #1c1e22; -fx-border-width: 1; -fx-border-radius: 12;
+                                 -fx-padding: 20;">
+                        <Label text="🕸 Équilibre Biologique"
+                               style="-fx-text-fill: #f1f2f4; -fx-font-size: 14px; -fx-font-weight: bold;" />
+                        <VBox fx:id="radarChartContainer" alignment="CENTER" prefHeight="280.0" />
+                    </VBox>
+
+                    <!-- Recommandations -->
+                    <VBox fx:id="recommandationsContainer" spacing="10" HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: #111318; -fx-background-radius: 12;
+                                 -fx-border-color: #1c1e22; -fx-border-width: 1; -fx-border-radius: 12;
+                                 -fx-padding: 20;" />
+
+                </HBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

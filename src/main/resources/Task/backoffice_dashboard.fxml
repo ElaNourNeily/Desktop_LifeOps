@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane style="-fx-background-color: #121417;"
+            stylesheets="@board_style.css"
+            xmlns="http://javafx.com/javafx/19"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.task.BackOfficeController">
+
+    <!-- ── TOP HEADER ──────────────────────────────────────── -->
+    <top>
+        <VBox style="-fx-background-color: #17191F; -fx-border-color: #2a2d32; -fx-border-width: 0 0 1 0; -fx-padding: 20 30 18 30;">
+            <children>
+                <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"
+                       text="⚡ Control Center Automatisé" />
+                <Label style="-fx-text-fill: #8a8d91; -fx-font-size: 13px;"
+                       text="Supervision IA &amp; Exécution n8n en temps réel" />
+            </children>
+        </VBox>
+    </top>
+
+    <!-- ── CONTENT ─────────────────────────────────────────── -->
+    <center>
+        <ScrollPane fitToWidth="true"
+                    style="-fx-background-color: transparent; -fx-background: #121417; -fx-border-color: transparent;">
+            <VBox spacing="20" style="-fx-padding: 24 30 30 30;">
+                <children>
+
+                    <!-- ROW 1: System Health + AI Insights -->
+                    <HBox spacing="20">
+                        <children>
+
+                            <!-- System Health -->
+                            <VBox spacing="14" styleClass="admin-panel-card" HBox.hgrow="ALWAYS">
+                                <children>
+                                    <Label styleClass="panel-section-title" text="SYSTEM HEALTH" />
+                                    <HBox spacing="20" alignment="CENTER_LEFT">
+                                        <children>
+                                            <VBox alignment="CENTER" spacing="4"
+                                                  style="-fx-background-color: rgba(16,185,129,0.08); -fx-background-radius: 10; -fx-padding: 10 16; -fx-border-color: rgba(16,185,129,0.2); -fx-border-width: 1; -fx-border-radius: 10;">
+                                                <Label text="API" style="-fx-text-fill: #8a8d91; -fx-font-size: 10px; -fx-font-weight: bold;" />
+                                                <Label text="12ms" style="-fx-text-fill: #34d399; -fx-font-size: 20px; -fx-font-weight: bold;" />
+                                            </VBox>
+                                            <VBox alignment="CENTER" spacing="4"
+                                                  style="-fx-background-color: rgba(16,185,129,0.08); -fx-background-radius: 10; -fx-padding: 10 16; -fx-border-color: rgba(16,185,129,0.2); -fx-border-width: 1; -fx-border-radius: 10;">
+                                                <Label text="Database" style="-fx-text-fill: #8a8d91; -fx-font-size: 10px; -fx-font-weight: bold;" />
+                                                <Label text="4ms" style="-fx-text-fill: #34d399; -fx-font-size: 20px; -fx-font-weight: bold;" />
+                                            </VBox>
+                                            <VBox alignment="CENTER" spacing="4"
+                                                  style="-fx-background-color: rgba(139,92,246,0.08); -fx-background-radius: 10; -fx-padding: 10 16; -fx-border-color: rgba(139,92,246,0.2); -fx-border-width: 1; -fx-border-radius: 10;">
+                                                <Label text="AI Model" style="-fx-text-fill: #8a8d91; -fx-font-size: 10px; -fx-font-weight: bold;" />
+                                                <Label text="Ready" style="-fx-text-fill: #a78bfa; -fx-font-size: 20px; -fx-font-weight: bold;" />
+                                            </VBox>
+                                        </children>
+                                    </HBox>
+                                    <Button text="Restart Services"
+                                            styleClass="action-button"
+                                            maxWidth="Infinity" />
+                                </children>
+                            </VBox>
+
+                            <!-- AI Insights -->
+                            <VBox spacing="14" styleClass="admin-panel-card" HBox.hgrow="ALWAYS">
+                                <children>
+                                    <Label styleClass="panel-section-title" text="AI INSIGHTS" />
+                                    <HBox spacing="20">
+                                        <children>
+                                            <VBox spacing="4"
+                                                  style="-fx-background-color: rgba(245,158,11,0.08); -fx-background-radius: 10; -fx-padding: 10 16; -fx-border-color: rgba(245,158,11,0.2); -fx-border-width: 1; -fx-border-radius: 10;">
+                                                <Label text="Risque de retard" style="-fx-text-fill: #8a8d91; -fx-font-size: 10px; -fx-font-weight: bold;" />
+                                                <Label text="14%" style="-fx-text-fill: #fbbf24; -fx-font-size: 22px; -fx-font-weight: bold;" />
+                                            </VBox>
+                                            <VBox spacing="4"
+                                                  style="-fx-background-color: rgba(239,68,68,0.08); -fx-background-radius: 10; -fx-padding: 10 16; -fx-border-color: rgba(239,68,68,0.2); -fx-border-width: 1; -fx-border-radius: 10;">
+                                                <Label text="Surcharge Globale" style="-fx-text-fill: #8a8d91; -fx-font-size: 10px; -fx-font-weight: bold;" />
+                                                <Label text="Critique" style="-fx-text-fill: #f87171; -fx-font-size: 22px; -fx-font-weight: bold;" />
+                                            </VBox>
+                                        </children>
+                                    </HBox>
+                                    <Label text="💡 L'IA recommande un rééquilibrage immédiat."
+                                           style="-fx-text-fill: #a78bfa; -fx-font-size: 12px; -fx-font-style: italic;" />
+                                </children>
+                            </VBox>
+
+                        </children>
+                    </HBox>
+
+                    <!-- ROW 2: Automation Toggles + Quick Actions -->
+                    <HBox spacing="20">
+                        <children>
+
+                            <!-- Automation Toggles -->
+                            <VBox spacing="14" styleClass="admin-panel-card-accent" HBox.hgrow="ALWAYS">
+                                <children>
+                                    <Label style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15px;"
+                                           text="🤖 Automation n8n (Auto-Pilot)" />
+
+                                    <HBox alignment="CENTER_LEFT" spacing="12">
+                                        <children>
+                                            <Label text="Assignation Auto"
+                                                   style="-fx-text-fill: #c0c3c8; -fx-pref-width: 150;" />
+                                            <ToggleButton fx:id="tglAutoAssign"
+                                                          styleClass="automation-toggle" text="OFF" />
+                                        </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" spacing="12">
+                                        <children>
+                                            <Label text="Rééquilibrage Charge"
+                                                   style="-fx-text-fill: #c0c3c8; -fx-pref-width: 150;" />
+                                            <ToggleButton fx:id="tglAutoRebalance"
+                                                          styleClass="automation-toggle" text="OFF" />
+                                        </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" spacing="12">
+                                        <children>
+                                            <Label text="Nettoyage Inactifs"
+                                                   style="-fx-text-fill: #c0c3c8; -fx-pref-width: 150;" />
+                                            <ToggleButton fx:id="tglAutoCleanup"
+                                                          styleClass="automation-toggle" text="OFF" />
+                                        </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" spacing="12">
+                                        <children>
+                                            <Label text="Entraînement IA"
+                                                   style="-fx-text-fill: #c0c3c8; -fx-pref-width: 150;" />
+                                            <ToggleButton fx:id="tglAutoRetrain"
+                                                          styleClass="automation-toggle" text="OFF" />
+                                        </children>
+                                    </HBox>
+                                </children>
+                            </VBox>
+
+                            <!-- Quick Actions -->
+                            <VBox spacing="14" styleClass="admin-panel-card" HBox.hgrow="ALWAYS">
+                                <children>
+                                    <Label styleClass="panel-section-title" text="QUICK ACTIONS (MANUELLES)" />
+
+                                    <HBox spacing="12">
+                                        <children>
+                                            <Button text="⚡ Rééquilibrer" onAction="#actionRebalance"
+                                                    style="-fx-background-color: rgba(59,130,246,0.15); -fx-text-fill: #60a5fa; -fx-border-color: rgba(59,130,246,0.3); -fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 9 14;"
+                                                    HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                                            <Button text="⚡ Assigner Tâches" onAction="#actionAutoAssign"
+                                                    styleClass="btn-primary"
+                                                    HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                                        </children>
+                                    </HBox>
+                                    <HBox spacing="12">
+                                        <children>
+                                            <Button text="🧹 Nettoyer Utilisateurs" onAction="#actionCleanup"
+                                                    styleClass="action-button"
+                                                    HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                                            <Button text="⏱️ Optimiser Deadlines" onAction="#actionOptimize"
+                                                    styleClass="action-button"
+                                                    HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                                        </children>
+                                    </HBox>
+                                </children>
+                            </VBox>
+
+                        </children>
+                    </HBox>
+
+                    <!-- ROW 3: Alerts -->
+                    <VBox spacing="14" styleClass="admin-panel-card">
+                        <children>
+                            <Label styleClass="panel-section-title" text="🚨 ALERTES CRITIQUES" />
+                            <VBox fx:id="alertsContainer" spacing="10">
+                                <!-- Dynamically populated -->
+                            </VBox>
+                        </children>
+                    </VBox>
+
+                </children>
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>
