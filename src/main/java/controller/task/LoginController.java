@@ -7,7 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import model.user.User;
+import Model.user.User;
 import service.user.UserService;
 import utils.Session;
 

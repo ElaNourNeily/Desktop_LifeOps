@@ -1,4 +1,4 @@
-package Controller;
+package Controller.finance;
 
 import model.Budget;
 import model.Depense;

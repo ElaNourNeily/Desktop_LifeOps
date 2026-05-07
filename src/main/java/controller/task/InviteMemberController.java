@@ -12,7 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.user.User;
+import Model.user.User;
 import service.user.UserService;
 import service.task.TaskSpaceUserService;
 import service.task.PusherService;

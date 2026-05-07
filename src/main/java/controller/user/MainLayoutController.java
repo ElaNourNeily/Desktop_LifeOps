@@ -10,7 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import model.user.User;
+import Model.user.User;
 import utils.RememberMe;
 import utils.Session;
 

@@ -8,7 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-import model.user.User;
+import Model.user.User;
 import model.task.Tache;
 import model.task.TaskSpace;
 import service.task.TaskService;

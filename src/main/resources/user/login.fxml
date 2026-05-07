@@ -13,31 +13,24 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-<StackPane prefHeight="700.0" prefWidth="500.0"
-           style="-fx-background-color: #121417;"
-           stylesheets="@../Task/board_style.css"
-           xmlns="http://javafx.com/javafx/19"
-           xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="Controller.user.login">
+<StackPane prefHeight="700.0" prefWidth="408.0" style="-fx-background-color: #121417;"
+           stylesheets="@../Task/board_style.css" xmlns="http://javafx.com/javafx/25"
+           xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.user.login">
 
     <VBox alignment="CENTER" maxWidth="420.0" spacing="24.0" styleClass="login-card">
 
         <!-- Brand -->
         <VBox alignment="CENTER" spacing="8.0">
             <children>
-                <Label style="-fx-text-fill: white; -fx-font-size: 32px; -fx-font-weight: bold;"
-                       text="⚡ LifeOps" />
-                <Label style="-fx-background-color: rgba(139,92,246,0.15); -fx-text-fill: #a78bfa;
-                              -fx-background-radius: 999; -fx-padding: 3 14;
-                              -fx-font-size: 11px; -fx-font-weight: bold;"
-                       text="Votre espace de vie numérique" />
-                <Label styleClass="subtitle-label"
-                       text="Connectez-vous à votre espace LifeOps" />
+                <Label style="-fx-text-fill: white; -fx-font-size: 32px; -fx-font-weight: bold;" text="⚡ LifeOps"/>
+                <Label style="-fx-background-color: rgba(139,92,246,0.15); -fx-text-fill: #a78bfa;                               -fx-background-radius: 999; -fx-padding: 3 14;                               -fx-font-size: 11px; -fx-font-weight: bold;"
+                       text="Votre espace de vie numérique"/>
+                <Label styleClass="subtitle-label" text="Connectez-vous à votre espace LifeOps"/>
             </children>
         </VBox>
 
         <!-- Form Fields -->
-        <VBox spacing="14.0" maxWidth="340.0">
+        <VBox maxWidth="340.0" spacing="14.0">
             <children>
 
                 <VBox spacing="6.0">
@@ -45,15 +38,13 @@
                         <HBox>
                             <children>
                                 <Label styleClass="form-label" text="EMAIL" />
-                                <Label fx:id="error" text="Email ou mot de passe invalide"
-                                       style="-fx-text-fill: #f87171; -fx-font-size: 11px;"
-                                       visible="false">
+                                <Label fx:id="error" style="-fx-text-fill: #f87171; -fx-font-size: 11px;"
+                                       text="Email ou mot de passe invalide" visible="false">
                                     <HBox.margin><Insets left="12.0" /></HBox.margin>
                                 </Label>
                             </children>
                         </HBox>
-                        <TextField fx:id="email" promptText="nom@exemple.com"
-                                   styleClass="form-field" />
+                        <TextField fx:id="email" promptText="nom@exemple.com" styleClass="form-field"/>
                     </children>
                 </VBox>
 
@@ -61,44 +52,51 @@
                     <children>
                         <Label styleClass="form-label" text="MOT DE PASSE" />
                         <StackPane alignment="CENTER_RIGHT">
-                            <PasswordField fx:id="password" maxWidth="Infinity"
-                                           promptText="••••••••" styleClass="form-field" />
-                            <SVGPath content="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
-                                    fill="#6a6d71" scaleX="0.85" scaleY="0.85">
+                            <PasswordField fx:id="password" maxWidth="Infinity" promptText="••••••••"
+                                           styleClass="form-field"/>
+                            <TextField fx:id="passwordTextField" maxWidth="Infinity" promptText="••••••••"
+                                       styleClass="form-field" visible="false"/>
+                            <SVGPath
+                                    content="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
+                                    fill="#6a6d71" onMouseClicked="#makevisivle" scaleX="0.85" scaleY="0.85">
                                 <StackPane.margin><Insets right="14.0" /></StackPane.margin>
                             </SVGPath>
                         </StackPane>
                     </children>
                 </VBox>
+                <Label onMouseClicked="#forget"
+                       style="-fx-text-fill: #a78bfa; -fx-font-weight: bold; -fx-font-size: 13px; -fx-cursor: hand;"
+                       text="mot de passe oublié">
+                    <VBox.margin>
+                        <Insets left="200.0"/>
+                    </VBox.margin>
+                </Label>
 
                 <CheckBox fx:id="rememberMeCheckbox"
                           style="-fx-text-fill: #8a8d91; -fx-font-size: 13px; -fx-cursor: hand;"
-                          text="Se souvenir de moi pendant 30 jours" />
+                          text="Se souvenir de moi pendant 30 jours"/>
 
             </children>
         </VBox>
 
         <!-- Submit -->
-        <Button maxWidth="340.0" onAction="#LogIn"
-                styleClass="btn-primary"
-                text="Se connecter" />
+        <Button maxWidth="340.0" onAction="#LogIn" styleClass="btn-primary" text="Se connecter"/>
 
         <!-- Separator -->
-        <HBox alignment="CENTER" spacing="10.0" maxWidth="340.0">
+        <HBox alignment="CENTER" maxWidth="340.0" spacing="10.0">
             <children>
-                <Separator HBox.hgrow="ALWAYS" style="-fx-background-color: #2a2d32;" />
+                <Separator style="-fx-background-color: #2a2d32;" HBox.hgrow="ALWAYS"/>
                 <Label style="-fx-text-fill: #6a6d71; -fx-font-size: 11px; -fx-font-weight: bold;"
-                       text="OU CONTINUER AVEC" />
-                <Separator HBox.hgrow="ALWAYS" style="-fx-background-color: #2a2d32;" />
+                       text="OU CONTINUER AVEC"/>
+                <Separator style="-fx-background-color: #2a2d32;" HBox.hgrow="ALWAYS"/>
             </children>
         </HBox>
 
         <!-- Social Buttons -->
-        <HBox alignment="CENTER" spacing="12.0" maxWidth="340.0">
+        <HBox alignment="CENTER" maxWidth="340.0" spacing="12.0">
             <children>
                 <!-- Google -->
-                <Button maxWidth="Infinity" onAction="#loginwithgoogle"
-                        styleClass="action-button" HBox.hgrow="ALWAYS">
+                <Button maxWidth="Infinity" onAction="#loginwithgoogle" styleClass="action-button" HBox.hgrow="ALWAYS">
                     <graphic>
                         <Group>
                             <SVGPath content="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -129,7 +127,7 @@
                 <Label styleClass="subtitle-label" text="Pas encore de compte ?" />
                 <Label onMouseClicked="#navtosignin"
                        style="-fx-text-fill: #a78bfa; -fx-font-weight: bold; -fx-font-size: 13px; -fx-cursor: hand;"
-                       text="S'inscrire" />
+                       text="S'inscrire"/>
             </children>
         </HBox>
 

@@ -6,7 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import model.user.User;
+import Model.user.User;
 import org.mindrot.jbcrypt.BCrypt;
 import service.user.UserService;
 import utils.Session;

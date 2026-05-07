@@ -1,6 +1,6 @@
 package service.task;
 
-import model.user.User;
+import Model.user.User;
 import utils.MyDatabase;
 import java.sql.*;
 import java.util.ArrayList;

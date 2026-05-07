@@ -1,6 +1,6 @@
 package service;
 
-import model.user.User;
+import Model.user.User;
 import utils.MyDatabase;
 import service.Interfaces.CRUD;
 

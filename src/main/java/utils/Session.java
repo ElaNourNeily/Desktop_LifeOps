@@ -1,6 +1,6 @@
 package utils;
 
-import model.user.User;
+import Model.user.User;
 
 /**
  * Session — holds the currently logged-in user.
@@ -14,7 +14,9 @@ import model.user.User;
 public class Session {
 
     private static Session instance;
-    private static User currentUser;   // static so both instance and static access share state
+    private static User currentUser;
+    private static String resetEmail;
+    private static String verificationCode;
 
     private Session() {}
 
@@ -23,6 +25,24 @@ public class Session {
             instance = new Session();
         }
         return instance;
+    }
+
+    public void setResetData(String email, String code) {
+        resetEmail = email;
+        verificationCode = code;
+    }
+
+    public String getResetEmail() {
+        return resetEmail;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void clearResetData() {
+        resetEmail = null;
+        verificationCode = null;
     }
 
     /** Set the logged-in user after successful authentication. */

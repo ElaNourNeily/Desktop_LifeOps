@@ -19,7 +19,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import model.user.User;
+import Model.user.User;
 import service.user.UserService;
 import org.json.JSONObject;
 
@@ -60,74 +60,105 @@ public class SignIn {
     @FXML
     private Label phoneerror;
 
+    @FXML
+    private Label captchaLabel;
+    @FXML
+    private TextField captchaInput;
+    @FXML
+    private Label captchaError;
+    private String currentCaptcha;
+
     private UserService userservice = new UserService();
+
+    @FXML
+    public void initialize() {
+        refreshCaptcha(null);
+    }
 
     @FXML
     void SignUp(ActionEvent event) {
         int x = 0;
+        boolean captchaValid = false;
         try {
-            User newUser = new User();
-            if ((!telephone.getText().matches("^[0-9]+$")) || (Integer.parseInt(telephone.getText()) < 8)) {
-                phoneerror.setVisible(true);
+            // Validate Captcha
+            if (captchaInput.getText() != null && captchaInput.getText().equalsIgnoreCase(currentCaptcha)) {
+                captchaError.setVisible(false);
+                captchaValid = true;
             } else {
+                captchaError.setVisible(true);
+                refreshCaptcha(null); // Refresh for security
+            }
+
+            User newUser = new User();
+
+            // Telephone validation (non-blocking for x)
+            if (telephone.getText() != null && telephone.getText().matches("^[0-9]+$") && Integer.parseInt(telephone.getText()) >= 8) {
                 phoneerror.setVisible(false);
                 newUser.setTelephone(telephone.getText());
+            } else {
+                phoneerror.setVisible(true);
             }
-            if (prenom.getText().matches("^[a-zA-Z].*")){
-                p.setVisible(false);
 
+            // Prénom validation
+            if (prenom.getText() != null && prenom.getText().matches("^[a-zA-Z].*")) {
+                p.setVisible(false);
                 newUser.setPrenom(prenom.getText());
-                x+=1;
-                newUser.setNom(nom.getText());
-            }else {
+                x += 1;
+            } else {
                 p.setVisible(true);
             }
-            if (nom.getText().matches("^[a-zA-Z].*")){
+
+            // Nom validation
+            if (nom.getText() != null && nom.getText().matches("^[a-zA-Z].*")) {
                 nomerror.setVisible(false);
                 newUser.setNom(nom.getText());
-                x+=1;
-
-
+                x += 1;
             } else {
                 nomerror.setText("Format incorrect");
                 nomerror.setVisible(true);
             }
 
-
-            if ((age.getText().isEmpty()) || Integer.parseInt(age.getText()) > 70 || Integer.parseInt(age.getText()) < 0) {
-                ageerror.setVisible(true);
-
-            } else {
+            // Age validation
+            if (age.getText() != null && !age.getText().isEmpty() && Integer.parseInt(age.getText()) <= 70 && Integer.parseInt(age.getText()) >= 0) {
                 ageerror.setVisible(false);
                 newUser.setAge(Integer.parseInt(age.getText()));
-                x+=1;
+                x += 1;
+            } else {
+                ageerror.setVisible(true);
             }
-            if (email.getText().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+
+            // Email validation
+            if (email.getText() != null && email.getText().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
                 if (userservice.findbyMail(email.getText()) != null) {
                     invalidmail.setText("Email already exists");
                     invalidmail.setVisible(true);
                 } else {
-
                     invalidmail.setVisible(false);
-                newUser.setEmail(email.getText());
+                    newUser.setEmail(email.getText());
                     x += 1;
                 }
-
-
             } else {
                 invalidmail.setText("Invalid email");
                 invalidmail.setVisible(true);
             }
-            if(password.getText().length()>5){
+
+            // Password validation
+            if (password.getText() != null && password.getText().length() > 5) {
                 pwdinvalid.setVisible(false);
                 newUser.setMot_de_passe(password.getText());
-                x+=1;
+                x += 1;
+            } else {
+                pwdinvalid.setVisible(true);
+            }
 
-
-            } else pwdinvalid.setVisible(true);
-            if (x==5){
+            // Final creation check
+            if (captchaValid && x == 5) {
                 userservice.create(newUser);
                 System.out.println("Sign in successful!");
+
+                // Log the user in and navigate to the main application
+                Session.getInstance().setCurrentUser(newUser);
+                navigateToMainLayout(event);
             }
 
         } catch (Exception e) {
@@ -253,5 +284,19 @@ public class SignIn {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @FXML
+    public void refreshCaptcha(ActionEvent event) {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder sb = new StringBuilder();
+        java.util.Random rnd = new java.util.Random();
+        while (sb.length() < 6) {
+            int index = (int) (rnd.nextFloat() * chars.length());
+            sb.append(chars.charAt(index));
+        }
+        currentCaptcha = sb.toString();
+        captchaLabel.setText(currentCaptcha);
+        captchaInput.clear();
     }
 }

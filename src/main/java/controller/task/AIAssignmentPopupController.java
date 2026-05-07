@@ -8,7 +8,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.user.User;
+import Model.user.User;
 import model.task.Recommendation;
 import model.task.Tache;
 import service.task.TaskService;

@@ -1,4 +1,4 @@
-package Controller;
+package Controller.finance;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;

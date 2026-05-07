@@ -1,4 +1,4 @@
-package Controller;
+package Controller.finance;
 
 import javafx.scene.control.ListCell;
 import model.Budget;

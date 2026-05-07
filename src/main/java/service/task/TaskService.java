@@ -3,7 +3,7 @@ package service.task;
 import model.task.Tache;
 import enums.PrioriteTache;
 import enums.StatutTache;
-import model.user.User;
+import Model.user.User;
 import utils.MyDatabase;
 
 import java.sql.*;

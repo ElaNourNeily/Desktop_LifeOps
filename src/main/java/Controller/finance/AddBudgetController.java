@@ -1,4 +1,4 @@
-package Controller;
+package Controller.finance;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -9,10 +9,10 @@ import service.BudgetService;
 
 import java.sql.SQLException;
 
-public class UpdateBudgetController {
+public class AddBudgetController {
 
-    @FXML
-    private Label budgetIdLabel;
+    private static final int CURRENT_UTILISATEUR_ID = 1;
+
     @FXML
     private TextField revenuMensuelField;
     @FXML
@@ -25,42 +25,23 @@ public class UpdateBudgetController {
     private Label messageLabel;
 
     private final BudgetService budgetService = new BudgetService();
-    private Budget selectedBudget;
 
     @FXML
     public void initialize() {
-        selectedBudget = FinanceSelectionContext.getSelectedBudget();
-        if (selectedBudget == null) {
-            messageLabel.setText("Aucun budget selectionne.");
-            return;
-        }
-
-        budgetIdLabel.setText("Budget #" + selectedBudget.getId());
-        revenuMensuelField.setText(String.valueOf(selectedBudget.getRevenuMensuel()));
-        plafondField.setText(String.valueOf(selectedBudget.getPlafond()));
-        moisField.setText(selectedBudget.getMois());
-        economiesField.setText(String.valueOf(selectedBudget.getEconomies()));
     }
 
     @FXML
     public void saveBudget(Event event) {
-        if (selectedBudget == null) {
-            messageLabel.setText("Aucun budget selectionne.");
-            return;
-        }
-
         try {
-            Budget updated = new Budget(
-                    selectedBudget.getId(),
+            Budget budget = new Budget(
                     parseDouble(revenuMensuelField.getText(), "revenu mensuel"),
                     parseDouble(plafondField.getText(), "plafond"),
                     requiredText(moisField.getText(), "mois"),
                     parseDouble(economiesField.getText(), "economies"),
-                    selectedBudget.getUtilisateurId()
+                    CURRENT_UTILISATEUR_ID
             );
 
-            budgetService.modifier(updated);
-            FinanceSelectionContext.setSelectedBudget(updated);
+            budgetService.ajouter(budget);
             ViewNavigator.navigate(event, "/finance/finance.fxml", "LifeOps - Finance");
         } catch (IllegalArgumentException | SQLException e) {
             messageLabel.setText(e.getMessage());

@@ -8,7 +8,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import model.user.User;
+import Model.user.User;
 import model.task.Tache;
 import service.task.TaskService;
 import service.user.UserService;

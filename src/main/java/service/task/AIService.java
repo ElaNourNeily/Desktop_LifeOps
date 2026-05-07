@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import model.user.User;
+import Model.user.User;
 import model.task.Recommendation;
 import model.task.Tache;
 

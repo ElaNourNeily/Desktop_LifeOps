@@ -20,7 +20,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import model.user.User;
+import Model.user.User;
 import service.user.UserService;
 import utils.Session;
 import utils.RememberMe;
@@ -28,6 +28,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -43,6 +45,9 @@ public class login {
     private PasswordField password;
 
     @FXML
+    private TextField passwordTextField;
+
+    @FXML
     private Label errorLabel;
 
     @FXML
@@ -51,15 +56,33 @@ public class login {
     UserService userservice = new UserService();
 
     @FXML
-    void LogIn(ActionEvent event) {
+    public void LogIn(ActionEvent event) {
         try {
-            String emailText = email.getText() != null ? email.getText().trim() : "";
-            String passwordText = password.getText() != null ? password.getText().trim() : "";
+            String emailText = email != null && email.getText() != null ? email.getText().trim() : "";
+
+            String passwordText = "";
+            if (password != null && password.isVisible()) {
+                passwordText = password.getText();
+            } else if (passwordTextField != null) {
+                passwordText = passwordTextField.getText();
+            }
+            passwordText = passwordText != null ? passwordText.trim() : "";
 
             if (emailText.isEmpty() || passwordText.isEmpty()) {
                 error.setText("Aucun mot de passe ou email n’est fourni!!");
                 error.setVisible(true);
                 return;
+            }
+
+            // Check if user is banned before attempting login
+            User existingUser = userservice.findbyMail(emailText);
+            if (existingUser != null && existingUser.getBanUntil() != null) {
+                if (existingUser.getBanUntil().isAfter(LocalDateTime.now())) {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+                    error.setText("Vous êtes banni jusqu'à " + existingUser.getBanUntil().format(formatter));
+                    error.setVisible(true);
+                    return;
+                }
             }
 
             User testingUser = new User();
@@ -69,6 +92,12 @@ public class login {
             if (userservice.recherche(testingUser)) {
                 // Fetch the full user from the DB and store in session
                 User loggedInUser = userservice.findbyMail(emailText);
+
+                // Clear ban status on successful login
+                if (loggedInUser.getBanUntil() != null) {
+                    userservice.updateBanUntil(loggedInUser.getId(), null);
+                }
+
                 Session.getInstance().setCurrentUser(loggedInUser);
 
                 System.out.println("Login successful — Welcome "
@@ -81,17 +110,27 @@ public class login {
 
                 navigateToMainLayout(event);
             } else {
-                error.setText("Email ou mot de passe incorrect!");
+                // If the email exists but password was wrong, ban for 3 hours
+                if (existingUser != null) {
+                    LocalDateTime banUntil = LocalDateTime.now().plusHours(3);
+                    userservice.updateBanUntil(existingUser.getId(), banUntil);
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+                    error.setText("Mot de passe incorrect. Vous êtes banni jusqu'à " + banUntil.format(formatter));
+                } else {
+                    error.setText("Email ou mot de passe incorrect!");
+                }
                 error.setVisible(true);
                 System.out.println("Login unsuccessful — invalid email or password");
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            error.setText("Erreur: " + e.getMessage());
+            error.setVisible(true);
+            e.printStackTrace();
         }
     }
 
     @FXML
-    void loginwithgoogle(ActionEvent event) {
+    public void loginwithgoogle(ActionEvent event) {
         try {
             GoogleAuthorizationCodeFlow flow =
                     new GoogleAuthorizationCodeFlow.Builder(
@@ -144,7 +183,7 @@ public class login {
     }
 
     @FXML
-    void navtosignin(MouseEvent event) {
+    public void navtosignin(MouseEvent event) {
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/user/SignIn.fxml")));
 
@@ -230,5 +269,81 @@ public class login {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @FXML
+    public void makevisivle(MouseEvent event) {
+        if (password.isVisible()) {
+            passwordTextField.setText(password.getText());
+            passwordTextField.setVisible(true);
+            password.setVisible(false);
+        } else {
+            password.setText(passwordTextField.getText());
+            password.setVisible(true);
+            passwordTextField.setVisible(false);
+        }
+    }
+
+    @FXML
+    void forget(MouseEvent event) {
+        String userEmail = email.getText();
+
+        if (userEmail == null || userEmail.isEmpty()) {
+            error.setText("Veuillez saisir votre email d'abord !");
+            error.setVisible(true);
+            return;
+        }
+
+        try {
+            User user = userservice.findbyMail(userEmail);
+            if (user == null) {
+                error.setText("Cet email n'existe pas dans notre système.");
+                error.setVisible(true);
+                return;
+            }
+
+            // Generate 6-digit code
+            int code = (int) (Math.random() * 900000) + 100000;
+            String verificationCode = String.valueOf(code);
+
+            // Send Email
+            String subject = "Réinitialisation de votre mot de passe - LifeOps";
+            String body = "Bonjour " + user.getPrenom() + ",\n\n"
+                    + "Vous avez demandé la réinitialisation de votre mot de passe.\n"
+                    + "Votre code de vérification est : " + verificationCode + "\n\n"
+                    + "Si vous n'êtes pas à l'origine de cette demande, veuillez ignorer cet e-mail.\n\n"
+                    + "L'équipe LifeOps.";
+
+            utils.EmailService.sendEmail(userEmail, subject, body);
+
+            // Store reset data in session
+            Session.getInstance().setResetData(userEmail, verificationCode);
+
+            // Success message and navigation
+            error.setText("Code envoyé ! Vérification...");
+            error.setStyle("-fx-text-fill: #34D399;");
+            error.setVisible(true);
+
+            System.out.println("Verification code for " + userEmail + ": " + verificationCode);
+
+            // Navigate to Reset Password page
+            navigateToResetPassword(event);
+
+        } catch (Exception e) {
+            error.setText("Erreur lors de l'envoi de l'email.");
+            error.setVisible(true);
+            e.printStackTrace();
+        }
+    }
+
+    private void navigateToResetPassword(MouseEvent event) {
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/user/ResetPassword.fxml")));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            System.out.println("Navigation Error: " + e.getMessage());
+        }
     }
 }

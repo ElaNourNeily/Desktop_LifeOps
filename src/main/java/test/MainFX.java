@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.user.User;
+import Model.user.User;
 import service.user.UserService;
 import utils.RememberMe;
 import utils.Session;

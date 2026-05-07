@@ -13,7 +13,7 @@ import model.task.TaskSpace;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pusher.client.channel.Channel;
-import model.user.User;
+import Model.user.User;
 import service.task.TaskService;
 import service.task.TaskSpaceService;
 import service.task.TaskSpaceUserService;

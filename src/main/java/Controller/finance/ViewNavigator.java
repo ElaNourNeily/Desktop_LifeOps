@@ -1,4 +1,4 @@
-package Controller;
+package Controller.finance;
 
 import Controller.user.MainLayoutController;
 import javafx.event.Event;

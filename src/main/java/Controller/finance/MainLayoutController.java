@@ -1,4 +1,4 @@
-package Controller;
+package Controller.finance;
 
 import javafx.animation.*;
 import javafx.fxml.FXML;

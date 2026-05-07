@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
-import model.user.User;
+import Model.user.User;
 import service.user.UserService;
 import utils.Session;
 

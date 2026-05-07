@@ -1,6 +1,6 @@
 package service.user;
 
-import model.user.User;
+import Model.user.User;
 import utils.MyDatabase;
 import service.Interfaces.CRUD;
 import org.mindrot.jbcrypt.BCrypt;
@@ -101,6 +101,16 @@ public class UserService implements CRUD<User> {
             Timestamp timestamp = rs.getTimestamp("created_at");
             if (timestamp != null) {
                 user.setCreated_at(timestamp.toLocalDateTime());
+            }
+
+            // Handle ban_until
+            try {
+                Timestamp banTimestamp = rs.getTimestamp("ban_until");
+                if (banTimestamp != null) {
+                    user.setBanUntil(banTimestamp.toLocalDateTime());
+                }
+            } catch (SQLException e) {
+                user.setBanUntil(null); // Column might not exist or name is different
             }
             
             // Handle has_set_password (may not exist in older databases)
@@ -226,6 +236,32 @@ public class UserService implements CRUD<User> {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    /**
+     * Updates the ban_until timestamp for a user.
+     */
+    public void updateBanUntil(int userId, java.time.LocalDateTime banUntil) throws SQLException {
+        String sql = "UPDATE utilisateur SET ban_until = ? WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            if (banUntil != null) {
+                ps.setTimestamp(1, Timestamp.valueOf(banUntil));
+            } else {
+                ps.setNull(1, Types.TIMESTAMP);
+            }
+            ps.setInt(2, userId);
+            ps.executeUpdate();
+        }
+    }
+
+    public void updatePasswordByEmail(String email, String newPassword) throws SQLException {
+        String sql = "UPDATE utilisateur SET mot_de_passe = ? WHERE email = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            // Hash the password before saving
+            ps.setString(1, BCrypt.hashpw(newPassword, BCrypt.gensalt()));
+            ps.setString(2, email);
+            ps.executeUpdate();
         }
     }
 }
