@@ -71,14 +71,36 @@ public class ActiviteService implements IService<Activite> {
                 ")"
             );
 
-            // Add recurrence_group_id column if missing (migration)
-            DatabaseMetaData md = connection.getMetaData();
-            ResultSet rs = md.getColumns(null, null, "activite", "recurrence_group_id");
-            if (!rs.next()) {
-                connection.createStatement().execute("ALTER TABLE activite ADD COLUMN recurrence_group_id INT NULL");
-            }
+            // Migration: add any missing columns to existing activite table
+            addColumnIfMissing("activite", "categorie",        "VARCHAR(100)");
+            addColumnIfMissing("activite", "couleur",          "VARCHAR(20)");
+            addColumnIfMissing("activite", "suggested_by_ai",  "BOOLEAN DEFAULT FALSE");
+            addColumnIfMissing("activite", "minutes_rappel",   "INT DEFAULT 0");
+            addColumnIfMissing("activite", "heure_debut_reelle","TIME");
+            addColumnIfMissing("activite", "heure_fin_reelle", "TIME");
+            addColumnIfMissing("activite", "is_recurrent",     "BOOLEAN DEFAULT FALSE");
+            addColumnIfMissing("activite", "recurrence_type",  "VARCHAR(20)");
+            addColumnIfMissing("activite", "recurrence_days",  "VARCHAR(50)");
+            addColumnIfMissing("activite", "recurrence_interval","INT DEFAULT 1");
+            addColumnIfMissing("activite", "recurrence_group_id","INT");
+            addColumnIfMissing("activite", "niveau_urgence",   "VARCHAR(50) DEFAULT 'moyen'");
+
         } catch (SQLException e) {
             System.err.println("[DB] Schema init error: " + e.getMessage());
+        }
+    }
+
+    private void addColumnIfMissing(String table, String column, String definition) {
+        try {
+            DatabaseMetaData md = connection.getMetaData();
+            ResultSet rs = md.getColumns(null, null, table, column);
+            if (!rs.next()) {
+                connection.createStatement().execute(
+                    "ALTER TABLE " + table + " ADD COLUMN " + column + " " + definition
+                );
+            }
+        } catch (SQLException e) {
+            System.err.println("[DB] Could not add column " + column + ": " + e.getMessage());
         }
     }
 
