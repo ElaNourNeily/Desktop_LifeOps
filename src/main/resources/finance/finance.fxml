@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
@@ -16,10 +15,22 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1400.0" styleClass="root-pane" stylesheets="@../styleRead.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FinanceController">
+<AnchorPane prefHeight="780.0" prefWidth="1400.0"
+            styleClass="root-pane"
+            stylesheets="@../Task/board_style.css"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.FinanceController">
    <children>
-      <VBox prefHeight="780.0" prefWidth="229.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+      <!-- ══════════════════════════════════════════════
+           SIDEBAR
+      ══════════════════════════════════════════════ -->
+      <VBox prefHeight="780.0" prefWidth="229.0" styleClass="sidebar"
+            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
+
+            <!-- Logo -->
             <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="229.0" spacing="10.0">
                <padding><Insets left="20.0" /></padding>
                <children>
@@ -32,24 +43,26 @@
                </children>
             </HBox>
 
-            <VBox prefHeight="300.0" prefWidth="229.0" spacing="5.0">
+            <!-- Nav items -->
+            <VBox prefWidth="229.0" spacing="5.0">
                <padding><Insets top="20.0" /></padding>
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0" spacing="10.0" styleClass="nav-item">
                      <padding><Insets left="20.0" /></padding>
                      <children>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image><Image url="@../assets/home_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                           <image><Image url="@../assets/home_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
                         </ImageView>
                         <Label styleClass="nav-label" text="Tableau de bord" />
                      </children>
                   </HBox>
 
+                  <!-- Finance — ACTIVE -->
                   <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="229.0" spacing="10.0" styleClass="nav-item-active">
                      <padding><Insets left="20.0" /></padding>
                      <children>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image><Image url="@../assets/account_balance_wallet_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                           <image><Image url="@../assets/account_balance_wallet_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
                         </ImageView>
                         <Label styleClass="nav-label-active" text="Finance" />
                      </children>
@@ -59,7 +72,7 @@
                      <padding><Insets left="20.0" /></padding>
                      <children>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image><Image url="@../assets/target_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                           <image><Image url="@../assets/target_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
                         </ImageView>
                         <Label styleClass="nav-label" text="Objectifs" />
                      </children>
@@ -69,7 +82,7 @@
                      <padding><Insets left="20.0" /></padding>
                      <children>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image><Image url="@../assets/ecg_heart_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                           <image><Image url="@../assets/ecg_heart_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
                         </ImageView>
                         <Label styleClass="nav-label" text="Santé" />
                      </children>
@@ -79,7 +92,7 @@
                      <padding><Insets left="20.0" /></padding>
                      <children>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image><Image url="@../assets/schedule_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                           <image><Image url="@../assets/schedule_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
                         </ImageView>
                         <Label styleClass="nav-label" text="Temps" />
                      </children>
@@ -89,168 +102,196 @@
 
             <VBox VBox.vgrow="ALWAYS" />
 
+            <!-- Account box -->
             <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="229.0" spacing="10.0" styleClass="account-box">
                <padding><Insets bottom="10.0" left="15.0" right="15.0" top="10.0" /></padding>
                <VBox.margin><Insets bottom="20.0" left="10.0" right="10.0" /></VBox.margin>
                <children>
                   <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                     <image><Image url="@../assets/account_circle_24dp_A1A1AA%20_FILL0_wght400_GRAD0_opsz24.png" /></image>
+                     <image><Image url="@../assets/account_circle_24dp_A1A1AA _FILL0_wght400_GRAD0_opsz24.png" /></image>
                   </ImageView>
-                  <Label styleClass="account-label" text="compte" />
+                  <Label fx:id="currentUserLabel" styleClass="account-label" text="compte" />
                </children>
             </HBox>
          </children>
       </VBox>
 
-      <Line endX="0.0" endY="780.0" startX="0.0" startY="0.0" styleClass="sidebar-divider" AnchorPane.leftAnchor="229.0" AnchorPane.topAnchor="0.0" />
+      <!-- Sidebar divider -->
+      <Line endX="0.0" endY="780.0" startX="0.0" startY="0.0"
+            style="-fx-stroke: #2a2d32;"
+            AnchorPane.leftAnchor="229.0" AnchorPane.topAnchor="0.0" />
 
-      <VBox prefHeight="780.0" prefWidth="1171.0" styleClass="main-content" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="229.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <!-- ══════════════════════════════════════════════
+           MAIN CONTENT
+      ══════════════════════════════════════════════ -->
+      <VBox prefHeight="780.0"
+            style="-fx-background-color: #17191F;"
+            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="229.0"
+            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox spacing="0.0">
-               <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="75.0" spacing="15.0">
-                     <padding><Insets left="30.0" right="30.0" top="20.0" /></padding>
-                     <children>
-                        <VBox spacing="3.0" HBox.hgrow="ALWAYS">
-                           <children>
-                              <Label styleClass="page-title" text="Finance personnelle">
-                                 <font><Font name="System Bold" size="20.0" /></font>
-                              </Label>
-                              <Label styleClass="page-subtitle" text="Ajoutez rapidement un budget et une dépense." />
-                              <Label fx:id="currentUserLabel" styleClass="page-subtitle" text="Utilisateur courant" />
-                           </children>
-                        </VBox>
-                        <Button mnemonicParsing="false" styleClass="action-button" text="Actualiser" onAction="#initialize" />
-                     </children>
-                  </HBox>
-                  <Line endX="1111.0" startX="0.0" styleClass="section-divider">
-                     <VBox.margin><Insets left="30.0" right="30.0" top="10.0" /></VBox.margin>
-                  </Line>
-               </children>
-            </VBox>
 
-            <Label fx:id="financeMessageLabel" styleClass="page-subtitle" text="Budgets et dépenses" VBox.vgrow="NEVER">
-               <VBox.margin><Insets left="30.0" right="30.0" top="15.0" /></VBox.margin>
-            </Label>
+            <!-- ── Page header ─────────────────────────── -->
+            <HBox alignment="CENTER_LEFT" style="-fx-padding: 32 40 20 40;">
+               <VBox spacing="4" HBox.hgrow="ALWAYS">
+                  <Label style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" text="💰 Finance" />
+                  <Label style="-fx-text-fill: #8a8d91; -fx-font-size: 13px;" text="Gérez vos budgets et dépenses personnelles" />
+               </VBox>
+               <Button mnemonicParsing="false" onAction="#initialize"
+                       styleClass="action-button" text="↻ Actualiser" />
+            </HBox>
 
-            <VBox fx:id="remindersBanner" visible="false" managed="false" spacing="10.0" styleClass="reminders-banner">
-               <VBox.margin><Insets left="30.0" right="30.0" top="12.0" /></VBox.margin>
+            <!-- ── Tabs / quick actions ─────────────────── -->
+            <HBox alignment="CENTER_LEFT" spacing="8" style="-fx-padding: 0 40 16 40;">
+               <Button mnemonicParsing="false" onAction="#openAddBudget"
+                       styleClass="btn-primary" text="+ Nouveau budget"
+                       style="-fx-padding: 9 18;" />
+               <Button mnemonicParsing="false" onAction="#openAddDepense"
+                       style="-fx-background-color: rgba(139,92,246,0.15); -fx-text-fill: #a78bfa;
+                              -fx-border-color: rgba(139,92,246,0.3); -fx-border-radius: 10; -fx-background-radius: 10;
+                              -fx-font-size: 13px; -fx-cursor: hand; -fx-padding: 9 18; -fx-font-weight: bold;"
+                       text="+ Nouvelle dépense" />
+               <Region HBox.hgrow="ALWAYS" />
+               <Label fx:id="financeMessageLabel"
+                      style="-fx-text-fill: #6a6d71; -fx-font-size: 12px;" text="" />
+            </HBox>
+
+            <!-- ── Reminders banner ─────────────────────── -->
+            <VBox fx:id="remindersBanner" visible="false" managed="false" spacing="10.0"
+                  style="-fx-background-color: rgba(239,68,68,0.10); -fx-background-radius: 12;
+                         -fx-border-color: rgba(239,68,68,0.35); -fx-border-radius: 12; -fx-padding: 16;">
+               <VBox.margin><Insets left="40.0" right="40.0" bottom="12.0" /></VBox.margin>
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="12.0">
                      <children>
-                        <Label fx:id="remindersKickerLabel" styleClass="reminders-pill" text="ALERTE 24H" />
+                        <Label fx:id="remindersKickerLabel"
+                               style="-fx-background-color: rgba(239,68,68,0.85); -fx-background-radius: 999;
+                                      -fx-padding: 4 10; -fx-text-fill: white; -fx-font-size: 11px; -fx-font-weight: bold;"
+                               text="ALERTE 24H" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button mnemonicParsing="false" onAction="#markAllRemindersRead" styleClass="action-button" text="Marquer tout comme lu" />
-                        <Button mnemonicParsing="false" onAction="#viewRemindersList" styleClass="submit-button" text="Voir la liste" />
+                        <Button mnemonicParsing="false" onAction="#markAllRemindersRead"
+                                styleClass="action-button" text="Marquer lu" />
+                        <Button mnemonicParsing="false" onAction="#viewRemindersList"
+                                styleClass="btn-primary" text="Voir la liste" />
                      </children>
                   </HBox>
-                  <Label fx:id="remindersTitleLabel" styleClass="reminders-title" text="Depense imminente: action conseillee." />
-                  <Label fx:id="remindersDetailLabel" styleClass="reminders-detail" text="" wrapText="true" />
-                  <Label fx:id="remindersMetaLabel" styleClass="reminders-meta" text="" />
+                  <Label fx:id="remindersTitleLabel"
+                         style="-fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;" text="" />
+                  <Label fx:id="remindersDetailLabel"
+                         style="-fx-text-fill: rgba(255,255,255,0.82); -fx-font-size: 13px;" text="" wrapText="true" />
+                  <Label fx:id="remindersMetaLabel"
+                         style="-fx-text-fill: rgba(255,255,255,0.55); -fx-font-size: 12px;" text="" />
                </children>
             </VBox>
 
-            <ScrollPane fitToWidth="true" styleClass="finance-scroll" VBox.vgrow="ALWAYS">
-               <VBox.margin><Insets bottom="20.0" left="30.0" right="30.0" top="20.0" /></VBox.margin>
+            <!-- ── Scrollable content ───────────────────── -->
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                        style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;">
                <content>
-                  <VBox spacing="24.0" styleClass="finance-page-content">
-	                     <children>
-	                        <VBox spacing="14.0" styleClass="finance-hero-card">
-	                           <children>
-	                              <Label styleClass="finance-kicker" text="Finance workspace" />
+                  <VBox spacing="24.0" style="-fx-padding: 0 40 40 40;">
+                     <children>
+
+                        <!-- Hero card -->
+                        <VBox spacing="14.0"
+                              style="-fx-background-color: linear-gradient(to right, rgba(28,31,45,0.96), rgba(97,61,164,0.78));
+                                     -fx-background-radius: 24; -fx-padding: 28;
+                                     -fx-border-color: rgba(255,255,255,0.08); -fx-border-radius: 24;">
+                           <children>
+                              <Label style="-fx-text-fill: #d8b4fe; -fx-font-size: 11px; -fx-font-weight: bold;"
+                                     text="FINANCE WORKSPACE" />
                               <HBox alignment="CENTER_LEFT" spacing="20.0">
                                  <children>
                                     <VBox spacing="6.0" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label styleClass="finance-hero-title" text="vos Budgets et vos dépenses " />
-                                          <Label styleClass="finance-hero-subtitle" text="Créez un budget, rattachez-y des dépenses pour mieux organiser votre vie financiere ." wrapText="true" />
+                                          <Label style="-fx-text-fill: white; -fx-font-size: 26px; -fx-font-weight: bold;"
+                                                 text="Vos Budgets et Dépenses" />
+                                          <Label style="-fx-text-fill: rgba(255,255,255,0.78); -fx-font-size: 13px;"
+                                                 text="Créez un budget, rattachez-y des dépenses pour mieux organiser votre vie financière."
+                                                 wrapText="true" />
                                        </children>
                                     </VBox>
-                                    <VBox spacing="8.0" styleClass="finance-stat-highlight">
+                                    <VBox spacing="8.0"
+                                          style="-fx-background-color: rgba(12,14,20,0.35); -fx-background-radius: 18; -fx-padding: 12 20;">
                                        <children>
-                                          <Label styleClass="finance-stat-caption" text="Vue active" />
-                                          <Label styleClass="finance-stat-value" text="Finance" />
+                                          <Label style="-fx-text-fill: #c4b5fd; -fx-font-size: 11px;" text="Vue active" />
+                                          <Label style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" text="Finance" />
                                        </children>
                                     </VBox>
                                  </children>
                               </HBox>
-	                           </children>
-	                        </VBox>
+                           </children>
+                        </VBox>
 
-	                        <VBox spacing="14.0" styleClass="finance-action-card">
-	                           <padding><Insets bottom="24.0" left="24.0" right="24.0" top="24.0" /></padding>
-	                           <children>
-	                              <HBox alignment="CENTER_LEFT">
-	                                 <children>
-	                                    <Label styleClass="finance-panel-title" text="Suggestions" />
-	                                    <Region HBox.hgrow="ALWAYS" />
-	                                    <Button mnemonicParsing="false" onAction="#dismissInsights" styleClass="action-button" text="Masquer" />
-	                                 </children>
-	                              </HBox>
-	                              <Label fx:id="insightsSubtitleLabel" styleClass="page-subtitle" text="" wrapText="true" />
-
-	                              <VBox fx:id="recurringBox" spacing="10.0">
-	                                 <children>
-	                                    <Label styleClass="finance-section-label" text="Depenses recurrentes detectees" />
-	                                    <Label fx:id="recurringSummaryLabel" styleClass="page-subtitle" text="" wrapText="true" />
-	                                 </children>
-	                              </VBox>
-
-	                              <VBox fx:id="priorityBox" spacing="10.0">
-	                                 <children>
-	                                    <Label styleClass="finance-section-label" text="Priorite proposee (HIGH/MED/LOW)" />
-	                                    <Label fx:id="prioritySummaryLabel" styleClass="page-subtitle" text="" wrapText="true" />
-	                                 </children>
-	                              </VBox>
-	                           </children>
-	                        </VBox>
-
-	                        <HBox spacing="20.0" styleClass="finance-forms-row">
-	                           <children>
-	                              <VBox prefWidth="520.0" spacing="16.0" styleClass="finance-action-card">
-                                 <padding><Insets bottom="24.0" left="24.0" right="24.0" top="24.0" /></padding>
+                        <!-- Insights / Suggestions card -->
+                        <VBox spacing="16.0"
+                              style="-fx-background-color: #17191F; -fx-background-radius: 20;
+                                     -fx-border-color: #2a2d32; -fx-border-width: 1; -fx-border-radius: 20; -fx-padding: 24;">
+                           <children>
+                              <HBox alignment="CENTER_LEFT">
                                  <children>
-                                    <Label styleClass="finance-panel-title" text="Budget" />
-                                    <Label styleClass="page-subtitle" text="Créez un nouveau budget mensuel dans un écran dédié, puis revenez ici pour le gérer." wrapText="true" />
-                                    <Button mnemonicParsing="false" onAction="#openAddBudget" styleClass="submit-button" text="+ Ajouter un budget" />
+                                    <VBox spacing="3" HBox.hgrow="ALWAYS">
+                                       <Label style="-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;"
+                                              text="💡 Suggestions IA" />
+                                       <Label fx:id="insightsSubtitleLabel"
+                                              style="-fx-text-fill: #8a8d91; -fx-font-size: 12px;" text="" />
+                                    </VBox>
+                                    <Button mnemonicParsing="false" onAction="#dismissInsights"
+                                            styleClass="action-button" text="Masquer" />
+                                 </children>
+                              </HBox>
+
+                              <VBox fx:id="recurringBox" spacing="8.0">
+                                 <children>
+                                    <Label style="-fx-text-fill: #a78bfa; -fx-font-size: 11px; -fx-font-weight: bold;"
+                                           text="DÉPENSES RÉCURRENTES DÉTECTÉES" />
+                                    <Label fx:id="recurringSummaryLabel"
+                                           style="-fx-text-fill: #8a8d91; -fx-font-size: 13px;" text="" wrapText="true" />
                                  </children>
                               </VBox>
 
-                              <VBox prefWidth="520.0" spacing="16.0" styleClass="finance-action-card">
-                                 <padding><Insets bottom="24.0" left="24.0" right="24.0" top="24.0" /></padding>
+                              <VBox fx:id="priorityBox" spacing="8.0">
                                  <children>
-                                    <Label styleClass="finance-panel-title" text="Depense" />
-                                    <Label styleClass="page-subtitle" text="Ajoutez une nouvelle dépense séparément et rattachez-la à un budget existant." wrapText="true" />
-                                    <Button mnemonicParsing="false" onAction="#openAddDepense" styleClass="submit-button" text="+ Ajouter une dépense" />
+                                    <Label style="-fx-text-fill: #a78bfa; -fx-font-size: 11px; -fx-font-weight: bold;"
+                                           text="PRIORITÉ PROPOSÉE (HIGH / MED / LOW)" />
+                                    <Label fx:id="prioritySummaryLabel"
+                                           style="-fx-text-fill: #8a8d91; -fx-font-size: 13px;" text="" wrapText="true" />
                                  </children>
                               </VBox>
                            </children>
-                        </HBox>
+                        </VBox>
 
-                        <VBox spacing="14.0" styleClass="finance-action-card">
-                           <padding><Insets bottom="24.0" left="24.0" right="24.0" top="24.0" /></padding>
+                        <!-- Search & sort bar -->
+                        <VBox spacing="14.0"
+                              style="-fx-background-color: #17191F; -fx-background-radius: 16;
+                                     -fx-border-color: #2a2d32; -fx-border-width: 1; -fx-border-radius: 16; -fx-padding: 20;">
                            <children>
-                              <Label styleClass="finance-panel-title" text="Recherche et tri" />
-                              <HBox spacing="20.0">
+                              <Label style="-fx-text-fill: #c0c3c8; -fx-font-size: 11px; -fx-font-weight: bold;"
+                                     text="RECHERCHE ET TRI" />
+                              <HBox spacing="16.0">
                                  <children>
-                                    <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                                    <VBox spacing="6.0" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label styleClass="page-subtitle" text="Budgets (Revenu ou Mois: 2026, 04-2026)" />
-                                          <HBox spacing="10.0">
+                                          <Label style="-fx-text-fill: #6a6d71; -fx-font-size: 11px;" text="Budget (mois: 04-2026, revenu...)" />
+                                          <HBox spacing="8.0">
                                              <children>
-                                                <TextField fx:id="budgetSearchField" promptText="Rechercher budget..." styleClass="form-field" HBox.hgrow="ALWAYS" />
-                                                <ComboBox fx:id="sortBudgetComboBox" prefWidth="180.0" styleClass="form-choice" />
+                                                <TextField fx:id="budgetSearchField" promptText="🔍 Rechercher budget..."
+                                                           styleClass="search-field" HBox.hgrow="ALWAYS" />
+                                                <ComboBox fx:id="sortBudgetComboBox" prefWidth="180.0"
+                                                          style="-fx-background-color: #1c1e22; -fx-text-fill: white;
+                                                                 -fx-background-radius: 10; -fx-border-color: #2a2d32; -fx-border-radius: 10;" />
                                              </children>
                                           </HBox>
                                        </children>
                                     </VBox>
-                                    <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                                    <VBox spacing="6.0" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label styleClass="page-subtitle" text="Depenses (Titre, Categorie, Paiement)" />
-                                          <HBox spacing="10.0">
+                                          <Label style="-fx-text-fill: #6a6d71; -fx-font-size: 11px;" text="Dépense (titre, catégorie, paiement...)" />
+                                          <HBox spacing="8.0">
                                              <children>
-                                                <TextField fx:id="depenseSearchField" promptText="Rechercher depense..." styleClass="form-field" HBox.hgrow="ALWAYS" />
-                                                <ComboBox fx:id="sortDepenseComboBox" prefWidth="180.0" styleClass="form-choice" />
+                                                <TextField fx:id="depenseSearchField" promptText="🔍 Rechercher dépense..."
+                                                           styleClass="search-field" HBox.hgrow="ALWAYS" />
+                                                <ComboBox fx:id="sortDepenseComboBox" prefWidth="180.0"
+                                                          style="-fx-background-color: #1c1e22; -fx-text-fill: white;
+                                                                 -fx-background-radius: 10; -fx-border-color: #2a2d32; -fx-border-radius: 10;" />
                                              </children>
                                           </HBox>
                                        </children>
@@ -260,12 +301,16 @@
                            </children>
                         </VBox>
 
-                        <VBox fx:id="budgetCardsContainer" spacing="18.0" styleClass="finance-cards-stack" />
+                        <!-- Budget cards container (populated by controller) -->
+                        <VBox fx:id="budgetCardsContainer" spacing="16.0" />
+
                      </children>
                   </VBox>
                </content>
             </ScrollPane>
+
          </children>
       </VBox>
+
    </children>
 </AnchorPane>
