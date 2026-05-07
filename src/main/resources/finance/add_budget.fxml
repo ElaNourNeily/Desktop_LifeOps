@@ -4,62 +4,75 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="620.0" prefWidth="960.0" styleClass="root-pane" stylesheets="@../styleRead.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddBudgetController">
-   <children>
-      <VBox prefHeight="620.0" prefWidth="960.0" styleClass="main-content">
-         <children>
-            <VBox spacing="18.0">
-               <padding><Insets bottom="30.0" left="40.0" right="40.0" top="40.0" /></padding>
-               <children>
-                  <Label styleClass="page-title" text="Ajouter Budget" />
-                  <Label fx:id="currentUserLabel" styleClass="page-subtitle" text="Utilisateur courant" />
-                  <VBox spacing="18.0" styleClass="finance-form-panel">
-                     <padding><Insets bottom="24.0" left="24.0" right="24.0" top="24.0" /></padding>
-                     <children>
-                        <HBox spacing="12.0">
-                           <children>
-                              <VBox spacing="8.0">
-                                 <children>
-                                    <Label styleClass="field-label" text="Revenu mensuel" />
-                                    <TextField fx:id="revenuMensuelField" promptText="4500" styleClass="form-field" />
-                                 </children>
-                              </VBox>
-                              <VBox spacing="8.0">
-                                 <children>
-                                    <Label styleClass="field-label" text="Plafond" />
-                                    <TextField fx:id="plafondField" promptText="3000" styleClass="form-field" />
-                                 </children>
-                              </VBox>
-                           </children>
-                        </HBox>
-                        <VBox spacing="8.0">
-                           <children>
-                              <Label styleClass="field-label" text="Mois (MM-YYYY)" />
-                              <TextField fx:id="moisField" promptText="01-2026" styleClass="form-field" />
-                           </children>
-                        </VBox>
-                        <VBox spacing="8.0">
-                           <children>
-                              <Label styleClass="field-label" text="Economies" />
-                              <TextField fx:id="economiesField" promptText="1500" styleClass="form-field" />
-                           </children>
-                        </VBox>
-                        <Label fx:id="messageLabel" styleClass="page-subtitle" text="" />
-                        <HBox spacing="12.0">
-                           <children>
-                              <Button mnemonicParsing="false" onAction="#saveBudget" styleClass="submit-button" text="Ajouter Budget" />
-                              <Button mnemonicParsing="false" onAction="#cancel" styleClass="action-button" text="Retour" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-               </children>
-            </VBox>
-         </children>
+<VBox spacing="0"
+      style="-fx-background-color: #17191F;"
+      stylesheets="@../Task/board_style.css"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controller.AddBudgetController">
+
+   <!-- Header -->
+   <HBox alignment="CENTER_LEFT" style="-fx-padding: 32 40 20 40;">
+      <VBox spacing="4" HBox.hgrow="ALWAYS">
+         <Label style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" text="+ Ajouter un Budget" />
+         <Label style="-fx-text-fill: #8a8d91; -fx-font-size: 13px;" text="Créez un nouveau budget mensuel" />
       </VBox>
-   </children>
-</AnchorPane>
+   </HBox>
+
+   <!-- Form card -->
+   <VBox spacing="20.0" style="-fx-padding: 0 40 40 40;">
+      <children>
+         <VBox spacing="20.0"
+               style="-fx-background-color: #17191F; -fx-background-radius: 20;
+                      -fx-border-color: #2a2d32; -fx-border-width: 1; -fx-border-radius: 20; -fx-padding: 28;">
+            <children>
+               <HBox spacing="16.0">
+                  <children>
+                     <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                        <children>
+                           <Label styleClass="field-label" text="Revenu mensuel" />
+                           <TextField fx:id="revenuMensuelField" promptText="4500" styleClass="form-field" />
+                        </children>
+                     </VBox>
+                     <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                        <children>
+                           <Label styleClass="field-label" text="Plafond de dépenses" />
+                           <TextField fx:id="plafondField" promptText="3000" styleClass="form-field" />
+                        </children>
+                     </VBox>
+                  </children>
+               </HBox>
+               <HBox spacing="16.0">
+                  <children>
+                     <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                        <children>
+                           <Label styleClass="field-label" text="Mois (MM-YYYY)" />
+                           <TextField fx:id="moisField" promptText="01-2026" styleClass="form-field" />
+                        </children>
+                     </VBox>
+                     <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                        <children>
+                           <Label styleClass="field-label" text="Économies" />
+                           <TextField fx:id="economiesField" promptText="1500" styleClass="form-field" />
+                        </children>
+                     </VBox>
+                  </children>
+               </HBox>
+               <Label fx:id="messageLabel" style="-fx-text-fill: #f87171; -fx-font-size: 13px;" text="" />
+               <HBox spacing="12.0">
+                  <children>
+                     <Button mnemonicParsing="false" onAction="#saveBudget"
+                             styleClass="btn-primary" text="Ajouter le budget" />
+                     <Button mnemonicParsing="false" onAction="#cancel"
+                             styleClass="action-button" text="← Retour" />
+                  </children>
+               </HBox>
+            </children>
+         </VBox>
+      </children>
+   </VBox>
+
+</VBox>

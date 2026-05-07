@@ -23,14 +23,11 @@ public class AddBudgetController {
     private TextField economiesField;
     @FXML
     private Label messageLabel;
-    @FXML
-    private Label currentUserLabel;
 
     private final BudgetService budgetService = new BudgetService();
 
     @FXML
     public void initialize() {
-        currentUserLabel.setText("Utilisateur courant : #" + CURRENT_UTILISATEUR_ID);
     }
 
     @FXML

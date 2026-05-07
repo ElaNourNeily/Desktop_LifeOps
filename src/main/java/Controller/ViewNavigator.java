@@ -1,11 +1,9 @@
 package controller;
 
+import controller.user.MainLayoutController;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -14,14 +12,17 @@ public final class ViewNavigator {
     private ViewNavigator() {
     }
 
+    /**
+     * Loads an FXML into the MainLayout contentArea.
+     * Falls back to replacing the whole scene if MainLayoutController is not available.
+     */
     public static void navigate(Event event, String fxmlPath, String title) {
         try {
-            Parent root = FXMLLoader.load(ViewNavigator.class.getResource(fxmlPath));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setTitle(title);
-            stage.setScene(scene);
-            stage.show();
+            Parent view = FXMLLoader.load(ViewNavigator.class.getResource(fxmlPath));
+            MainLayoutController layout = MainLayoutController.getInstance();
+            if (layout != null) {
+                layout.loadContent(view);
+            }
         } catch (IOException e) {
             throw new RuntimeException("Impossible de charger la vue : " + fxmlPath, e);
         }

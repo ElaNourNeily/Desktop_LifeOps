@@ -42,8 +42,6 @@ public class FinanceController {
     @FXML
     private Label financeMessageLabel;
     @FXML
-    private Label currentUserLabel;
-    @FXML
     private VBox budgetCardsContainer;
     @FXML
     private TextField budgetSearchField;
@@ -88,11 +86,9 @@ public class FinanceController {
 
     @FXML
     public void initialize() {
-        currentUserLabel.setText("Utilisateur courant : #" + CURRENT_UTILISATEUR_ID);
-        
         sortBudgetComboBox.getItems().setAll(SORT_DEFAULT, SORT_BUDGET_ASC, SORT_BUDGET_DESC);
         sortBudgetComboBox.setValue(SORT_DEFAULT);
-        
+
         sortDepenseComboBox.getItems().setAll(SORT_DEP_DEFAULT, SORT_DEP_ASC, SORT_DEP_DESC);
         sortDepenseComboBox.setValue(SORT_DEP_DEFAULT);
 

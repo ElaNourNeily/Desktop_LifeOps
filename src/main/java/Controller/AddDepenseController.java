@@ -64,8 +64,6 @@ public class AddDepenseController {
     @FXML
     private Label messageLabel;
     @FXML
-    private Label currentUserLabel;
-    @FXML
     private Button scanReceiptButton;
     @FXML
     private CheckBox importantCheckBox;
@@ -84,7 +82,6 @@ public class AddDepenseController {
 
     @FXML
     public void initialize() {
-        currentUserLabel.setText("Utilisateur courant : #" + CURRENT_UTILISATEUR_ID);
         categorieComboBox.setItems(FXCollections.observableArrayList(DEPENSE_CATEGORIES));
         categorieComboBox.setPromptText("Sélectionnez ou laissez vide pour auto-détection");
         typePaiementComboBox.setItems(FXCollections.observableArrayList("Card", "Cash"));
