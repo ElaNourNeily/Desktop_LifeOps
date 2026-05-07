@@ -42,6 +42,7 @@ public class BoardViewController {
     @FXML private Button btnInvite;
     @FXML private Button btnDeleteBoard;
     @FXML private Button btnAISuggest;
+    @FXML private javafx.scene.layout.HBox membersContainer;
     private Tache selectedTask;
 
     private TaskSpace currentBoard;
@@ -88,8 +89,74 @@ public class BoardViewController {
         lblBoardType.setText(space.getCategory().toUpperCase() + " (" + (currentUserRole != null ? currentUserRole : "VIEWER") + ")");
         lblBoardSubtitle.setText("Sprint de " + space.getDuration() + " jours");
         loadTasks();
-
+        loadMemberAvatars();
         setupRealtimeIfTeam();
+    }
+
+    private void loadMemberAvatars() {
+        if (membersContainer == null) return;
+
+        // Keep only the "+" invite button (last child), remove old avatars
+        javafx.scene.Node inviteBtn = null;
+        for (javafx.scene.Node n : membersContainer.getChildren()) {
+            if (n instanceof Button) { inviteBtn = n; break; }
+        }
+        membersContainer.getChildren().clear();
+
+        // Collect all members: leader + board members
+        List<User> members = new java.util.ArrayList<>(spaceUserService.getMembersByBoard(currentBoard.getId()));
+        // Add leader if not already in the list
+        if (members.stream().noneMatch(u -> u.getId() == currentBoard.getLeaderId())) {
+            User leader = new service.user.UserService().getById(currentBoard.getLeaderId());
+            if (leader != null) members.add(0, leader);
+        }
+
+        // Avatar color palette
+        String[] colors = {"#ef4444", "#10b981", "#3b82f6", "#f59e0b", "#8b5cf6", "#ec4899", "#06b6d4"};
+        int colorIdx = 0;
+
+        for (User u : members) {
+            // Build initials from prenom + nom
+            String initials = "";
+            if (u.getPrenom() != null && !u.getPrenom().isEmpty())
+                initials += u.getPrenom().substring(0, 1).toUpperCase();
+            if (u.getNom() != null && !u.getNom().isEmpty())
+                initials += u.getNom().substring(0, 1).toUpperCase();
+            if (initials.isEmpty()) initials = "?";
+
+            String color = colors[colorIdx % colors.length];
+            colorIdx++;
+
+            Label avatar = new Label(initials);
+            avatar.setStyle(
+                "-fx-background-color: " + color + ";" +
+                "-fx-text-fill: white;" +
+                "-fx-background-radius: 50%;" +
+                "-fx-min-width: 30; -fx-min-height: 30;" +
+                "-fx-max-width: 30; -fx-max-height: 30;" +
+                "-fx-alignment: center;" +
+                "-fx-border-color: #121417;" +
+                "-fx-border-width: 2;" +
+                "-fx-border-radius: 50%;" +
+                "-fx-font-size: 11px;" +
+                "-fx-font-weight: bold;" +
+                "-fx-cursor: hand;"
+            );
+
+            // Tooltip with full name
+            String fullName = ((u.getPrenom() != null ? u.getPrenom() : "") + " " +
+                               (u.getNom() != null ? u.getNom() : "")).trim();
+            boolean isLeaderUser = u.getId() == currentBoard.getLeaderId();
+            javafx.scene.control.Tooltip tip = new javafx.scene.control.Tooltip(
+                fullName + (isLeaderUser ? " (Leader)" : " (Membre)")
+            );
+            javafx.scene.control.Tooltip.install(avatar, tip);
+
+            membersContainer.getChildren().add(avatar);
+        }
+
+        // Re-add the invite button at the end
+        if (inviteBtn != null) membersContainer.getChildren().add(inviteBtn);
     }
 
     public void loadTasks() {
