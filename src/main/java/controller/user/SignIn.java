@@ -169,12 +169,17 @@ public class SignIn {
     @FXML
     void createwithgoogle(ActionEvent event) {
         try {
+            String clientId     = System.getenv("GOOGLE_CLIENT_ID");
+            String clientSecret = System.getenv("GOOGLE_CLIENT_SECRET");
+            if (clientId == null)     clientId     = "YOUR_GOOGLE_CLIENT_ID";
+            if (clientSecret == null) clientSecret = "YOUR_GOOGLE_CLIENT_SECRET";
+
             GoogleAuthorizationCodeFlow flow =
                     new GoogleAuthorizationCodeFlow.Builder(
                             new NetHttpTransport(),
                             JacksonFactory.getDefaultInstance(),
-                            "",
-                            "",
+                            clientId,
+                            clientSecret,
                             Arrays.asList(
                                     "https://www.googleapis.com/auth/userinfo.profile",
                                     "https://www.googleapis.com/auth/userinfo.email"

@@ -8,8 +8,8 @@ import java.util.Properties;
 
 public class EmailService {
 
-    private static final String SENDER_EMAIL = "";
-    private static final String SENDER_PASSWORD = "";
+    private static final String SENDER_EMAIL = "life.ops.esprit@gmail.com";
+    private static final String SENDER_PASSWORD = "lsmknxyceriknrds";
 
     public static void sendEmail(String recipientEmail, String subject, String body) throws MessagingException {
         // SMTP Settings

@@ -209,7 +209,10 @@ public class BoardViewController {
 
     private boolean canManageTask(Tache t) {
         if ("LEADER".equals(currentUserRole)) return true;
-        return Session.isLoggedIn() && Session.getCurrentUser().getId() == t.getAssignedUserId();
+        if (!Session.isLoggedIn()) return false;
+        Integer assignedId = t.getAssignedUserId();
+        if (assignedId == null) return false;
+        return Session.getCurrentUser().getId() == assignedId;
     }
 
     private boolean canTransitionTo(StatutTache status) {
