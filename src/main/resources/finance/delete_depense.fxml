@@ -10,7 +10,7 @@
       stylesheets="@../Task/board_style.css"
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="controller.DeleteDepenseController">
+      fx:controller="Controller.DeleteDepenseController">
 
    <!-- Header -->
    <HBox alignment="CENTER_LEFT" style="-fx-padding: 32 40 20 40;">

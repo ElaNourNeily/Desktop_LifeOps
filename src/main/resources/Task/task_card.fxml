@@ -11,7 +11,7 @@
       stylesheets="@board_style.css"
       xmlns="http://javafx.com/javafx/19"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="controller.task.TaskCardController">
+      fx:controller="Controller.task.TaskCardController">
 
     <padding>
         <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />

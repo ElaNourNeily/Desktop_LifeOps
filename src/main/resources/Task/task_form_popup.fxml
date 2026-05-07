@@ -16,7 +16,7 @@
       stylesheets="@board_style.css"
       xmlns="http://javafx.com/javafx/19"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="controller.task.TaskFormPopupController">
+      fx:controller="Controller.task.TaskFormPopupController">
 
     <padding>
         <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />

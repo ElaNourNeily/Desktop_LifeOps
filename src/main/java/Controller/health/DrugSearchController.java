@@ -1,7 +1,7 @@
 package Controller.health;
 
 import Model.health.DrugInfo;
-import controller.user.MainLayoutController;
+import Controller.user.MainLayoutController;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

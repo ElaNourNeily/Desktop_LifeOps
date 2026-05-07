@@ -1,6 +1,6 @@
-package controller;
+package Controller;
 
-import controller.user.MainLayoutController;
+import Controller.user.MainLayoutController;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

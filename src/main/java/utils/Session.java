@@ -4,7 +4,6 @@ import model.user.User;
 
 /**
  * Session — holds the currently logged-in user.
- *
  * Usage:
  *   Session.getInstance().setCurrentUser(user)  - set after login
  *   Session.getInstance().logout()              - clear on logout

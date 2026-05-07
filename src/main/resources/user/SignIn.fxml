@@ -17,7 +17,7 @@
            stylesheets="@../Task/board_style.css"
            xmlns="http://javafx.com/javafx/19"
            xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="controller.user.SignIn">
+           fx:controller="Controller.user.SignIn">
 
     <VBox alignment="CENTER" maxWidth="420.0" spacing="22.0" styleClass="login-card">
 

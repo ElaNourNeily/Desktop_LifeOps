@@ -16,7 +16,7 @@
       stylesheets="@../Task/board_style.css"
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="controller.AddDepenseController">
+      fx:controller="Controller.AddDepenseController">
 
    <!-- Header -->
    <HBox alignment="CENTER_LEFT" style="-fx-padding: 32 40 20 40;">

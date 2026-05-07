@@ -1,4 +1,4 @@
-package controller;
+package Controller;
 
 import javafx.collections.FXCollections;
 import javafx.event.Event;

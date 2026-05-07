@@ -1,4 +1,4 @@
-package controller.task;
+package Controller.task;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;

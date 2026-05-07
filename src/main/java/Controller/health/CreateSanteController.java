@@ -1,7 +1,7 @@
 package Controller.health;
 
 import Model.health.SuiviSante;
-import controller.user.MainLayoutController;
+import Controller.user.MainLayoutController;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -1,4 +1,4 @@
-package controller.user;
+package Controller.user;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

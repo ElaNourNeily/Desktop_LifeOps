@@ -13,7 +13,7 @@
       stylesheets="@../Task/board_style.css"
       xmlns="http://javafx.com/javafx/19"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="controller.user.ModifyPasswordController">
+      fx:controller="Controller.user.ModifyPasswordController">
 
     <!-- ── Page header ─────────────────────────────── -->
     <HBox alignment="CENTER_LEFT" spacing="14">

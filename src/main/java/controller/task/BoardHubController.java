@@ -1,4 +1,4 @@
-package controller.task;
+package Controller.task;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.task.TaskSpace;
 import service.task.TaskSpaceService;
-import controller.user.MainLayoutController;
+import Controller.user.MainLayoutController;
 
 import java.io.IOException;
 import java.util.Comparator;

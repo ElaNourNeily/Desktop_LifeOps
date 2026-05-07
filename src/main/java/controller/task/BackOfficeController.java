@@ -1,4 +1,4 @@
-package controller.task;
+package Controller.task;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;

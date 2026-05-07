@@ -1,4 +1,4 @@
-package controller.user;
+package Controller.user;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

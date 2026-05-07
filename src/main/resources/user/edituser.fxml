@@ -14,7 +14,7 @@
             stylesheets="@../Task/board_style.css"
             xmlns="http://javafx.com/javafx/19"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controller.user.EditUserController">
+            fx:controller="Controller.user.EditUserController">
 
     <VBox spacing="0" style="-fx-background-color: #171A21; -fx-padding: 40 50 40 50;">
 

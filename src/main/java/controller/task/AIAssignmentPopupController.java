@@ -1,4 +1,4 @@
-package controller.task;
+package Controller.task;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;

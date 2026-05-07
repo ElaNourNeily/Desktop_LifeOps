@@ -2,7 +2,7 @@ package Controller.health;
 
 import Model.health.BilanSante;
 import Model.health.SuiviSante;
-import controller.user.MainLayoutController;
+import Controller.user.MainLayoutController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
