@@ -79,35 +79,41 @@ public class TaskFormPopupController {
     }
 
     public void setBoardContext(TaskSpace board, String currentUserRole) {
-        // Permissions logic
         boolean isLeader = "LEADER".equals(currentUserRole);
-        
-        // If not leader, they can't assign tasks
+
+        // Non-leaders cannot assign tasks to others
         comboAssignee.setDisable(!isLeader);
-        
-        // If editing an existing task and not leader nor assignee, disable everything
-        if (editingTask != null && !isLeader) {
-            boolean isAssignee = Session.isLoggedIn() && Session.getCurrentUser().getId() == editingTask.getAssignedUserId();
-            if (!isAssignee) {
+
+        if (!isLeader && editingTask != null) {
+            Integer assignedId = editingTask.getAssignedUserId();
+            boolean isAssignee = Session.isLoggedIn()
+                    && assignedId != null
+                    && Session.getCurrentUser().getId() == assignedId.intValue();
+
+            if (isAssignee) {
+                // Assignee: can change status (but not to DONE), cannot edit other fields
                 txtTitle.setDisable(true);
                 txtDescription.setDisable(true);
                 comboPriority.setDisable(true);
                 comboDifficulty.setDisable(true);
+                dateDeadline.setDisable(true);
+                btnDelete.setVisible(false);
+                // Remove TERMINE from status options for members
+                comboStatus.setItems(FXCollections.observableArrayList(
+                        StatutTache.A_FAIRE, StatutTache.EN_COURS, StatutTache.EN_REVISION
+                ));
+                lblFormTitle.setText("Mettre à jour le statut");
+            } else {
+                // Non-assignee member: read-only view
+                txtTitle.setDisable(true);
+                txtDescription.setDisable(true);
+                comboPriority.setDisable(true);
+                comboDifficulty.setDisable(true);
+                comboStatus.setDisable(true);
                 dateDeadline.setDisable(true);
                 btnSubmit.setVisible(false);
                 btnDelete.setVisible(false);
-            } else {
-                // Assignee can only change status
-                txtTitle.setDisable(true);
-                txtDescription.setDisable(true);
-                comboPriority.setDisable(true);
-                comboDifficulty.setDisable(true);
-                dateDeadline.setDisable(true);
-                
-                // Restriction: Member cannot set to DONE
-                comboStatus.setItems(FXCollections.observableArrayList(
-                    StatutTache.A_FAIRE, StatutTache.EN_COURS, StatutTache.EN_REVISION
-                ));
+                lblFormTitle.setText("Détails de la tâche");
             }
         }
     }

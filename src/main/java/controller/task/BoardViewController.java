@@ -382,8 +382,9 @@ public class BoardViewController {
             
             TaskFormPopupController controller = loader.getController();
             controller.setContext(currentBoard.getId(), currentBoard.getLeaderId(), this);
-            controller.setBoardContext(currentBoard, currentUserRole);
+            // fillForm BEFORE setBoardContext so editingTask is set when permissions are evaluated
             controller.fillForm(task);
+            controller.setBoardContext(currentBoard, currentUserRole);
 
             javafx.stage.Stage stage = new javafx.stage.Stage();
             stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
